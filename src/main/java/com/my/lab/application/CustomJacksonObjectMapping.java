@@ -29,7 +29,8 @@ public class CustomJacksonObjectMapping implements ContextResolver<ObjectMapper>
         serializationModule.addSerializer(Date.class, new BirthDateSerializer());
 
         mapper.registerModule(serializationModule);
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+                .configure(SerializationFeature.INDENT_OUTPUT, true);
     }
 
     @Override
