@@ -1,7 +1,6 @@
 package com.my.lab.data.json;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.my.lab.data.DateFormats;
@@ -13,7 +12,7 @@ public class BirthDateDeserializer extends JsonDeserializer<Date> {
 
     @Override
     public Date deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-            throws IOException, JsonProcessingException {
+            throws IOException {
         return DateFormats.BIRTH_DATE_FORMAT.fromSting(jsonParser.getText());
     }
 }

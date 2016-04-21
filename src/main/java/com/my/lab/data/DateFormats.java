@@ -20,7 +20,7 @@ public enum DateFormats {
     public Date fromSting(String date) {
         try {
             Matcher matcher = Pattern.compile("\\d{4}").matcher(date);
-            return matcher.find() == true ? format.parse(matcher.group()) : null;
+            return matcher.find() ? format.parse(matcher.group()) : null;
         } catch (ParseException | NullPointerException exc) {
             return null;
         }
