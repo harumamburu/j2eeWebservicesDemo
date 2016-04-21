@@ -30,15 +30,11 @@ public class BookResource {
     }
 
     @POST
-    //@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
     @Produces("text/plain"/*{MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}*/)
-    public String saveBook(String book) {
+    public String saveBook(Book book) {
         try {
-            String[] bookDetails = book.split("=");
-            Book bookObj = new Book(bookDetails[1]);
-            bookObj.setId(Integer.valueOf(bookDetails[0]));
-            books.put(bookObj.getId(), bookObj);
-            return bookObj.toString();
+            return book.toString();
         } catch (NullPointerException exc) {
             return "Oh no! Books storage weren't initialized!";
         } catch (IndexOutOfBoundsException exc) {
@@ -48,7 +44,7 @@ public class BookResource {
 
     @PUT
     public String saveOrUpdateBook(String book) {
-        return saveBook(book);
+        return null;//saveBook(book);
     }
 
     @DELETE

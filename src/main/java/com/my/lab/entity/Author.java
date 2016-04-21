@@ -11,6 +11,10 @@ public class Author {
     private String name;
     private Date birth;
 
+    public Author() {
+        // Default empty constuctor for JSON data binding
+    }
+
     public Author(String name) {
         this.name = name;
     }

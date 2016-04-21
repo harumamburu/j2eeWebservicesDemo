@@ -18,6 +18,10 @@ public class Book {
         this.name = name;
     }
 
+    public Book() {
+        // Default empty constuctor for JSON data binding
+    }
+
     public Integer getId() {
         return id;
     }
