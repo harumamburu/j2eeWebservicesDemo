@@ -1,6 +1,10 @@
 package com.my.lab.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.my.lab.data.DateFormats;
+import com.my.lab.data.json.PublishingDateDeserializer;
+import com.my.lab.data.json.PublishingDateSerializer;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -12,6 +16,8 @@ public class Book {
     private String name;
     private Author author;
     private List<Genre> genres;
+    @JsonDeserialize(using = PublishingDateDeserializer.class)
+    @JsonSerialize(using = PublishingDateSerializer.class)
     private Date written;
 
     public Book(String name) {

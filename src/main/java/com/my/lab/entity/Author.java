@@ -1,6 +1,10 @@
 package com.my.lab.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.my.lab.data.DateFormats;
+import com.my.lab.data.json.BirthDateDeserializer;
+import com.my.lab.data.json.BirthDateSerializer;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -9,14 +13,16 @@ public class Author {
 
     private Integer authorId;
     private String name;
+    @JsonDeserialize(using = BirthDateDeserializer.class)
+    @JsonSerialize(using = BirthDateSerializer.class)
     private Date birth;
-
-    public Author() {
-        // Default empty constuctor for JSON data binding
-    }
 
     public Author(String name) {
         this.name = name;
+    }
+
+    public Author() {
+        // Default empty constuctor for JSON data bindingor for JSON data binding
     }
 
     public Integer getAuthorId() {
