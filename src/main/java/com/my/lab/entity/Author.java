@@ -1,6 +1,6 @@
 package com.my.lab.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.my.lab.data.DateFormats;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -11,7 +11,7 @@ public class Author {
     private String name;
     private Date birth;
 
-    public Author(/*@JsonProperty("name")*/String name) {
+    public Author(String name) {
         this.name = name;
     }
 
@@ -44,7 +44,7 @@ public class Author {
         return "Author{" +
                 "authorId=" + authorId +
                 ", name='" + name + '\'' +
-                ", birth=" + birth +
+                ", birth=" + DateFormats.BIRTH_DATE_FORMAT.fromDate(birth) +
                 '}';
     }
 

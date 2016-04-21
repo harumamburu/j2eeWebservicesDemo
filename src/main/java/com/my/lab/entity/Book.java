@@ -1,8 +1,8 @@
 package com.my.lab.entity;
 
+import com.my.lab.data.DateFormats;
+
 import javax.validation.constraints.NotNull;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -14,13 +14,9 @@ public class Book {
     private List<Genre> genres;
     private Date written;
 
-    public Book(/*@JsonProperty("name")*/String name) {
+    public Book(String name) {
         this.name = name;
     }
-
-    /*public Book() {
-        // Default empty constuctor for JSON data binding
-    }*/
 
     public Integer getId() {
         return id;
@@ -64,7 +60,6 @@ public class Book {
 
     @Override
     public String toString() {
-        DateFormat yearFormat = new SimpleDateFormat("yyyy");
         String result =  "Book{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
@@ -74,10 +69,11 @@ public class Book {
             result = result + "null";
         } else {
             for (Genre genre : genres) {
-                result = result + " " + genre.name() + " ";
+                result = result + " " + genre.name() + ", ";
             }
         }
-        return result + " }, written=" + (written == null ? "N/A" : yearFormat.format(written)) + '}';
+        return result.substring(0, result.length() - 2) +
+                " }, written=" + DateFormats.YEAR_DATE_FORMAT.fromDate(written) + '}';
     }
 
     @Override
