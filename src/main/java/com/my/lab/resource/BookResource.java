@@ -16,30 +16,28 @@ public class BookResource {
     private static final String PARAM_BOOK_ID = "bookId";
 
     @GET
-    @Produces("text/plain"/*{MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}*/)
-    public String/*Response*/ getBookById(@QueryParam(PARAM_BOOK_ID) String bookId) {
+    @Produces({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
+    public Response getBookById(@QueryParam(PARAM_BOOK_ID) String bookId) {
         try {
+            if (bookId.equals("null") || bookId == null) {
+                throw new BadRequestException(PARAM_BOOK_ID + " can't be null!");
+            }
+
             Book book = books.get(Integer.valueOf(bookId));
             if (book == null) {
-                return "No book found by id = " + bookId;
+                return Response.serverError().entity("No book found by id = " + bookId).build();
             }
-            return book.toString();
+            return Response.ok(book).build();
         } catch (NullPointerException exc) {
-            return "Oh no! Books storage weren't initialized!";
+            return Response.serverError().entity("Oh no! Books storage weren't initialized!").build();
         }
     }
 
     @POST
     @Consumes({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
-    @Produces("text/plain"/*{MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}*/)
-    public String saveBook(Book book) {
-        try {
-            return book.toString();
-        } catch (NullPointerException exc) {
-            return "Oh no! Books storage weren't initialized!";
-        } catch (IndexOutOfBoundsException exc) {
-            return "PLease provide a book record in the id=book_name format";
-        }
+    @Produces({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
+    public Response saveBook(Book book) {
+        return Response.ok().entity(book).build();
     }
 
     @PUT
