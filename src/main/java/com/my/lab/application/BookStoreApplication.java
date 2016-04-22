@@ -16,8 +16,7 @@ public class BookStoreApplication extends ResourceConfig {
         swaggerConfig.setResourcePackage("com.my.lab");
         swaggerConfig.setScan(true);
 
-        packages("com.my.lab","io.swagger.jaxrs.json", "io.swagger.jaxrs.listing",
-                "com.fasterxml.jackson.jaxrs");
+        packages("com.my.lab","io.swagger.jaxrs.json", "io.swagger.jaxrs.listing");
         register(CustomJacksonDateMappingProvider.class);
     }
 }

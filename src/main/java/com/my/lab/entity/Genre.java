@@ -42,6 +42,6 @@ public enum Genre {
     TEXTBOOK,
     REFERENCE_BOOK,
     SELFHELP_BOOK,
-    JOURNALISM;
+    JOURNALISM
 
 }
