@@ -2,6 +2,8 @@ package com.my.lab.resource;
 
 import com.my.lab.data.storage.BookStorage;
 import com.my.lab.entity.Book;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -29,6 +31,9 @@ public class BookResource {
     @POST
     @Consumes({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
     @Produces({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
+    @ApiOperation(value = "Post a book", consumes = MediaType.APPLICATION_JSON,
+            produces = MediaType.APPLICATION_JSON, response = Book.class)
+    @ApiResponse(code = 500, message = "Internal Server Error")
     public Response saveBook(Book book) {
         return Response.ok().entity(BookStorage.addBook(book)).build();
     }
