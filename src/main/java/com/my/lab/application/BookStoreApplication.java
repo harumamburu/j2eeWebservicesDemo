@@ -1,9 +1,14 @@
 package com.my.lab.application;
 
+import org.glassfish.jersey.server.ResourceConfig;
+
 import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
 
 @ApplicationPath("/bookstore/api")
-public class BookStoreApplication extends Application {
+public class BookStoreApplication extends ResourceConfig {
 
+    public BookStoreApplication() {
+        packages("com.my.lab");
+        register(CustomJacksonDateMappingProvider.class);
+    }
 }

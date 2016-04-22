@@ -13,13 +13,13 @@ import javax.ws.rs.ext.Provider;
 import java.util.Date;
 
 @Provider
-public class CustomJacksonObjectMapping implements ContextResolver<ObjectMapper> {
+public class CustomJacksonDateMappingProvider implements ContextResolver<ObjectMapper> {
 
     private static final String SERIALIZATION_MODULE_NAME = "Custom serialization module";
 
     private final ObjectMapper mapper;
 
-    public CustomJacksonObjectMapping() {
+    public CustomJacksonDateMappingProvider() {
         mapper = new ObjectMapper();
         SimpleModule serializationModule = new SimpleModule(SERIALIZATION_MODULE_NAME);
 
