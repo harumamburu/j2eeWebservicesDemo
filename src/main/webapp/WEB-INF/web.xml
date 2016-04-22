@@ -4,4 +4,13 @@
 
 <web-app>
     <display-name>Archetype Created Web Application</display-name>
+
+    <filter>
+        <filter-name>SwaggerFilter</filter-name>
+        <filter-class>com.my.lab.application.SwaggerFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SwaggerFilter</filter-name>
+        <url-pattern>/bookstore/api/*</url-pattern>
+    </filter-mapping>
 </web-app>
