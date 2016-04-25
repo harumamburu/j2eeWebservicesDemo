@@ -55,7 +55,7 @@ public class BookResource {
     }
 
     private Response saveBook(Book book) {
-        return Response.ok().entity(BookStorage.addBook(book)).build();
+        return Response.status(Response.Status.CREATED).entity(BookStorage.addBook(book)).build();
     }
 
     @PUT
@@ -78,6 +78,6 @@ public class BookResource {
         if (book == null) {
             throw new NotFoundException("No book found with id = " + bookId);
         }
-        return Response.ok().entity(book.toString() + "\r\nDeleted").build();
+        return Response.ok().entity(book).build();
     }
 }
