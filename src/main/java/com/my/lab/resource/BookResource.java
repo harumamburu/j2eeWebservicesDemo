@@ -12,21 +12,29 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/book")
-@Api
+@Api(value = "book")
 @Produces({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
 public class BookResource {
 
     private static final String PARAM_BOOK_ID = "bookId";
 
     @GET
+    @ApiOperation(value = "get a book by id", response = Book.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 400, message = "Book id is null or misformatted"),
+            @ApiResponse(code = 404, message = "No book found"),
+            @ApiResponse(code = 500, message = "Internal server error")})
     public Response getBookById(@QueryParam(PARAM_BOOK_ID) String bookId) {
-        if (bookId == null || bookId.equals("null")) {
+        if (bookId == null) {
             throw new BadRequestException(PARAM_BOOK_ID + " can't be null!");
+        }
+        if (!bookId.matches("\\d+")) {
+            throw new BadRequestException(PARAM_BOOK_ID + " should be an integer only!");
         }
 
         Book book = BookStorage.getBook(Integer.valueOf(bookId));
         if (book == null) {
-            return Response.serverError().entity("No book found by id = " + bookId).build();
+            throw new NotFoundException("No book found by id = " + bookId);
         }
         return Response.ok(book).build();
     }
@@ -35,21 +43,41 @@ public class BookResource {
     @Consumes({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
     @ApiOperation(value = "Post a book", response = Book.class)
     @ApiResponses(value = {
+            @ApiResponse(code = 409, message = "A book with such id is already exist"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    public Response saveBook(Book book) {
+    public Response saveNewBook(Book book) {
+        Integer id;
+        if ((id = book.getId()) != null && BookStorage.contains(id)) {
+            throw new WebApplicationException(String.format("A book with id %d is already exist", id),
+                    Response.Status.CONFLICT);
+        }
+        return saveBook(book);
+    }
+
+    private Response saveBook(Book book) {
         return Response.ok().entity(BookStorage.addBook(book)).build();
     }
 
     @PUT
     @Consumes({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
+    @ApiOperation(value = "Post or update a book", response = Book.class, notes = "Post a book (no id required), " +
+            "or check if a book exists (an id required) and either update it's entry or just post it")
+    @ApiResponses(value = {
+            @ApiResponse(code = 500, message = "Internal server error")})
     public Response saveOrUpdateBook(Book book) {
         return saveBook(book);
     }
 
     @DELETE
-    public String deleteBook(@QueryParam(PARAM_BOOK_ID) String bookId) {
+    @ApiOperation(value = "Delete a book")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "book has been deleted"),
+            @ApiResponse(code = 404, message = "no book found")})
+    public Response deleteBook(@QueryParam(PARAM_BOOK_ID) String bookId) {
         Book book = BookStorage.deleteBook(Integer.valueOf(bookId));
-        return book == null
-                ? "No book found with id = " + bookId : book.toString() + "\r\nDeleted";
+        if (book == null) {
+            throw new NotFoundException("No book found with id = " + bookId);
+        }
+        return Response.ok().entity(book.toString() + "\r\nDeleted").build();
     }
 }

@@ -23,7 +23,11 @@ public class BookStorage {
         return books.get(id);
     }
 
-    public static  Book deleteBook(Integer id) {
+    public static Book deleteBook(Integer id) {
         return books.remove(id);
+    }
+
+    public static boolean contains(Integer id) {
+        return books.containsKey(id);
     }
 }
