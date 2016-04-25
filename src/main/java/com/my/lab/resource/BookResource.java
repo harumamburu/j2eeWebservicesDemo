@@ -2,20 +2,23 @@ package com.my.lab.resource;
 
 import com.my.lab.data.storage.BookStorage;
 import com.my.lab.entity.Book;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/book")
+@Api
+@Produces({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
 public class BookResource {
 
     private static final String PARAM_BOOK_ID = "bookId";
 
     @GET
-    @Produces({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
     public Response getBookById(@QueryParam(PARAM_BOOK_ID) String bookId) {
         if (bookId == null || bookId.equals("null")) {
             throw new BadRequestException(PARAM_BOOK_ID + " can't be null!");
@@ -30,23 +33,20 @@ public class BookResource {
 
     @POST
     @Consumes({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
-    @Produces({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
-    @ApiOperation(value = "Post a book", consumes = MediaType.APPLICATION_JSON,
-            produces = MediaType.APPLICATION_JSON, response = Book.class)
-    @ApiResponse(code = 500, message = "Internal Server Error")
+    @ApiOperation(value = "Post a book", response = Book.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 500, message = "Internal Server Error")})
     public Response saveBook(Book book) {
         return Response.ok().entity(BookStorage.addBook(book)).build();
     }
 
     @PUT
     @Consumes({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
-    @Produces({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
     public Response saveOrUpdateBook(Book book) {
         return saveBook(book);
     }
 
     @DELETE
-    @Produces({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
     public String deleteBook(@QueryParam(PARAM_BOOK_ID) String bookId) {
         Book book = BookStorage.deleteBook(Integer.valueOf(bookId));
         return book == null
