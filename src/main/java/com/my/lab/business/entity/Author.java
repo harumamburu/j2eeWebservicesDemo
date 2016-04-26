@@ -1,10 +1,10 @@
-package com.my.lab.entity;
+package com.my.lab.business.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.my.lab.data.DateFormats;
-import com.my.lab.data.json.BirthDateDeserializer;
-import com.my.lab.data.json.BirthDateSerializer;
+import com.my.lab.business.DateFormats;
+import com.my.lab.web.setting.json.BirthDateDeserializer;
+import com.my.lab.web.setting.json.BirthDateSerializer;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -37,7 +37,7 @@ public class Author {
         return name;
     }
 
-    public void setName(@NotNull String name) {
+    public void setName(String name) {
         this.name = name;
     }
 

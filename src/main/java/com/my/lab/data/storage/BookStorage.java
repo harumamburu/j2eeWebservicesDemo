@@ -1,6 +1,6 @@
 package com.my.lab.data.storage;
 
-import com.my.lab.entity.Book;
+import com.my.lab.business.entity.Book;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,9 +1,9 @@
-package com.my.lab.data.json;
+package com.my.lab.web.setting.json;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.my.lab.data.DateFormats;
+import com.my.lab.business.DateFormats;
 
 import java.io.IOException;
 import java.util.Date;

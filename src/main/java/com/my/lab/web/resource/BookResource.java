@@ -1,7 +1,7 @@
-package com.my.lab.resource;
+package com.my.lab.web.resource;
 
 import com.my.lab.data.storage.BookStorage;
-import com.my.lab.entity.Book;
+import com.my.lab.business.entity.Book;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

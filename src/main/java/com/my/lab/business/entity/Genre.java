@@ -1,4 +1,4 @@
-package com.my.lab.entity;
+package com.my.lab.business.entity;
 
 public enum Genre {
 

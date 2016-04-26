@@ -1,4 +1,4 @@
-package com.my.lab.application;
+package com.my.lab.web.setting;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;

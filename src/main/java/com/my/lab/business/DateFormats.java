@@ -1,4 +1,4 @@
-package com.my.lab.data;
+package com.my.lab.business;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
