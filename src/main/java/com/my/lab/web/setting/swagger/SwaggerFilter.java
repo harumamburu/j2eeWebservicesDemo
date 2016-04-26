@@ -1,4 +1,4 @@
-package com.my.lab.web.setting;
+package com.my.lab.web.setting.swagger;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;

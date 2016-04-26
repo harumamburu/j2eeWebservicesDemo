@@ -1,6 +1,6 @@
 package com.my.lab.web.resource;
 
-import com.my.lab.data.storage.BookStorage;
+import com.my.lab.data.storage.memory.InMemoryBookStorage;
 import com.my.lab.business.entity.Book;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,7 +32,7 @@ public class BookResource {
             throw new BadRequestException(PARAM_BOOK_ID + " should be an integer only!");
         }
 
-        Book book = BookStorage.getBook(Integer.valueOf(bookId));
+        Book book = InMemoryBookStorage.getBook(Integer.valueOf(bookId));
         if (book == null) {
             throw new NotFoundException("No book found by id = " + bookId);
         }
@@ -47,7 +47,7 @@ public class BookResource {
             @ApiResponse(code = 500, message = "Internal Server Error")})
     public Response saveNewBook(Book book) {
         Integer id;
-        if ((id = book.getId()) != null && BookStorage.contains(id)) {
+        if ((id = book.getId()) != null && InMemoryBookStorage.contains(id)) {
             throw new WebApplicationException(String.format("A book with id %d is already exist", id),
                     Response.Status.CONFLICT);
         }
@@ -55,7 +55,7 @@ public class BookResource {
     }
 
     private Response saveBook(Book book) {
-        return Response.status(Response.Status.CREATED).entity(BookStorage.addBook(book)).build();
+        return Response.status(Response.Status.CREATED).entity(InMemoryBookStorage.addBook(book)).build();
     }
 
     @PUT
@@ -74,7 +74,7 @@ public class BookResource {
             @ApiResponse(code = 200, message = "book has been deleted"),
             @ApiResponse(code = 404, message = "no book found")})
     public Response deleteBook(@QueryParam(PARAM_BOOK_ID) String bookId) {
-        Book book = BookStorage.deleteBook(Integer.valueOf(bookId));
+        Book book = InMemoryBookStorage.deleteBook(Integer.valueOf(bookId));
         if (book == null) {
             throw new NotFoundException("No book found with id = " + bookId);
         }

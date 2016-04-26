@@ -2,9 +2,9 @@ package com.my.lab.business.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.my.lab.business.DateFormats;
-import com.my.lab.web.setting.json.BirthDateDeserializer;
-import com.my.lab.web.setting.json.BirthDateSerializer;
+import com.my.lab.business.entity.format.DateFormats;
+import com.my.lab.web.setting.json.deserialization.BirthDateDeserializer;
+import com.my.lab.web.setting.json.deserialization.BirthDateSerializer;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -12,6 +12,7 @@ import java.util.Date;
 public class Author {
 
     private Integer authorId;
+    @NotNull
     private String name;
     @JsonDeserialize(using = BirthDateDeserializer.class)
     @JsonSerialize(using = BirthDateSerializer.class)
@@ -22,7 +23,7 @@ public class Author {
     }
 
     public Author() {
-        // Default empty constuctor for JSON data bindingor for JSON data binding
+        // Default empty constuctor for JSON data bindings
     }
 
     public Integer getAuthorId() {

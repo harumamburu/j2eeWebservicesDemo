@@ -1,6 +1,6 @@
 package com.my.lab.web;
 
-import com.my.lab.web.setting.CustomJacksonDateMappingProvider;
+import com.my.lab.web.setting.json.CustomJacksonDateMappingProvider;
 import io.swagger.jaxrs.config.BeanConfig;
 import io.swagger.models.Info;
 import org.glassfish.jersey.server.ResourceConfig;

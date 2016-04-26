@@ -6,7 +6,7 @@
 
     <filter>
         <filter-name>SwaggerFilter</filter-name>
-        <filter-class>com.my.lab.web.setting.SwaggerFilter</filter-class>
+        <filter-class>com.my.lab.web.setting.swagger.SwaggerFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>SwaggerFilter</filter-name>

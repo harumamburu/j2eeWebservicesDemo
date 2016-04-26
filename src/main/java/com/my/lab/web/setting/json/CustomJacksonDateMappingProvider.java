@@ -1,12 +1,12 @@
-package com.my.lab.web.setting;
+package com.my.lab.web.setting.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.my.lab.web.setting.json.BirthDateDeserializer;
-import com.my.lab.web.setting.json.BirthDateSerializer;
-import com.my.lab.web.setting.json.PublishingDateDeserializer;
-import com.my.lab.web.setting.json.PublishingDateSerializer;
+import com.my.lab.web.setting.json.deserialization.BirthDateDeserializer;
+import com.my.lab.web.setting.json.deserialization.BirthDateSerializer;
+import com.my.lab.web.setting.json.deserialization.PublishingDateDeserializer;
+import com.my.lab.web.setting.json.deserialization.PublishingDateSerializer;
 
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;

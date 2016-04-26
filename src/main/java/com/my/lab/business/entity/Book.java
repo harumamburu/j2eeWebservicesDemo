@@ -2,9 +2,9 @@ package com.my.lab.business.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.my.lab.business.DateFormats;
-import com.my.lab.web.setting.json.PublishingDateDeserializer;
-import com.my.lab.web.setting.json.PublishingDateSerializer;
+import com.my.lab.business.entity.format.DateFormats;
+import com.my.lab.web.setting.json.deserialization.PublishingDateDeserializer;
+import com.my.lab.web.setting.json.deserialization.PublishingDateSerializer;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -13,6 +13,7 @@ import java.util.List;
 public class Book {
 
     private Integer id;
+    @NotNull
     private String name;
     private Author author;
     private List<Genre> genres;

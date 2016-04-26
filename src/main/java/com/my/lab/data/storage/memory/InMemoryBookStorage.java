@@ -1,4 +1,4 @@
-package com.my.lab.data.storage;
+package com.my.lab.data.storage.memory;
 
 import com.my.lab.business.entity.Book;
 
@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class BookStorage {
+public class InMemoryBookStorage {
 
     private static final AtomicInteger increment = new AtomicInteger();
     private static final Map<Integer, Book> books = new HashMap<>();
