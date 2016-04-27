@@ -1,6 +1,7 @@
 package com.my.lab.web.resource;
 
-import com.my.lab.data.storage.memory.InMemoryBookStorage;
+import com.my.lab.dao.DAO;
+import com.my.lab.dao.memory.InMemoryBookDao;
 import com.my.lab.business.entity.Book;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.Response;
 public class BookResource {
 
     private static final String PARAM_BOOK_ID = "bookId";
+    private static final DAO<Book> bookDao = new InMemoryBookDao();
 
     @GET
     @ApiOperation(value = "get a book by id", response = Book.class)
@@ -32,7 +34,7 @@ public class BookResource {
             throw new BadRequestException(PARAM_BOOK_ID + " should be an integer only!");
         }
 
-        Book book = InMemoryBookStorage.getBook(Integer.valueOf(bookId));
+        Book book = bookDao.get(Integer.valueOf(bookId));
         if (book == null) {
             throw new NotFoundException("No book found by id = " + bookId);
         }
@@ -47,7 +49,7 @@ public class BookResource {
             @ApiResponse(code = 500, message = "Internal Server Error")})
     public Response saveNewBook(Book book) {
         Integer id;
-        if ((id = book.getId()) != null && InMemoryBookStorage.contains(id)) {
+        if ((id = book.getId()) != null && bookDao.contains(id)) {
             throw new WebApplicationException(String.format("A book with id %d is already exist", id),
                     Response.Status.CONFLICT);
         }
@@ -55,7 +57,7 @@ public class BookResource {
     }
 
     private Response saveBook(Book book) {
-        return Response.status(Response.Status.CREATED).entity(InMemoryBookStorage.addBook(book)).build();
+        return Response.status(Response.Status.CREATED).entity(bookDao.save(book)).build();
     }
 
     @PUT
@@ -74,7 +76,7 @@ public class BookResource {
             @ApiResponse(code = 200, message = "book has been deleted"),
             @ApiResponse(code = 404, message = "no book found")})
     public Response deleteBook(@QueryParam(PARAM_BOOK_ID) String bookId) {
-        Book book = InMemoryBookStorage.deleteBook(Integer.valueOf(bookId));
+        Book book = bookDao.delete(Integer.valueOf(bookId));
         if (book == null) {
             throw new NotFoundException("No book found with id = " + bookId);
         }

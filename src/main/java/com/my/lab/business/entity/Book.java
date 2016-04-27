@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
-public class Book {
+public class Book implements Entity {
 
     private Integer id;
     @NotNull

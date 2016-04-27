@@ -9,7 +9,7 @@ import com.my.lab.web.setting.json.deserialization.BirthDateSerializer;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-public class Author {
+public class Author implements Entity {
 
     private Integer authorId;
     @NotNull
@@ -26,11 +26,11 @@ public class Author {
         // Default empty constuctor for JSON data bindings
     }
 
-    public Integer getAuthorId() {
+    public Integer getId() {
         return authorId;
     }
 
-    public void setAuthorId(Integer authorId) {
+    public void setId(Integer authorId) {
         this.authorId = authorId;
     }
 
