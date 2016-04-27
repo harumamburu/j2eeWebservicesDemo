@@ -5,21 +5,39 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.my.lab.business.entity.format.DateFormats;
 import com.my.lab.web.setting.json.deserialization.PublishingDateDeserializer;
 import com.my.lab.web.setting.json.deserialization.PublishingDateSerializer;
+import org.hibernate.annotations.GeneratorType;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
+@javax.persistence.Entity(name = "Books")
 public class Book implements Entity {
 
+    @Id
+    @GeneratedValue(generator = "book_counter")
+    @GenericGenerator(name = "book_counter", strategy = "increment")
+    @Column(name = "book_id")
     private Integer id;
+
     @NotNull
+    @Column(name = "book_name")
     private String name;
+
+    @Column(name = "author_id")
     private Author author;
+
+    // TODO deal with list persistence
+    @Transient
     private List<Genre> genres;
+
+    @Temporal(TemporalType.DATE)
     @JsonDeserialize(using = PublishingDateDeserializer.class)
     @JsonSerialize(using = PublishingDateSerializer.class)
     private Date written;
+
 
     public Book(String name) {
         this.name = name;
