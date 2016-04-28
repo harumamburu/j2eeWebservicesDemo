@@ -2,20 +2,32 @@ package com.my.lab.business.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.my.lab.business.Constants;
 import com.my.lab.business.entity.format.DateFormats;
 import com.my.lab.web.setting.json.deserialization.BirthDateDeserializer;
 import com.my.lab.web.setting.json.deserialization.BirthDateSerializer;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+@javax.persistence.Entity(name = Constants.AUTHOR_TABLE_NAME)
 public class Author implements Entity {
 
+    @Id
+    @GeneratedValue(generator = "author_counter")
+    @GenericGenerator(name = "author_counter", strategy = "increment")
+    @Column(name = Constants.AUTHOR_COLUMN_ID)
     private Integer authorId;
+
     @NotNull
+    @Column(name = Constants.AUTHOR_COLUMN_NAME, nullable = false)
     private String name;
+
     @JsonDeserialize(using = BirthDateDeserializer.class)
     @JsonSerialize(using = BirthDateSerializer.class)
+    @Temporal(TemporalType.DATE)
     private Date birth;
 
     public Author(String name) {
@@ -23,7 +35,7 @@ public class Author implements Entity {
     }
 
     public Author() {
-        // Default empty constuctor for JSON data bindings
+        // Default empty constructor for JSON data bindings
     }
 
     public Integer getId() {

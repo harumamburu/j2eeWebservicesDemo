@@ -2,10 +2,10 @@ package com.my.lab.business.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.my.lab.business.Constants;
 import com.my.lab.business.entity.format.DateFormats;
 import com.my.lab.web.setting.json.deserialization.PublishingDateDeserializer;
 import com.my.lab.web.setting.json.deserialization.PublishingDateSerializer;
-import org.hibernate.annotations.GeneratorType;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -13,29 +13,36 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
-@javax.persistence.Entity(name = "Books")
+@javax.persistence.Entity(name = Constants.BOOK_TABLE_NAME)
 public class Book implements Entity {
 
     @Id
     @GeneratedValue(generator = "book_counter")
     @GenericGenerator(name = "book_counter", strategy = "increment")
-    @Column(name = "book_id")
+    @Column(name = Constants.BOOK_COLUMN_ID)
     private Integer id;
 
     @NotNull
-    @Column(name = "book_name")
+    @Column(name = Constants.BOOK_COLUMN_NAME)
+    @Basic(optional = false)
     private String name;
 
-    @Column(name = "author_id")
+    @Column(name = Constants.BOOK_COLUMN_AUTHOR)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(name = Constants.JOIN_TABLE_BOOKS_AUTHORS,
+            joinColumns = @JoinColumn(name = Constants.BOOK_COLUMN_ID),
+            inverseJoinColumns = @JoinColumn(name = Constants.AUTHOR_COLUMN_ID))
     private Author author;
 
-    // TODO deal with list persistence
-    @Transient
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = Constants.COLLECTION_TABLE_BOOK_GENRES,
+            joinColumns = @JoinColumn(name = Constants.GENRE_COLUMN_ID))
+    @Enumerated(EnumType.STRING)
     private List<Genre> genres;
 
-    @Temporal(TemporalType.DATE)
     @JsonDeserialize(using = PublishingDateDeserializer.class)
     @JsonSerialize(using = PublishingDateSerializer.class)
+    @Temporal(TemporalType.DATE)
     private Date written;
 
 
@@ -44,7 +51,7 @@ public class Book implements Entity {
     }
 
     public Book() {
-        // Default empty constuctor for JSON data binding
+        // Default empty constructor for hibernate and JSON data binding
     }
 
     public Integer getId() {
