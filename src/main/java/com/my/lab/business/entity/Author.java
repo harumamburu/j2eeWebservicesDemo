@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.my.lab.business.Constants;
 import com.my.lab.business.entity.format.DateFormats;
+import com.my.lab.dao.db.Queries;
 import com.my.lab.web.setting.json.deserialization.BirthDateDeserializer;
 import com.my.lab.web.setting.json.deserialization.BirthDateSerializer;
 import org.hibernate.annotations.GenericGenerator;
@@ -13,6 +14,8 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @javax.persistence.Entity(name = Constants.AUTHOR_TABLE_NAME)
+@NamedQueries({@NamedQuery(name = Queries.AUTHOR_DELETE_BYID_QUERYNAME, query = Queries.AUTHOR_DELETE_BYID_QUERY),
+        @NamedQuery(name = Queries.AUTHOR_CHECK_BYID_QUERYNAME, query = Queries.AUTHOR_CHECK_BYID_QUERY)})
 public class Author implements Entity {
 
     @Id

@@ -39,4 +39,9 @@ public class InMemoryBookDao implements DAO<Book> {
     public Boolean contains(Integer id) {
         return BOOKS.containsKey(id);
     }
+
+    @Override
+    public Book update(Book entity) {
+        return save(entity);
+    }
 }

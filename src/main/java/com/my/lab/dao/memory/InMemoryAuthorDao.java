@@ -39,4 +39,9 @@ public class InMemoryAuthorDao implements DAO<Author> {
     public Boolean contains(Integer id) {
         return AUTHORS.containsKey(id);
     }
+
+    @Override
+    public Author update(Author entity) {
+        return save(entity);
+    }
 }

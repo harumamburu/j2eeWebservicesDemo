@@ -5,13 +5,13 @@
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@127.0.0.1:1521:MKYONG"/>
-            <property name="javax.persistence.jdbc.user" value="sa"/>
-            <property name="javax.persistence.jdbc.password" value=""/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@127.0.0.1:1521:BKSTORE"/>
+            <property name="javax.persistence.jdbc.user" value="STOREOWNER"/>
+            <property name="javax.persistence.jdbc.password" value="123"/>
 
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.format_sql" value="true"/>
-            <property name='hibernate.hbm2ddl.auto' value="validate"/>
+            <property name='hibernate.hbm2ddl.auto' value="create"/>
         </properties>
     </persistence-unit>
 </persistence>

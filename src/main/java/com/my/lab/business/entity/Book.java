@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.my.lab.business.Constants;
 import com.my.lab.business.entity.format.DateFormats;
+import com.my.lab.dao.db.Queries;
 import com.my.lab.web.setting.json.deserialization.PublishingDateDeserializer;
 import com.my.lab.web.setting.json.deserialization.PublishingDateSerializer;
 import org.hibernate.annotations.GenericGenerator;
@@ -14,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 
 @javax.persistence.Entity(name = Constants.BOOK_TABLE_NAME)
+@NamedQueries({@NamedQuery(name = Queries.BOOK_DELETE_BYID_QUERYNAME, query = Queries.BOOK_DELETE_BYID_QUERY),
+        @NamedQuery(name = Queries.BOOK_CHECK_BYID_QUERYNAME, query = Queries.BOOK_CHECK_BYID_QUERY)})
 public class Book implements Entity {
 
     @Id
