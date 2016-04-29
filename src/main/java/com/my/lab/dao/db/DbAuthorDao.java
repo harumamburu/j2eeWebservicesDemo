@@ -2,7 +2,9 @@ package com.my.lab.dao.db;
 
 import com.my.lab.business.entity.Author;
 
-public class AuthorDao extends AbstractDbDao<Author> {
+/*@Stateless
+@LocalBean*/
+public class DbAuthorDao extends AbstractDbDao<Author> {
 
     @Override
     protected Class<Author> getEntityClass() {

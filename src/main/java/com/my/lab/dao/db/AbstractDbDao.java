@@ -4,15 +4,15 @@ import com.my.lab.business.entity.Entity;
 import com.my.lab.dao.DAO;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import java.util.HashMap;
 import java.util.Map;
 
 abstract class AbstractDbDao<T extends Entity> implements DAO<T> {
 
-    @PersistenceContext(unitName = "FX-persistence-unit")
-    private EntityManager entityManager;
+    //@PersistenceContext(unitName = "FX-persistence-unit")
+    private EntityManager entityManager = Persistence.createEntityManagerFactory("demo-persistence-unit").createEntityManager();
 
     protected abstract Class<T> getEntityClass();
 

@@ -1,6 +1,7 @@
 package com.my.lab.web.resource;
 
 import com.my.lab.dao.DAO;
+import com.my.lab.dao.db.DbBookDao;
 import com.my.lab.dao.memory.InMemoryBookDao;
 import com.my.lab.business.entity.Book;
 import io.swagger.annotations.Api;
@@ -18,7 +19,7 @@ import javax.ws.rs.core.Response;
 public class BookResource {
 
     private static final String PARAM_BOOK_ID = "bookId";
-    private static final DAO<Book> bookDao = new InMemoryBookDao();
+    private static final DAO<Book> bookDao = new DbBookDao();
 
     @GET
     @ApiOperation(value = "get a book by id", response = Book.class)

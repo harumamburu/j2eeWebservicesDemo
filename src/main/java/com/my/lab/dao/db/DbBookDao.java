@@ -2,7 +2,9 @@ package com.my.lab.dao.db;
 
 import com.my.lab.business.entity.Book;
 
-public class BookDao extends AbstractDbDao<Book> {
+/*@Stateless
+@LocalBean*/
+public class DbBookDao extends AbstractDbDao<Book> {
 
     @Override
     protected Class<Book> getEntityClass() {
