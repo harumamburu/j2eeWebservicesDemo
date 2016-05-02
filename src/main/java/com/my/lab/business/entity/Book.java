@@ -14,7 +14,8 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
-@javax.persistence.Entity(name = Constants.BOOK_TABLE_NAME)
+@javax.persistence.Entity
+@Table(name = Constants.BOOK_TABLE_NAME)
 @NamedQueries({@NamedQuery(name = Queries.BOOK_DELETE_BYID_QUERYNAME, query = Queries.BOOK_DELETE_BYID_QUERY),
         @NamedQuery(name = Queries.BOOK_CHECK_BYID_QUERYNAME, query = Queries.BOOK_CHECK_BYID_QUERY)})
 public class Book implements Entity {
@@ -23,18 +24,20 @@ public class Book implements Entity {
     @GeneratedValue(generator = "book_counter")
     @GenericGenerator(name = "book_counter", strategy = "increment")
     @Column(name = Constants.BOOK_COLUMN_ID)
-    private Integer id;
+    private Integer bookId;
 
     @NotNull
     @Column(name = Constants.BOOK_COLUMN_NAME)
     @Basic(optional = false)
     private String name;
 
-    @Column(name = Constants.BOOK_COLUMN_AUTHOR)
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    //@Column(name = Constants.BOOK_COLUMN_AUTHOR)
+    /*@ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = Constants.JOIN_TABLE_BOOKS_AUTHORS,
             joinColumns = @JoinColumn(name = Constants.BOOK_COLUMN_ID),
-            inverseJoinColumns = @JoinColumn(name = Constants.AUTHOR_COLUMN_ID))
+            inverseJoinColumns = @JoinColumn(name = Constants.AUTHOR_COLUMN_ID))*/
+    @ManyToOne
+    @JoinColumn(name = Constants.BOOK_COLUMN_AUTHOR, foreignKey = @ForeignKey(name = Constants.BOOK_COLUMN_AUTHOR + "_FK"))
     private Author author;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -58,11 +61,11 @@ public class Book implements Entity {
     }
 
     public Integer getId() {
-        return id;
+        return bookId;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.bookId = id;
     }
 
     public String getName() {
@@ -100,7 +103,7 @@ public class Book implements Entity {
     @Override
     public String toString() {
         String result =  "Book{" +
-                "id=" + id +
+                "bookId=" + bookId +
                 ", name='" + name + '\'' +
                 ", author=" + author +
                 ", genres={ ";
@@ -122,7 +125,7 @@ public class Book implements Entity {
 
         Book book = (Book) o;
 
-        if (id != null ? !id.equals(book.id) : book.id != null) return false;
+        if (bookId != null ? !bookId.equals(book.bookId) : book.bookId != null) return false;
         if (!name.equals(book.name)) return false;
         if (author != null ? !author.equals(book.author) : book.author != null) return false;
         if (genres != null ? !genres.equals(book.genres) : book.genres != null) return false;
@@ -132,7 +135,7 @@ public class Book implements Entity {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = bookId != null ? bookId.hashCode() : 0;
         result = 31 * result + name.hashCode();
         result = 31 * result + (author != null ? author.hashCode() : 0);
         result = 31 * result + (genres != null ? genres.hashCode() : 0);

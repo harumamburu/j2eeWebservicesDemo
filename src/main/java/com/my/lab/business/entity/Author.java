@@ -13,7 +13,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-@javax.persistence.Entity(name = Constants.AUTHOR_TABLE_NAME)
+@javax.persistence.Entity
+@Table(name = Constants.AUTHOR_TABLE_NAME)
 @NamedQueries({@NamedQuery(name = Queries.AUTHOR_DELETE_BYID_QUERYNAME, query = Queries.AUTHOR_DELETE_BYID_QUERY),
         @NamedQuery(name = Queries.AUTHOR_CHECK_BYID_QUERYNAME, query = Queries.AUTHOR_CHECK_BYID_QUERY)})
 public class Author implements Entity {
@@ -38,15 +39,15 @@ public class Author implements Entity {
     }
 
     public Author() {
-        // Default empty constructor for JSON data bindings
+        // Default empty constructor for hibernate and JSON data binding
     }
 
     public Integer getId() {
         return authorId;
     }
 
-    public void setId(Integer authorId) {
-        this.authorId = authorId;
+    public void setId(Integer id) {
+        this.authorId = id;
     }
 
     public String getName() {
