@@ -54,10 +54,6 @@ public class BookResource {
             throw new WebApplicationException(String.format("A book with id %d is already exist", id),
                     Response.Status.CONFLICT);
         }
-        return saveBook(book);
-    }
-
-    private Response saveBook(Book book) {
         return Response.status(Response.Status.CREATED).entity(bookDao.saveEntity(book)).build();
     }
 
@@ -68,7 +64,7 @@ public class BookResource {
     @ApiResponses(value = {
             @ApiResponse(code = 500, message = "Internal server error")})
     public Response saveOrUpdateBook(Book book) {
-        return saveBook(book);
+        return Response.ok(bookDao.updateEntity(book)).build();
     }
 
     @DELETE
