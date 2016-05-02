@@ -31,6 +31,7 @@ public class Book implements Entity {
     @Basic(optional = false)
     private String name;
 
+    // TODO: try to set up many-many relations
     //@Column(name = Constants.BOOK_COLUMN_AUTHOR)
     /*@ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = Constants.JOIN_TABLE_BOOKS_AUTHORS,

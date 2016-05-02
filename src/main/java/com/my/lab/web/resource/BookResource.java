@@ -49,6 +49,7 @@ public class BookResource {
             @ApiResponse(code = 500, message = "Internal Server Error")})
     public Response saveNewBook(Book book) {
         Integer id;
+        // TODO: move this validation to dao, catch an exception instead
         if ((id = book.getId()) != null && bookDao.contains(id)) {
             throw new WebApplicationException(String.format("A book with id %d is already exist", id),
                     Response.Status.CONFLICT);

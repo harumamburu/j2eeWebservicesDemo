@@ -12,6 +12,7 @@ import java.util.Map;
 
 abstract class AbstractDbDao<T extends Entity> implements DAO<T> {
 
+    // TODO change EM initialization to container-managed
     //@PersistenceContext(unitName = "FX-persistence-unit")
     private EntityManager entityManager = Persistence.createEntityManagerFactory("demo-persistence-unit").createEntityManager();
 
