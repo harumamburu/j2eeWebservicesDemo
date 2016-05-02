@@ -12,14 +12,8 @@ public class DbBookDao extends AbstractDbDao<Book> {
     }
 
     @Override
-    public Book delete(Integer id) {
-        return executeNamedQuerySingleResult(Queries.BOOK_DELETE_BYID_QUERYNAME,
-                getSingleParamMap(Queries.QUERY_PARAM_ID, id));
-    }
-
-    @Override
     public Boolean contains(Integer id) {
-        return executeNamedQuerySingleResult(Queries.BOOK_CHECK_BYID_QUERYNAME,
+        return executeQuerySingleResult(Queries.BOOK_CHECK_BYID_QUERYNAME,
                 getSingleParamMap(Queries.QUERY_PARAM_ID, id)) != null;
     }
 }

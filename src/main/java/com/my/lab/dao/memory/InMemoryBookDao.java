@@ -13,7 +13,7 @@ public class InMemoryBookDao implements DAO<Book> {
     private static final Map<Integer, Book> BOOKS = new HashMap<>();
 
     @Override
-    public Book save(Book book) {
+    public Book saveEntity(Book book) {
         if (book.getId() == null) {
             book.setId(COUNTER.incrementAndGet());
         }
@@ -22,12 +22,12 @@ public class InMemoryBookDao implements DAO<Book> {
     }
 
     @Override
-    public Book get(Integer id) {
+    public Book getEntity(Integer id) {
         return BOOKS.get(id);
     }
 
     @Override
-    public Book delete(Integer id) {
+    public Book deleteEntity(Integer id) {
         Book book = BOOKS.remove(id);
         if (book != null) {
             COUNTER.decrementAndGet();
@@ -41,7 +41,7 @@ public class InMemoryBookDao implements DAO<Book> {
     }
 
     @Override
-    public Book update(Book entity) {
-        return save(entity);
+    public Book updateEntity(Book entity) {
+        return saveEntity(entity);
     }
 }

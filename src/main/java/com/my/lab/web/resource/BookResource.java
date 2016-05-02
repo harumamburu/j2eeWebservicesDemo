@@ -2,7 +2,6 @@ package com.my.lab.web.resource;
 
 import com.my.lab.dao.DAO;
 import com.my.lab.dao.db.DbBookDao;
-import com.my.lab.dao.memory.InMemoryBookDao;
 import com.my.lab.business.entity.Book;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,7 +34,7 @@ public class BookResource {
             throw new BadRequestException(PARAM_BOOK_ID + " should be an integer only!");
         }
 
-        Book book = bookDao.get(Integer.valueOf(bookId));
+        Book book = bookDao.getEntity(Integer.valueOf(bookId));
         if (book == null) {
             throw new NotFoundException("No book found by id = " + bookId);
         }
@@ -58,7 +57,7 @@ public class BookResource {
     }
 
     private Response saveBook(Book book) {
-        return Response.status(Response.Status.CREATED).entity(bookDao.save(book)).build();
+        return Response.status(Response.Status.CREATED).entity(bookDao.saveEntity(book)).build();
     }
 
     @PUT
@@ -77,7 +76,7 @@ public class BookResource {
             @ApiResponse(code = 200, message = "book has been deleted"),
             @ApiResponse(code = 404, message = "no book found")})
     public Response deleteBook(@QueryParam(PARAM_BOOK_ID) String bookId) {
-        Book book = bookDao.delete(Integer.valueOf(bookId));
+        Book book = bookDao.deleteEntity(Integer.valueOf(bookId));
         if (book == null) {
             throw new NotFoundException("No book found with id = " + bookId);
         }

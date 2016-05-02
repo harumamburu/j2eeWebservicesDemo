@@ -4,9 +4,9 @@ import com.my.lab.business.entity.Entity;
 
 public interface DAO<T extends Entity> {
 
-    T save(T entity);
-    T update(T entity);
-    T get(Integer id);
-    T delete(Integer id);
+    T saveEntity(T entity);
+    T updateEntity(T entity);
+    T getEntity(Integer id);
+    T deleteEntity(Integer id);
     Boolean contains(Integer id);
 }

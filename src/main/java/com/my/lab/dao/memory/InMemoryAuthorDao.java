@@ -13,7 +13,7 @@ public class InMemoryAuthorDao implements DAO<Author> {
     private static final Map<Integer, Author> AUTHORS = new HashMap<>();
 
     @Override
-    public Author save(Author author) {
+    public Author saveEntity(Author author) {
         if (author.getId() == null) {
             author.setId(COUNTER.incrementAndGet());
         }
@@ -22,12 +22,12 @@ public class InMemoryAuthorDao implements DAO<Author> {
     }
 
     @Override
-    public Author get(Integer id) {
+    public Author getEntity(Integer id) {
         return AUTHORS.get(id);
     }
 
     @Override
-    public Author delete(Integer id) {
+    public Author deleteEntity(Integer id) {
         Author author = AUTHORS.remove(id);
         if (author != null) {
             COUNTER.decrementAndGet();
@@ -41,7 +41,7 @@ public class InMemoryAuthorDao implements DAO<Author> {
     }
 
     @Override
-    public Author update(Author entity) {
-        return save(entity);
+    public Author updateEntity(Author entity) {
+        return saveEntity(entity);
     }
 }

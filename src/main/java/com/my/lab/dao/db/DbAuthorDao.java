@@ -12,14 +12,8 @@ public class DbAuthorDao extends AbstractDbDao<Author> {
     }
 
     @Override
-    public Author delete(Integer id) {
-        return executeNamedQuerySingleResult(Queries.AUTHOR_DELETE_BYID_QUERYNAME,
-                getSingleParamMap(Queries.QUERY_PARAM_ID, id));
-    }
-
-    @Override
     public Boolean contains(Integer id) {
-        return executeNamedQuerySingleResult(Queries.AUTHOR_CHECK_BYID_QUERYNAME,
+        return executeQuerySingleResult(Queries.AUTHOR_CHECK_BYID_QUERYNAME,
                 getSingleParamMap(Queries.QUERY_PARAM_ID, id)) != null;
     }
 }
