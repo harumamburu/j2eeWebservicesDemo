@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -18,7 +19,9 @@ import javax.ws.rs.core.Response;
 public class BookResource {
 
     private static final String PARAM_BOOK_ID = "bookId";
-    private static final DAO<Book> bookDao = new DbBookDao();
+
+    @EJB(beanName="BookDbDaoBean")
+    private DAO<Book> bookDao;// = new DbBookDao();
 
     @GET
     @ApiOperation(value = "get a book by id", response = Book.class)

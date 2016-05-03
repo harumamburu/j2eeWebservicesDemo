@@ -3,48 +3,58 @@ package com.my.lab.dao.db;
 import com.my.lab.business.entity.Entity;
 import com.my.lab.dao.DAO;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
 
 abstract class AbstractDbDao<T extends Entity> implements DAO<T> {
 
     // TODO change EM initialization to container-managed
-    //@PersistenceContext(unitName = "FX-persistence-unit")
-    private EntityManager entityManager = Persistence.createEntityManagerFactory("demo-persistence-unit").createEntityManager();
+    @PersistenceContext(unitName = "demo-persistence-unit")
+    private EntityManager entityManager;
+    //private EntityManagerFactory emf = Persistence.createEntityManagerFactory("demo-persistence-unit");
 
     protected abstract Class<T> getEntityClass();
 
     @Override
     public T saveEntity(T entity) {
+        //entityManager = emf.createEntityManager();
         entityManager.persist(entity);
+        //entityManager.close();
         return entity;
     }
 
     @Override
     public T updateEntity(T entity) {
-        return entityManager.merge(entity);
+        //entityManager = emf.createEntityManager();
+        entity = entityManager.merge(entity);
+        //entityManager.close();
+        return entity;
     }
 
     @Override
     public T getEntity(Integer id) {
-        return entityManager.find(getEntityClass(), id);
+        //entityManager = emf.createEntityManager();
+        T entity = entityManager.find(getEntityClass(), id);
+        //entityManager.close();
+        return entity;
     }
 
     @Override
     public T deleteEntity(Integer id) {
-        T entity = getEntity(id);
+        //entityManager = emf.createEntityManager();
+        T entity = entityManager.find(getEntityClass(), id);
         if (entity != null) {
             entityManager.remove(entity);
         }
+        //entityManager.close();
         return entity;
     }
 
     T executeQuerySingleResult(String queryName, Map<String, ?> params) {
+        //entityManager = emf.createEntityManager();
         TypedQuery<T> query = getTypedQuery(queryName, params);
+        //entityManager.close();
         return query.getSingleResult();
     }
 

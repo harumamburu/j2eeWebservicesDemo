@@ -2,8 +2,9 @@ package com.my.lab.dao.db;
 
 import com.my.lab.business.entity.Author;
 
-/*@Stateless
-@LocalBean*/
+import javax.ejb.Stateless;
+
+@Stateless(name = "AuthorDbDaoBean")
 public class DbAuthorDao extends AbstractDbDao<Author> {
 
     @Override

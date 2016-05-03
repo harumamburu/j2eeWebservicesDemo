@@ -3,10 +3,12 @@ package com.my.lab.dao.memory;
 import com.my.lab.business.entity.Book;
 import com.my.lab.dao.DAO;
 
+import javax.ejb.Stateful;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Stateful(name = "AuthorMemDaoBean")
 public class InMemoryBookDao implements DAO<Book> {
 
     private static final AtomicInteger COUNTER = new AtomicInteger();
