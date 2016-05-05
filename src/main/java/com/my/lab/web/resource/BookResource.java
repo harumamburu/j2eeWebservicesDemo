@@ -1,8 +1,7 @@
 package com.my.lab.web.resource;
 
-import com.my.lab.dao.DAO;
-import com.my.lab.dao.db.DbBookDao;
 import com.my.lab.business.entity.Book;
+import com.my.lab.dao.DAO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -14,8 +13,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/book")
-@Api(value = "book")
 @Produces({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
+@Api(value = "book")
 public class BookResource {
 
     private static final String PARAM_BOOK_ID = "bookId";
