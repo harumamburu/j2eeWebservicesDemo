@@ -4,7 +4,7 @@ import com.my.lab.business.entity.Author;
 
 import javax.ejb.Stateless;
 
-@Stateless(name = "AuthorDbDaoBean")
+@Stateless
 public class DbAuthorDao extends AbstractDbDao<Author> {
 
     @Override

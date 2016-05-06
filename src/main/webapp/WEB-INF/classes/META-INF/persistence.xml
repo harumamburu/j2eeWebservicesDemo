@@ -13,11 +13,12 @@
         <properties>
             <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle12cDialect"/>
-            <property name="hibernate.flushMode" value="FLUSH_AUTO" />
+            <property name="hibernate.classloading.use_current_tccl_as_parent" value="false" />
+            <!--<property name="hibernate.flushMode" value="FLUSH_AUTO" />-->
             <property name="hibernate.archive.autodetection" value="class" />
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
-            <property name='hibernate.hbm2ddl.auto' value="update"/>
+            <property name='hibernate.hbm2ddl.auto' value="create"/>
         </properties>
     </persistence-unit>
 </persistence>

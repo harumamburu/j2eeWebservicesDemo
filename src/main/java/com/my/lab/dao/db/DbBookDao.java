@@ -2,9 +2,11 @@ package com.my.lab.dao.db;
 
 import com.my.lab.business.entity.Book;
 
+import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
-@Stateless(name = "BookDbDaoBean")
+@Stateless
+@LocalBean
 public class DbBookDao extends AbstractDbDao<Book> {
 
     @Override

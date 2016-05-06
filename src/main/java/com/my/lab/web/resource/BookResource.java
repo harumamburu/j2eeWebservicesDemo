@@ -1,7 +1,8 @@
 package com.my.lab.web.resource;
 
 import com.my.lab.business.entity.Book;
-import com.my.lab.dao.DAO;
+//import com.my.lab.dao.DAO;
+import com.my.lab.dao.db.DbBookDao;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -19,8 +20,8 @@ public class BookResource {
 
     private static final String PARAM_BOOK_ID = "bookId";
 
-    @EJB(beanName="BookDbDaoBean")
-    private DAO<Book> bookDao;// = new DbBookDao();
+    @EJB
+    private DbBookDao bookDao;
 
     @GET
     @ApiOperation(value = "get a book by id", response = Book.class)

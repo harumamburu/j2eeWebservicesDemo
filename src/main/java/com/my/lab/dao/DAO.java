@@ -2,9 +2,9 @@ package com.my.lab.dao;
 
 import com.my.lab.business.entity.Entity;
 
-import javax.ejb.Local;
+//import javax.ejb.Local;
 
-@Local
+//@Local
 public interface DAO<T extends Entity> {
 
     T saveEntity(T entity);
