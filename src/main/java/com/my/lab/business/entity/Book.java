@@ -37,7 +37,7 @@ public class Book implements Entity {
     @JoinTable(name = Constants.JOIN_TABLE_BOOKS_AUTHORS,
             joinColumns = @JoinColumn(name = Constants.BOOK_COLUMN_ID),
             inverseJoinColumns = @JoinColumn(name = Constants.AUTHOR_COLUMN_ID))*/
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = Constants.BOOK_COLUMN_AUTHOR, foreignKey = @ForeignKey(name = Constants.BOOK_COLUMN_AUTHOR + "_FK"))
     private Author author;
 
