@@ -39,10 +39,10 @@ public class Book implements Entity {
             inverseJoinColumns = @JoinColumn(name = Constants.AUTHOR_COLUMN_ID, nullable = false))
     private List<Author> authors;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = Constants.COLLECTION_TABLE_BOOK_GENRES,
-            joinColumns = @JoinColumn(name = Constants.GENRE_COLUMN_ID))
-    @Enumerated(EnumType.STRING)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @JoinTable(name = Constants.JOIN_TABLE_BOOK_GENRES,
+            joinColumns = @JoinColumn(name = Constants.BOOK_COLUMN_ID),
+            inverseJoinColumns = @JoinColumn(name = Constants.GENRE_COLUMN_ID))
     private List<Genre> genres;
 
     @JsonDeserialize(using = PublishingDateDeserializer.class)

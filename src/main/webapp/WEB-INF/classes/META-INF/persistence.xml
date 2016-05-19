@@ -7,6 +7,7 @@
 
         <class>com.my.lab.business.entity.Book</class>
         <class>com.my.lab.business.entity.Author</class>
+        <class>com.my.lab.business.entity.Genre</class>
 
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
