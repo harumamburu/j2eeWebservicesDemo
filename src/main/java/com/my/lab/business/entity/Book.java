@@ -31,15 +31,11 @@ public class Book implements Entity {
     @Basic(optional = false)
     private String name;
 
-    // TODO: try to set up many-many relations
-    //@Column(name = Constants.BOOK_COLUMN_AUTHOR)
-    /*@ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = Constants.JOIN_TABLE_BOOKS_AUTHORS,
             joinColumns = @JoinColumn(name = Constants.BOOK_COLUMN_ID),
-            inverseJoinColumns = @JoinColumn(name = Constants.AUTHOR_COLUMN_ID))*/
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = Constants.BOOK_COLUMN_AUTHOR, foreignKey = @ForeignKey(name = Constants.BOOK_COLUMN_AUTHOR + "_FK"))
-    private Author author;
+            inverseJoinColumns = @JoinColumn(name = Constants.AUTHOR_COLUMN_ID))
+    private List<Author> authors;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = Constants.COLLECTION_TABLE_BOOK_GENRES,
@@ -77,12 +73,18 @@ public class Book implements Entity {
         this.name = name;
     }
 
-    public Author getAuthor() {
-        return author;
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
     }
 
     public void setAuthor(Author author) {
-        this.author = author;
+        if (!authors.contains(author)) {
+            authors.add(author);
+        }
     }
 
     public List<Genre> getGenres() {
@@ -106,8 +108,11 @@ public class Book implements Entity {
         String result =  "Book{" +
                 "bookId=" + bookId +
                 ", name='" + name + '\'' +
-                ", author=" + author +
-                ", genres={ ";
+                ", authors={";
+        for (Author author : authors) {
+            result += "\r\n\t" + author.toString();
+        }
+        result += ", genres={ ";
         if (genres == null) {
             result = result + "null";
         } else {
@@ -128,7 +133,7 @@ public class Book implements Entity {
 
         if (bookId != null ? !bookId.equals(book.bookId) : book.bookId != null) return false;
         if (!name.equals(book.name)) return false;
-        if (author != null ? !author.equals(book.author) : book.author != null) return false;
+        if (authors != null ? !authors.equals(book.authors) : book.authors != null) return false;
         if (genres != null ? !genres.equals(book.genres) : book.genres != null) return false;
         return !(written != null ? !written.equals(book.written) : book.written != null);
 
@@ -138,7 +143,7 @@ public class Book implements Entity {
     public int hashCode() {
         int result = bookId != null ? bookId.hashCode() : 0;
         result = 31 * result + name.hashCode();
-        result = 31 * result + (author != null ? author.hashCode() : 0);
+        result = 31 * result + (authors != null ? authors.hashCode() : 0);
         result = 31 * result + (genres != null ? genres.hashCode() : 0);
         result = 31 * result + (written != null ? written.hashCode() : 0);
         return result;
