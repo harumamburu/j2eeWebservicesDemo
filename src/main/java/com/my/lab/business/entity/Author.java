@@ -68,11 +68,11 @@ public class Author implements Entity {
 
     @Override
     public String toString() {
-        return "Author{" +
+        return "Author : { " +
                 "authorId=" + authorId +
-                ", name='" + name + '\'' +
+                ", name='" + name + "'" +
                 ", birth=" + DateFormats.BIRTH_DATE_FORMAT.fromDate(birth) +
-                '}';
+                " }";
     }
 
     @Override

@@ -27,7 +27,7 @@ public class Book implements Entity {
     private Integer bookId;
 
     @NotNull
-    @Column(name = Constants.BOOK_COLUMN_NAME)
+    @Column(name = Constants.BOOK_COLUMN_NAME, nullable = false)
     @Basic(optional = false)
     private String name;
 
@@ -105,23 +105,23 @@ public class Book implements Entity {
 
     @Override
     public String toString() {
-        String result =  "Book{" +
+        String result =  "Book : { " +
                 "bookId=" + bookId +
                 ", name='" + name + '\'' +
-                ", authors={";
+                ", authors=[";
         for (Author author : authors) {
-            result += "\r\n\t" + author.toString();
+            result += " " + author.toString() + ",";
         }
-        result += ", genres={ ";
+        result = result.substring(0, result.length() - 1) + " ], genres=[";
         if (genres == null) {
-            result = result + "null";
+            result += " null  ";
         } else {
             for (Genre genre : genres) {
-                result = result + " " + genre.name() + ", ";
+                result += " " + genre.name() + ",";
             }
         }
-        return result.substring(0, result.length() - 2) +
-                " }, written=" + DateFormats.YEAR_DATE_FORMAT.fromDate(written) + '}';
+        return result.substring(0, result.length() - 1) +
+                " ], written=" + DateFormats.YEAR_DATE_FORMAT.fromDate(written) + " }";
     }
 
     @Override
