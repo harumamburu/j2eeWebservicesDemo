@@ -20,6 +20,7 @@ import java.util.List;
         @NamedQuery(name = Queries.BOOK_CHECK_BYID_QUERYNAME, query = Queries.BOOK_CHECK_BYID_QUERY)})
 public class Book implements Entity {
 
+    @NotNull
     @Id
     @GeneratedValue(generator = "book_counter")
     @GenericGenerator(name = "book_counter", strategy = "increment")
@@ -31,10 +32,11 @@ public class Book implements Entity {
     @Basic(optional = false)
     private String name;
 
+    @NotNull
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = Constants.JOIN_TABLE_BOOKS_AUTHORS,
-            joinColumns = @JoinColumn(name = Constants.BOOK_COLUMN_ID),
-            inverseJoinColumns = @JoinColumn(name = Constants.AUTHOR_COLUMN_ID))
+            joinColumns = @JoinColumn(name = Constants.BOOK_COLUMN_ID, nullable = false),
+            inverseJoinColumns = @JoinColumn(name = Constants.AUTHOR_COLUMN_ID, nullable = false))
     private List<Author> authors;
 
     @ElementCollection(fetch = FetchType.EAGER)

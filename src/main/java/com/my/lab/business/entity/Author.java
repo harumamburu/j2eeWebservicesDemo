@@ -19,6 +19,7 @@ import java.util.Date;
         @NamedQuery(name = Queries.AUTHOR_CHECK_BYID_QUERYNAME, query = Queries.AUTHOR_CHECK_BYID_QUERY)})
 public class Author implements Entity {
 
+    @NotNull
     @Id
     @GeneratedValue(generator = "author_counter")
     @GenericGenerator(name = "author_counter", strategy = "increment")
