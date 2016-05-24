@@ -22,8 +22,8 @@ public class Book implements Entity {
 
     @NotNull
     @Id
-    @GeneratedValue(generator = "book_counter")
-    @GenericGenerator(name = "book_counter", strategy = "increment")
+    @GeneratedValue(generator = "book_counter", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "book_counter", sequenceName = "book_seq", allocationSize = 1)
     @Column(name = Constants.BOOK_COLUMN_ID)
     private Integer bookId;
 

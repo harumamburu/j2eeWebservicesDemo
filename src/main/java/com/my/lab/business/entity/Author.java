@@ -21,8 +21,8 @@ public class Author implements Entity {
 
     @NotNull
     @Id
-    @GeneratedValue(generator = "author_counter")
-    @GenericGenerator(name = "author_counter", strategy = "increment")
+    @GeneratedValue(generator = "author_counter", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "author_counter", sequenceName = "author_seq", allocationSize = 1)
     @Column(name = Constants.AUTHOR_COLUMN_ID)
     private Integer authorId;
 
