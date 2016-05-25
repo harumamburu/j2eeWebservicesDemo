@@ -11,6 +11,7 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.lang.String;
 import java.util.Date;
 import java.util.List;
 
@@ -61,16 +62,23 @@ public class Book implements Entity {
         // Default empty constructor for hibernate and JSON data binding
     }
 
+    @Override
     public Integer getId() {
         return bookId;
     }
 
+    @Override
     public void setId(Integer id) {
         this.bookId = id;
     }
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public <String> String getNaturalId() {
+        return (String) getName();
     }
 
     public void setName(String name) {
