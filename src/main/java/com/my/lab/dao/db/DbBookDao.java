@@ -19,4 +19,10 @@ public class DbBookDao extends AbstractDbDao<Book> {
         return executeQuerySingleResult(Queries.BOOK_CHECK_BYID_QUERYNAME,
                 getSingleParamMap(Queries.QUERY_PARAM_ID, id)) != null;
     }
+
+    @Override
+    public <String> Book getEntityByNaturalId(String naturalId) {
+        return executeQuerySingleResult(Queries.BOOK_CHECK_BYNATURALID_QUERYNAME,
+                getSingleParamMap(Queries.QUERY_PARAM_NAME, naturalId));
+    }
 }

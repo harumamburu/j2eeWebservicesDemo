@@ -41,6 +41,18 @@ public class InMemoryAuthorDao implements DAO<Author> {
     }
 
     @Override
+    public <String> Author getEntityByNaturalId(String naturalId) {
+        Author entity = null;
+        for (Author author : AUTHORS.values()) {
+            if (author.getName().equals(naturalId)) {
+                entity = author;
+                break;
+            }
+        }
+        return entity;
+    }
+
+    @Override
     public Boolean contains(Integer id) {
         return AUTHORS.containsKey(id);
     }

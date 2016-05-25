@@ -17,4 +17,10 @@ public class DbAuthorDao extends AbstractDbDao<Author> {
         return executeQuerySingleResult(Queries.AUTHOR_CHECK_BYID_QUERYNAME,
                 getSingleParamMap(Queries.QUERY_PARAM_ID, id)) != null;
     }
+
+    @Override
+    public <String> Author getEntityByNaturalId(String naturalId) {
+        return executeQuerySingleResult(Queries.BOOK_CHECK_BYNATURALID_QUERYNAME,
+                getSingleParamMap(Queries.QUERY_PARAM_NAME, naturalId));
+    }
 }

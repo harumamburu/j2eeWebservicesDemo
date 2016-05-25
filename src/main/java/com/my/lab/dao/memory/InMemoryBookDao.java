@@ -41,6 +41,18 @@ public class InMemoryBookDao implements DAO<Book> {
     }
 
     @Override
+    public <String> Book getEntityByNaturalId(String naturalId) {
+        Book entity = null;
+        for (Book book : BOOKS.values()) {
+            if (book.getName().equals(naturalId)) {
+                entity = book;
+                break;
+            }
+        }
+        return entity;
+    }
+
+    @Override
     public Boolean contains(Integer id) {
         return BOOKS.containsKey(id);
     }
