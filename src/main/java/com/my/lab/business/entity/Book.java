@@ -7,7 +7,7 @@ import com.my.lab.business.entity.format.DateFormats;
 import com.my.lab.dao.db.Queries;
 import com.my.lab.web.setting.json.deserialization.PublishingDateDeserializer;
 import com.my.lab.web.setting.json.deserialization.PublishingDateSerializer;
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -28,6 +28,7 @@ public class Book implements Entity {
     private Integer bookId;
 
     @NotNull
+    @NaturalId
     @Column(name = Constants.BOOK_COLUMN_NAME, nullable = false)
     @Basic(optional = false)
     private String name;

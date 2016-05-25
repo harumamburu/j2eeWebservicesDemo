@@ -7,7 +7,7 @@ import com.my.lab.business.entity.format.DateFormats;
 import com.my.lab.dao.db.Queries;
 import com.my.lab.web.setting.json.deserialization.BirthDateDeserializer;
 import com.my.lab.web.setting.json.deserialization.BirthDateSerializer;
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -27,6 +27,7 @@ public class Author implements Entity {
     private Integer authorId;
 
     @NotNull
+    @NaturalId
     @Column(name = Constants.AUTHOR_COLUMN_NAME, nullable = false)
     private String name;
 
