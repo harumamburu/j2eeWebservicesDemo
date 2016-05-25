@@ -17,7 +17,8 @@ import java.util.List;
 @javax.persistence.Entity
 @Table(name = Constants.BOOK_TABLE_NAME)
 @NamedQueries({@NamedQuery(name = Queries.BOOK_DELETE_BYID_QUERYNAME, query = Queries.BOOK_DELETE_BYID_QUERY),
-        @NamedQuery(name = Queries.BOOK_CHECK_BYID_QUERYNAME, query = Queries.BOOK_CHECK_BYID_QUERY)})
+        @NamedQuery(name = Queries.BOOK_CHECK_BYID_QUERYNAME, query = Queries.BOOK_CHECK_BYID_QUERY),
+        @NamedQuery(name = Queries.BOOK_CHECK_BYNATURALID_QUERYNAME, query = Queries.BOOK_CHECK_BYNATURALID_QUERY)})
 public class Book implements Entity {
 
     @NotNull

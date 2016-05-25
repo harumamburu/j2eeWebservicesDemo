@@ -16,7 +16,8 @@ import java.util.Date;
 @javax.persistence.Entity
 @Table(name = Constants.AUTHOR_TABLE_NAME)
 @NamedQueries({@NamedQuery(name = Queries.AUTHOR_DELETE_BYID_QUERYNAME, query = Queries.AUTHOR_DELETE_BYID_QUERY),
-        @NamedQuery(name = Queries.AUTHOR_CHECK_BYID_QUERYNAME, query = Queries.AUTHOR_CHECK_BYID_QUERY)})
+        @NamedQuery(name = Queries.AUTHOR_CHECK_BYID_QUERYNAME, query = Queries.AUTHOR_CHECK_BYID_QUERY),
+        @NamedQuery(name = Queries.AUTHOR_CHECK_BYNATURALID_QUERYNAME, query = Queries.AUTHOR_CHECK_BYID_QUERY)})
 public class Author implements Entity {
 
     @NotNull
