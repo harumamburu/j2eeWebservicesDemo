@@ -17,7 +17,15 @@ public abstract class AbstractDbDao<T extends Entity> implements DAO<T> {
 
     @Override
     public T saveEntity(T entity) {
-        entityManager.persist(entity);
+        // as ugly as it is, but this check is required to get rid of exceptions
+        // on attempt to persist an entity with naturalId saved before
+        T entityCheck = getEntityByNaturalId(entity.getNaturalId());
+        if (entityCheck != null) {
+            entity.setId(entityCheck.getId());
+            entityManager.merge(entity);
+        } else {
+            entityManager.persist(entity);
+        }
         return entity;
     }
 
@@ -41,7 +49,7 @@ public abstract class AbstractDbDao<T extends Entity> implements DAO<T> {
         return entity;
     }
 
-    T executeQuerySingleResult(String queryName, Map<String, ?> params) {
+    protected T executeQuerySingleResult(String queryName, Map<String, ?> params) {
         TypedQuery<T> query = getTypedQuery(queryName, params);
         return query.getSingleResult();
     }
@@ -58,7 +66,7 @@ public abstract class AbstractDbDao<T extends Entity> implements DAO<T> {
         return query;
     }
 
-    <X extends Object> Map<String, X> getSingleParamMap(String key, X value) {
+    protected <X extends Object> Map<String, X> getSingleParamMap(String key, X value) {
         Map<String, X> param = new HashMap<>();
         param.put(key, value);
         return param;
