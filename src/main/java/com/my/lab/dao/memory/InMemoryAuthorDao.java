@@ -8,13 +8,14 @@ import javax.ejb.Singleton;
 import javax.ejb.Stateful;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Singleton
 public class InMemoryAuthorDao implements DAO<Author> {
 
     private static final AtomicInteger COUNTER = new AtomicInteger();
-    private static final Map<Integer, Author> AUTHORS = new HashMap<>();
+    private static final Map<Integer, Author> AUTHORS = new ConcurrentHashMap<>(8, 0.9f, 1);
 
     @Override
     public Author saveEntity(Author author) {
