@@ -11,7 +11,6 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.lang.String;
 import java.util.Date;
 import java.util.List;
 
@@ -77,8 +76,8 @@ public class Book implements Entity {
     }
 
     @Override
-    public <String> String getNaturalId() {
-        return (String) getName();
+    public String getNaturalId() {
+        return getName();
     }
 
     public void setName(String name) {

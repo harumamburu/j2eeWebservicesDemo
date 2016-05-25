@@ -60,8 +60,8 @@ public class Author implements Entity {
     }
 
     @Override
-    public <String> String getNaturalId() {
-        return (String) getName();
+    public String getNaturalId() {
+        return getName();
     }
 
     public void setName(String name) {
