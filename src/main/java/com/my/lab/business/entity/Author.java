@@ -60,6 +60,7 @@ public class Author implements Entity {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public String getNaturalId() {
         return getName();
     }

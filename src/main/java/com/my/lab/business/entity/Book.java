@@ -76,6 +76,7 @@ public class Book implements Entity {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public String getNaturalId() {
         return getName();
     }
