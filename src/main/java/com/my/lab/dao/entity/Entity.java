@@ -1,8 +1,8 @@
 package com.my.lab.dao.entity;
 
-public interface Entity {
+import com.my.lab.core.Identifiable;
 
-    Integer getId();
-    void setId(Integer id);
+public interface Entity extends Identifiable {
+
     <T extends Object> T getNaturalId();
 }
