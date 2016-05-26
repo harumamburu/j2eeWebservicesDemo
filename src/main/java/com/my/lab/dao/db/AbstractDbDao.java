@@ -1,9 +1,8 @@
 package com.my.lab.dao.db;
 
-import com.my.lab.business.entity.Entity;
+import com.my.lab.dao.entity.Entity;
 import com.my.lab.dao.DAO;
 
-import javax.annotation.PreDestroy;
 import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;

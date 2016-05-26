@@ -1,6 +1,6 @@
 package com.my.lab.dao.db;
 
-import com.my.lab.business.entity.Book;
+import com.my.lab.dao.entity.Book;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;

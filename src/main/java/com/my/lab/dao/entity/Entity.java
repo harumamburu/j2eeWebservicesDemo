@@ -1,4 +1,4 @@
-package com.my.lab.business.entity;
+package com.my.lab.dao.entity;
 
 public interface Entity {
 

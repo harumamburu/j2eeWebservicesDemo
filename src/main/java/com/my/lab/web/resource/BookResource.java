@@ -1,6 +1,6 @@
 package com.my.lab.web.resource;
 
-import com.my.lab.business.entity.Book;
+import com.my.lab.dao.entity.Book;
 //import com.my.lab.dao.DAO;
 import com.my.lab.dao.db.DbBookDao;
 import io.swagger.annotations.Api;

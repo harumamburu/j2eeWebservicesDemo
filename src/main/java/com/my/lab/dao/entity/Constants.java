@@ -1,4 +1,4 @@
-package com.my.lab.business;
+package com.my.lab.dao.entity;
 
 public interface Constants {
     

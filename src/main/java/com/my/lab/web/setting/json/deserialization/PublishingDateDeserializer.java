@@ -3,7 +3,7 @@ package com.my.lab.web.setting.json.deserialization;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.my.lab.business.entity.format.DateFormats;
+import com.my.lab.web.entity.format.DateFormats;
 
 import java.io.IOException;
 import java.util.Date;

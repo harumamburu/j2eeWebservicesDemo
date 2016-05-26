@@ -1,6 +1,6 @@
 package com.my.lab.dao.db;
 
-import com.my.lab.business.entity.Author;
+import com.my.lab.dao.entity.Author;
 
 import javax.ejb.Stateless;
 

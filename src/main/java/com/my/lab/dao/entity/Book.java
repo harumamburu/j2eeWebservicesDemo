@@ -1,9 +1,8 @@
-package com.my.lab.business.entity;
+package com.my.lab.dao.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.my.lab.business.Constants;
-import com.my.lab.business.entity.format.DateFormats;
+import com.my.lab.web.entity.format.DateFormats;
 import com.my.lab.dao.db.Queries;
 import com.my.lab.web.setting.json.deserialization.PublishingDateDeserializer;
 import com.my.lab.web.setting.json.deserialization.PublishingDateSerializer;
