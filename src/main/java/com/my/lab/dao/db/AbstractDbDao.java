@@ -50,7 +50,13 @@ public abstract class AbstractDbDao<T extends Entity> implements DAO<T> {
 
     protected T executeQuerySingleResult(String queryName, Map<String, ?> params) {
         TypedQuery<T> query = getTypedQuery(queryName, params);
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+          // JPA throws an exception in case there's nothing matching the query instead of returning null
+          // so here's a workaround
+        } catch (NoResultException exc) {
+            return null;
+        }
     }
 
     private TypedQuery<T> getTypedQuery(String queryName, Map<String, ?> params) {
