@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="book" type="book"/>
+
+  <xs:complexType name="book">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="authors" type="author" maxOccurs="unbounded"/>
+      <xs:element name="genres" type="genre" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="written" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:int" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="author">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="birth" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:int" use="required"/>
+  </xs:complexType>
+
+  <xs:simpleType name="genre">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="DRAMA"/>
+      <xs:enumeration value="CLASSIC"/>
+      <xs:enumeration value="COMIC"/>
+      <xs:enumeration value="GRAPHIC_NOVEL"/>
+      <xs:enumeration value="CRIME"/>
+      <xs:enumeration value="DETECTIVE"/>
+      <xs:enumeration value="FABLE"/>
+      <xs:enumeration value="FAIRY_TALE"/>
+      <xs:enumeration value="FANFICTION"/>
+      <xs:enumeration value="FANTASY"/>
+      <xs:enumeration value="FICTION_NARRATIVE"/>
+      <xs:enumeration value="FICTION_IN_VERSE"/>
+      <xs:enumeration value="FOLKLORE"/>
+      <xs:enumeration value="HISTORICAL_FICTION"/>
+      <xs:enumeration value="HORROR"/>
+      <xs:enumeration value="HUMOUR"/>
+      <xs:enumeration value="LEGEND"/>
+      <xs:enumeration value="MAGICAL_REALISM"/>
+      <xs:enumeration value="METAFICTION"/>
+      <xs:enumeration value="MYSTERY"/>
+      <xs:enumeration value="MYTHOLOGY"/>
+      <xs:enumeration value="MYTHOPOEIA"/>
+      <xs:enumeration value="REALISTIC_FICTION"/>
+      <xs:enumeration value="SCIENCE_FICTION"/>
+      <xs:enumeration value="SHORT_STORY"/>
+      <xs:enumeration value="SUSPENSE"/>
+      <xs:enumeration value="THRILLER"/>
+      <xs:enumeration value="TALL_TALE"/>
+      <xs:enumeration value="WESTERN"/>
+      <xs:enumeration value="BIOGRAPHY"/>
+      <xs:enumeration value="AUTOBIOGRAPHY"/>
+      <xs:enumeration value="ESSAY"/>
+      <xs:enumeration value="NARRATIVE_NONFICTION"/>
+      <xs:enumeration value="PERSONAL_NARRATIVE"/>
+      <xs:enumeration value="MEMOIR"/>
+      <xs:enumeration value="SPEECH"/>
+      <xs:enumeration value="LABORATORY_REPORT"/>
+      <xs:enumeration value="TEXTBOOK"/>
+      <xs:enumeration value="REFERENCE_BOOK"/>
+      <xs:enumeration value="SELFHELP_BOOK"/>
+      <xs:enumeration value="JOURNALISM"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+
