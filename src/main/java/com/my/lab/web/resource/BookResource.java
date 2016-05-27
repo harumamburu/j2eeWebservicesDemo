@@ -54,10 +54,7 @@ public class BookResource {
             @ApiResponse(code = 500, message = "Internal Server Error")})
     public Response saveNewBook(Book book) {
         Integer id;
-        if ((id = book.getId()) != null && bookManager.contains(id)) {
-            throw new WebApplicationException(String.format("A book with id %d is already exist", id),
-                    Response.Status.CONFLICT);
-        }
+        // TODO: add catch block for processing error messages
         Converter<BookDTO, Book> converter = new BookConverter();
         book = converter.convertFromDTO(bookManager.saveBook(converter.convertToDTO(book)));
         return Response.status(Response.Status.CREATED).entity(book).build();
