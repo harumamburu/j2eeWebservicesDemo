@@ -1,4 +1,4 @@
-package com.my.lab.core.converters;
+package com.my.lab.core.converter;
 
 import com.my.lab.core.dto.DTO;
 
