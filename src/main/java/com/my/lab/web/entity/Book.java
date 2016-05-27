@@ -2,7 +2,7 @@ package com.my.lab.web.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.my.lab.core.converters.dao.enumeration.Genre;
+import com.my.lab.core.dto.enumeration.Genre;
 import com.my.lab.web.entity.format.adapters.WrittenDateAdapter;
 import com.my.lab.web.setting.json.deserialization.PublishingDateDeserializer;
 import com.my.lab.web.setting.json.deserialization.PublishingDateSerializer;

@@ -1,4 +1,4 @@
-package com.my.lab.core.converters.dao.enumeration;
+package com.my.lab.core.dto.enumeration;
 
 
 public enum Genre {

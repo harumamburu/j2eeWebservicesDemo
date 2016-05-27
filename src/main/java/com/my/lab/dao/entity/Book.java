@@ -2,7 +2,7 @@ package com.my.lab.dao.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.my.lab.core.converters.dao.enumeration.Genre;
+import com.my.lab.core.dto.enumeration.Genre;
 import com.my.lab.web.entity.format.DateFormats;
 import com.my.lab.dao.db.Queries;
 import com.my.lab.web.setting.json.deserialization.PublishingDateDeserializer;

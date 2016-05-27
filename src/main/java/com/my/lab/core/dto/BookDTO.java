@@ -1,6 +1,6 @@
 package com.my.lab.core.dto;
 
-import com.my.lab.core.converters.dao.enumeration.Genre;
+import com.my.lab.core.dto.enumeration.Genre;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
