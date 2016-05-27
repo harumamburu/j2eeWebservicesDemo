@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 public class BookConverter implements Converter<BookDTO, Book> {
 
+    // TODO: Consuder using MapStruct
     private AuthorConverter subConverter = new AuthorConverter();
 
     @Override
