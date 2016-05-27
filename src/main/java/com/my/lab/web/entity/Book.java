@@ -3,10 +3,12 @@ package com.my.lab.web.entity;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.my.lab.core.converters.dao.enumeration.Genre;
+import com.my.lab.web.entity.format.adapters.WrittenDateAdapter;
 import com.my.lab.web.setting.json.deserialization.PublishingDateDeserializer;
 import com.my.lab.web.setting.json.deserialization.PublishingDateSerializer;
 
 import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +27,7 @@ public class Book {
 
     private List<Genre> genres;
 
+    @XmlJavaTypeAdapter(WrittenDateAdapter.class)
     @JsonDeserialize(using = PublishingDateDeserializer.class)
     @JsonSerialize(using = PublishingDateSerializer.class)
     private Date written;
