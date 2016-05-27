@@ -10,7 +10,6 @@ import com.my.lab.web.setting.json.deserialization.PublishingDateSerializer;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -21,20 +20,17 @@ import java.util.List;
         @NamedQuery(name = Queries.BOOK_CHECK_BYNATURALID_QUERYNAME, query = Queries.BOOK_CHECK_BYNATURALID_QUERY)})
 public class Book implements Entity {
 
-    @NotNull
     @Id
     @GeneratedValue(generator = "book_counter", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "book_counter", sequenceName = "book_seq", allocationSize = 1)
-    @Column(name = Constants.BOOK_COLUMN_ID)
+    @Column(name = Constants.BOOK_COLUMN_ID, nullable = false)
     private Integer bookId;
 
-    @NotNull
     @NaturalId
     @Column(name = Constants.BOOK_COLUMN_NAME, nullable = false)
     @Basic(optional = false)
     private String name;
 
-    @NotNull
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(name = Constants.JOIN_TABLE_BOOKS_AUTHORS,
             joinColumns = @JoinColumn(name = Constants.BOOK_COLUMN_ID, nullable = false),
@@ -58,7 +54,7 @@ public class Book implements Entity {
     }
 
     public Book() {
-        // Default empty constructor for hibernate and JSON data binding
+        // Default empty constructor for hibernate
     }
 
     @Override

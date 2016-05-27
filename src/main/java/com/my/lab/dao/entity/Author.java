@@ -9,7 +9,6 @@ import com.my.lab.web.setting.json.deserialization.BirthDateSerializer;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @javax.persistence.Entity
@@ -19,14 +18,12 @@ import java.util.Date;
         @NamedQuery(name = Queries.AUTHOR_CHECK_BYNATURALID_QUERYNAME, query = Queries.AUTHOR_CHECK_BYID_QUERY)})
 public class Author implements Entity {
 
-    @NotNull
     @Id
     @GeneratedValue(generator = "author_counter", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "author_counter", sequenceName = "author_seq", allocationSize = 1)
-    @Column(name = Constants.AUTHOR_COLUMN_ID)
+    @Column(name = Constants.AUTHOR_COLUMN_ID, nullable = false)
     private Integer authorId;
 
-    @NotNull
     @NaturalId
     @Column(name = Constants.AUTHOR_COLUMN_NAME, nullable = false)
     private String name;
@@ -41,7 +38,7 @@ public class Author implements Entity {
     }
 
     public Author() {
-        // Default empty constructor for hibernate and JSON data binding
+        // Default empty constructor for hibernate
     }
 
     @Override
