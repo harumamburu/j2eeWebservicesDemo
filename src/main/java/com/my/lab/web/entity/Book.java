@@ -6,19 +6,25 @@ import com.my.lab.core.converters.dao.enumeration.Genre;
 import com.my.lab.web.setting.json.deserialization.PublishingDateDeserializer;
 import com.my.lab.web.setting.json.deserialization.PublishingDateSerializer;
 
-import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
+@XmlRootElement(name = "book")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Book {
 
-    @NotNull
+    @XmlAttribute(name = "id", required = true)
     private Integer bookId;
-    @NotNull
+
+    @XmlElement(required = true)
     private String name;
-    @NotNull
+
+    @XmlElement(required = true)
     private List<Author> authors;
+
     private List<Genre> genres;
+
     @JsonDeserialize(using = PublishingDateDeserializer.class)
     @JsonSerialize(using = PublishingDateSerializer.class)
     private Date written;

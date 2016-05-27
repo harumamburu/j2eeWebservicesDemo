@@ -1,10 +1,13 @@
 package com.my.lab.core.dto;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class AuthorDTO implements DTO {
 
+    @NotNull
     private Integer authorId;
+    @NotNull
     private String name;
     private Date birth;
 

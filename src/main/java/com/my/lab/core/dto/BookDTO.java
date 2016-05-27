@@ -2,13 +2,17 @@ package com.my.lab.core.dto;
 
 import com.my.lab.core.converters.dao.enumeration.Genre;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
 public class BookDTO implements DTO {
 
+    @NotNull
     private Integer bookId;
+    @NotNull
     private String name;
+    @NotNull
     private List<AuthorDTO> authors;
     private List<Genre> genres;
     private Date written;
