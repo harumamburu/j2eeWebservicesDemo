@@ -1,7 +1,10 @@
 package com.my.lab.web.resource;
 
-import com.my.lab.dao.entity.Book;
-import com.my.lab.dao.db.DbBookDao;
+import com.my.lab.core.converter.Converter;
+import com.my.lab.core.dto.BookDTO;
+import com.my.lab.core.manager.BookManager;
+import com.my.lab.web.entity.Book;
+import com.my.lab.web.entity.converter.BookConverter;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -20,7 +23,7 @@ public class BookResource {
     private static final String PARAM_BOOK_ID = "bookId";
 
     @EJB
-    private DbBookDao bookDao;
+    private BookManager bookManager;
 
     @GET
     @ApiOperation(value = "get a book by id", response = Book.class)
@@ -36,7 +39,7 @@ public class BookResource {
             throw new BadRequestException(PARAM_BOOK_ID + " should be an integer only!");
         }
 
-        Book book = bookDao.getEntity(Integer.valueOf(bookId));
+        Book book = new BookConverter().convertFromDTO(bookManager.getBook(Integer.valueOf(bookId)));
         if (book == null) {
             throw new NotFoundException("No book found by id = " + bookId);
         }
@@ -51,11 +54,13 @@ public class BookResource {
             @ApiResponse(code = 500, message = "Internal Server Error")})
     public Response saveNewBook(Book book) {
         Integer id;
-        if ((id = book.getId()) != null && bookDao.contains(id)) {
+        if ((id = book.getId()) != null && bookManager.contains(id)) {
             throw new WebApplicationException(String.format("A book with id %d is already exist", id),
                     Response.Status.CONFLICT);
         }
-        return Response.status(Response.Status.CREATED).entity(bookDao.saveEntity(book)).build();
+        Converter<BookDTO, Book> converter = new BookConverter();
+        book = converter.convertFromDTO(bookManager.saveBook(converter.convertToDTO(book)));
+        return Response.status(Response.Status.CREATED).entity(book).build();
     }
 
     @PUT
@@ -65,7 +70,9 @@ public class BookResource {
     @ApiResponses(value = {
             @ApiResponse(code = 500, message = "Internal server error")})
     public Response saveOrUpdateBook(Book book) {
-        return Response.ok(bookDao.updateEntity(book)).build();
+        Converter<BookDTO, Book> converter = new BookConverter();
+        book = converter.convertFromDTO(bookManager.updateBook(converter.convertToDTO(book)));
+        return Response.ok(book).build();
     }
 
     @DELETE
@@ -74,7 +81,7 @@ public class BookResource {
             @ApiResponse(code = 200, message = "book has been deleted"),
             @ApiResponse(code = 404, message = "no book found")})
     public Response deleteBook(@QueryParam(PARAM_BOOK_ID) String bookId) {
-        Book book = bookDao.deleteEntity(Integer.valueOf(bookId));
+        Book book = new BookConverter().convertFromDTO(bookManager.deleteBook(Integer.valueOf(bookId)));
         if (book == null) {
             throw new NotFoundException("No book found with id = " + bookId);
         }
