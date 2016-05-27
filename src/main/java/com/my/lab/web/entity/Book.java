@@ -13,29 +13,15 @@ import java.util.Date;
 import java.util.List;
 
 @XmlRootElement(name = "book")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Book {
 
-    @XmlAttribute(name = "id", required = true)
     private Integer bookId;
-
-    @XmlElement(required = true)
     private String name;
-
-    @XmlElement(required = true)
     private List<Author> authors;
-
     private List<Genre> genres;
-
-    @XmlJavaTypeAdapter(WrittenDateAdapter.class)
     @JsonDeserialize(using = PublishingDateDeserializer.class)
     @JsonSerialize(using = PublishingDateSerializer.class)
     private Date written;
-
-
-    public Book(String name) {
-        this.name = name;
-    }
 
     public Book() {
         // Default empty constructor for JSON data binding
@@ -45,6 +31,7 @@ public class Book {
         return bookId;
     }
 
+    @XmlAttribute(name = "id", required = true)
     public void setBookId(Integer bookId) {
         this.bookId = bookId;
     }
@@ -53,6 +40,7 @@ public class Book {
         return name;
     }
 
+    @XmlElement(required = true)
     public void setName(String name) {
         this.name = name;
     }
@@ -61,6 +49,7 @@ public class Book {
         return authors;
     }
 
+    @XmlElement(required = true)
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
     }
@@ -77,6 +66,7 @@ public class Book {
         return written;
     }
 
+    @XmlJavaTypeAdapter(WrittenDateAdapter.class)
     public void setWritten(Date written) {
         this.written = written;
     }
