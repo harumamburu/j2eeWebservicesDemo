@@ -1,4 +1,4 @@
-package com.my.lab.dao.entity.converter;
+package com.my.lab.core.dto.converter;
 
 import com.my.lab.core.converter.Converter;
 import com.my.lab.core.dto.BookDTO;

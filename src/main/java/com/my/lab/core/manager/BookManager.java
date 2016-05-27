@@ -4,7 +4,7 @@ import com.my.lab.core.converter.Converter;
 import com.my.lab.core.dto.BookDTO;
 import com.my.lab.dao.db.DbBookDao;
 import com.my.lab.dao.entity.Book;
-import com.my.lab.dao.entity.converter.BookConverter;
+import com.my.lab.core.dto.converter.BookConverter;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;

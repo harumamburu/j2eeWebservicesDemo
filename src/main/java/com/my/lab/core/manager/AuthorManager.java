@@ -4,7 +4,7 @@ import com.my.lab.core.converter.Converter;
 import com.my.lab.core.dto.AuthorDTO;
 import com.my.lab.dao.db.DbAuthorDao;
 import com.my.lab.dao.entity.Author;
-import com.my.lab.dao.entity.converter.AuthorConverter;
+import com.my.lab.core.dto.converter.AuthorConverter;
 
 import javax.ejb.EJB;
 
