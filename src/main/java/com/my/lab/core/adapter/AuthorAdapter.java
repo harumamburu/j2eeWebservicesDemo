@@ -16,7 +16,7 @@ import javax.ejb.Stateless;
 public class AuthorAdapter implements DAO<AuthorDTO> {
 
     @EJB
-    private DAO<AuthorJPAEntity> authorDao;
+    private DbAuthorDao authorDao;
 
     @Override
     public AuthorDTO getEntity(Integer id) {
