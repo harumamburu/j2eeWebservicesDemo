@@ -1,6 +1,6 @@
 package com.my.lab.dao.memory;
 
-import com.my.lab.dao.DBPoller;
+import com.my.lab.dao.Persistent;
 import com.my.lab.dao.entity.BookJPAEntity;
 
 import javax.ejb.Singleton;
@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Singleton
-public class InMemoryBookDao implements DBPoller<BookJPAEntity> {
+public class InMemoryBookDao implements Persistent<BookJPAEntity> {
 
     private static final AtomicInteger COUNTER = new AtomicInteger();
     private static final Map<Integer, BookJPAEntity> BOOKS = new ConcurrentHashMap<>(8, 0.9f, 1);

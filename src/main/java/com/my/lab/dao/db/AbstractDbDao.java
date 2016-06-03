@@ -1,14 +1,13 @@
 package com.my.lab.dao.db;
 
-import com.my.lab.dao.DBPoller;
+import com.my.lab.dao.Persistent;
 import com.my.lab.dao.entity.Entity;
-import com.my.lab.dao.DAO;
 
 import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractDbDao<T extends Entity> implements DBPoller<T> {
+public abstract class AbstractDbDao<T extends Entity> implements Persistent<T> {
 
     @PersistenceContext(unitName = "demo-persistence-unit")
     private EntityManager entityManager;
