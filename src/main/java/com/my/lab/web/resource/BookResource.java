@@ -1,16 +1,14 @@
 package com.my.lab.web.resource;
 
-import com.my.lab.core.converter.Converter;
 import com.my.lab.core.dto.BookDTO;
-import com.my.lab.core.adapter.BookAdapter;
 import com.my.lab.web.entity.BookWebEntity;
-import com.my.lab.web.entity.converter.BookConverter;
+import com.my.lab.web.service.BookService;
+import com.my.lab.web.service.Service;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -22,8 +20,7 @@ public class BookResource {
 
     private static final String PARAM_BOOK_ID = "bookId";
 
-    @EJB
-    private BookAdapter bookAdapter;
+    private final Service<BookWebEntity> bookService = new BookService();
 
     @GET
     @ApiOperation(value = "get a book by id", response = BookWebEntity.class)
@@ -39,7 +36,7 @@ public class BookResource {
             throw new BadRequestException(PARAM_BOOK_ID + " should be an integer only!");
         }
 
-        BookWebEntity book = new BookConverter().convertFromDTO(bookAdapter.getEntity(Integer.valueOf(bookId)));
+        BookWebEntity book = bookService.onGet(Integer.valueOf(bookId));
         if (book == null) {
             throw new NotFoundException("No book found by id = " + bookId);
         }
@@ -55,8 +52,7 @@ public class BookResource {
     public Response saveNewBook(BookWebEntity book) {
         Integer id;
         // TODO: add catch block for processing error messages
-        Converter<BookDTO, BookWebEntity> converter = new BookConverter();
-        book = converter.convertFromDTO(bookAdapter.saveEntity(converter.convertToDTO(book)));
+        book = bookService.onPost(book);
         return Response.status(Response.Status.CREATED).entity(book).build();
     }
 
@@ -67,8 +63,7 @@ public class BookResource {
     @ApiResponses(value = {
             @ApiResponse(code = 500, message = "Internal server error")})
     public Response saveOrUpdateBook(BookWebEntity book) {
-        Converter<BookDTO, BookWebEntity> converter = new BookConverter();
-        book = converter.convertFromDTO(bookAdapter.updateEntity(converter.convertToDTO(book)));
+        book = bookService.onPut(book);
         return Response.ok(book).build();
     }
 
@@ -78,7 +73,7 @@ public class BookResource {
             @ApiResponse(code = 200, message = "book has been deleted"),
             @ApiResponse(code = 404, message = "no book found")})
     public Response deleteBook(@QueryParam(PARAM_BOOK_ID) String bookId) {
-        BookWebEntity book = new BookConverter().convertFromDTO(bookAdapter.deleteEntity(Integer.valueOf(bookId)));
+        BookWebEntity book = bookService.onDelete(Integer.valueOf(bookId));
         if (book == null) {
             throw new NotFoundException("No book found with id = " + bookId);
         }
