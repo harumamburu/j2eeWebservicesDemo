@@ -8,9 +8,11 @@ import com.my.lab.dao.entity.mapper.frommapper.BookJPAFromDTOMapper;
 import com.my.lab.dao.entity.mapper.tomapper.BookJPAToDTOMapper;
 
 import javax.ejb.EJB;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 
 @Stateless
+@Local
 public class BookAdapter implements DAO<BookDTO> {
 
     @EJB

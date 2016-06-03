@@ -8,11 +8,15 @@ import com.my.lab.dao.entity.mapper.frommapper.AuthorJPAFromDTOMapper;
 import com.my.lab.dao.entity.mapper.tomapper.AuthorJPAToDTOMapper;
 
 import javax.ejb.EJB;
+import javax.ejb.Local;
+import javax.ejb.Stateless;
 
+@Stateless
+@Local
 public class AuthorAdapter implements DAO<AuthorDTO> {
 
     @EJB
-    private DbAuthorDao authorDao;
+    private DAO<AuthorJPAEntity> authorDao;
 
     @Override
     public AuthorDTO getEntity(Integer id) {
