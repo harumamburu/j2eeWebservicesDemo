@@ -89,12 +89,6 @@ public class BookJPAEntity implements Entity {
         this.authors = authors;
     }
 
-    public void setAuthor(AuthorJPAEntity author) {
-        if (!authors.contains(author)) {
-            authors.add(author);
-        }
-    }
-
     public List<Genre> getGenres() {
         return genres;
     }
