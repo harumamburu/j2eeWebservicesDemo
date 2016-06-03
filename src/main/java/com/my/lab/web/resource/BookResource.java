@@ -1,6 +1,5 @@
 package com.my.lab.web.resource;
 
-import com.my.lab.core.dto.BookDTO;
 import com.my.lab.web.entity.BookWebEntity;
 import com.my.lab.web.service.BookService;
 import com.my.lab.web.service.Service;
