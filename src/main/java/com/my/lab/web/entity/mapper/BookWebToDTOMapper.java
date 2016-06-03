@@ -5,10 +5,10 @@ import com.my.lab.web.entity.BookWebEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = AuthorMapper.class)
-public interface BookMapper {
+@Mapper(uses = AuthorWebToDTOMapper.class)
+public interface BookWebToDTOMapper {
 
-    BookMapper INSTANCE = Mappers.getMapper(BookMapper.class);
+    BookWebToDTOMapper INSTANCE = Mappers.getMapper(BookWebToDTOMapper.class);
 
     BookDTO bookToDTO(BookWebEntity book);
 }

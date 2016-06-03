@@ -6,9 +6,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
-public interface AuthorMapper {
+public interface AuthorWebToDTOMapper {
 
-    AuthorMapper INSTANCE = Mappers.getMapper(AuthorMapper.class);
+    AuthorWebToDTOMapper INSTANCE = Mappers.getMapper(AuthorWebToDTOMapper.class);
 
     AuthorDTO authorToDTO(AuthorWebEntity author);
 }
