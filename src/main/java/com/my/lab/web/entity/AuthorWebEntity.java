@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 
-public class Author implements WebEntity {
+public class AuthorWebEntity implements WebEntity {
 
     private Integer authorId;
     private String name;
@@ -19,7 +19,7 @@ public class Author implements WebEntity {
     @JsonSerialize(using = BirthDateSerializer.class)
     private Date birth;
 
-    public Author() {
+    public AuthorWebEntity() {
         // Default empty constructor JSON data binding
     }
 

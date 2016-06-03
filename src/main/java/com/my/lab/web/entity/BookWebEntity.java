@@ -13,17 +13,17 @@ import java.util.Date;
 import java.util.List;
 
 @XmlRootElement(name = "book")
-public class Book implements WebEntity {
+public class BookWebEntity implements WebEntity {
 
     private Integer bookId;
     private String name;
-    private List<Author> authors;
+    private List<AuthorWebEntity> authors;
     private List<Genre> genres;
     @JsonDeserialize(using = PublishingDateDeserializer.class)
     @JsonSerialize(using = PublishingDateSerializer.class)
     private Date written;
 
-    public Book() {
+    public BookWebEntity() {
         // Default empty constructor for JSON data binding
     }
 
@@ -47,12 +47,12 @@ public class Book implements WebEntity {
         this.name = name;
     }
 
-    public List<Author> getAuthors() {
+    public List<AuthorWebEntity> getAuthors() {
         return authors;
     }
 
     @XmlElement(required = true)
-    public void setAuthors(List<Author> authors) {
+    public void setAuthors(List<AuthorWebEntity> authors) {
         this.authors = authors;
     }
 
