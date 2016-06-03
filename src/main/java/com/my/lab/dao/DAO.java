@@ -1,8 +1,6 @@
 package com.my.lab.dao;
 
-import com.my.lab.dao.entity.Entity;
-
-public interface DAO<T extends Entity> {
+public interface DAO<T> {
 
     T saveEntity(T entity);
     T updateEntity(T entity);
