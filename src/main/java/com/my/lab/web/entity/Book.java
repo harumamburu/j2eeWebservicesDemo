@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @XmlRootElement(name = "book")
-public class Book {
+public class Book implements WebEntity {
 
     private Integer bookId;
     private String name;
@@ -27,12 +27,14 @@ public class Book {
         // Default empty constructor for JSON data binding
     }
 
-    public Integer getBookId() {
+    @Override
+    public Integer getId() {
         return bookId;
     }
 
+    @Override
     @XmlAttribute(name = "id", required = true)
-    public void setBookId(Integer bookId) {
+    public void setId(Integer bookId) {
         this.bookId = bookId;
     }
 

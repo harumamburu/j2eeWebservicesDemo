@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 
-public class Author {
+public class Author implements WebEntity {
 
     private Integer authorId;
     private String name;
@@ -23,12 +23,14 @@ public class Author {
         // Default empty constructor JSON data binding
     }
 
-    public Integer getAuthorId() {
+    @Override
+    public Integer getId() {
         return authorId;
     }
 
+    @Override
     @XmlAttribute(name = "id", required = true)
-    public void setAuthorId(Integer authorId) {
+    public void setId(Integer authorId) {
         this.authorId = authorId;
     }
 
