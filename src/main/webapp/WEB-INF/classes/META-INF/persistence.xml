@@ -5,7 +5,7 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>jdbc/oracleDB</jta-data-source>
 
-        <class>com.my.lab.dao.entity.Book</class>
+        <class>com.my.lab.dao.entity.BookJPAEntity</class>
         <class>com.my.lab.dao.entity.AuthorJPAEntity</class>
 
         <exclude-unlisted-classes>false</exclude-unlisted-classes>

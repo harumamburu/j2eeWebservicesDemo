@@ -6,14 +6,14 @@ public interface Queries {
     String QUERY_PARAM_NAME = "name";
 
     
-    String BOOK_DELETE_BYID_QUERYNAME = "Book.DeleteById";
-    String BOOK_DELETE_BYID_QUERY = "delete Book b where b.bookId = :" + QUERY_PARAM_ID;
+    String BOOK_DELETE_BYID_QUERYNAME = "BookJPAEntity.DeleteById";
+    String BOOK_DELETE_BYID_QUERY = "delete BookJPAEntity b where b.bookId = :" + QUERY_PARAM_ID;
     
-    String BOOK_CHECK_BYID_QUERYNAME = "Book.CheckById";
-    String BOOK_CHECK_BYID_QUERY = "select 1 from Book b where b.bookId = :" + QUERY_PARAM_ID;
+    String BOOK_CHECK_BYID_QUERYNAME = "BookJPAEntity.CheckById";
+    String BOOK_CHECK_BYID_QUERY = "select 1 from BookJPAEntity b where b.bookId = :" + QUERY_PARAM_ID;
 
-    String BOOK_CHECK_BYNATURALID_QUERYNAME = "Book.CheckByNaturalId";
-    String BOOK_CHECK_BYNATURALID_QUERY = "select b from Book b where b.name = :" + QUERY_PARAM_NAME;
+    String BOOK_CHECK_BYNATURALID_QUERYNAME = "BookJPAEntity.CheckByNaturalId";
+    String BOOK_CHECK_BYNATURALID_QUERY = "select b from BookJPAEntity b where b.name = :" + QUERY_PARAM_NAME;
 
     
     String AUTHOR_DELETE_BYID_QUERYNAME = "AuthorJPAEntity.DeleteById";

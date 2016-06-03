@@ -18,7 +18,7 @@ import java.util.List;
 @NamedQueries({@NamedQuery(name = Queries.BOOK_DELETE_BYID_QUERYNAME, query = Queries.BOOK_DELETE_BYID_QUERY),
         @NamedQuery(name = Queries.BOOK_CHECK_BYID_QUERYNAME, query = Queries.BOOK_CHECK_BYID_QUERY),
         @NamedQuery(name = Queries.BOOK_CHECK_BYNATURALID_QUERYNAME, query = Queries.BOOK_CHECK_BYNATURALID_QUERY)})
-public class Book implements Entity {
+public class BookJPAEntity implements Entity {
 
     @Id
     @GeneratedValue(generator = "book_counter", strategy = GenerationType.SEQUENCE)
@@ -49,11 +49,11 @@ public class Book implements Entity {
     private Date written;
 
 
-    public Book(String name) {
+    public BookJPAEntity(String name) {
         this.name = name;
     }
 
-    public Book() {
+    public BookJPAEntity() {
         // Default empty constructor for hibernate
     }
 
@@ -137,7 +137,7 @@ public class Book implements Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Book book = (Book) o;
+        BookJPAEntity book = (BookJPAEntity) o;
 
         if (bookId != null ? !bookId.equals(book.bookId) : book.bookId != null) return false;
         if (!name.equals(book.name)) return false;

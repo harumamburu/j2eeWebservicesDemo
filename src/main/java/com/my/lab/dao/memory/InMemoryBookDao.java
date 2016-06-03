@@ -1,8 +1,7 @@
 package com.my.lab.dao.memory;
 
 import com.my.lab.dao.DBPoller;
-import com.my.lab.dao.entity.Book;
-import com.my.lab.dao.DAO;
+import com.my.lab.dao.entity.BookJPAEntity;
 
 import javax.ejb.Singleton;
 import java.util.Map;
@@ -10,13 +9,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Singleton
-public class InMemoryBookDao implements DBPoller<Book> {
+public class InMemoryBookDao implements DBPoller<BookJPAEntity> {
 
     private static final AtomicInteger COUNTER = new AtomicInteger();
-    private static final Map<Integer, Book> BOOKS = new ConcurrentHashMap<>(8, 0.9f, 1);
+    private static final Map<Integer, BookJPAEntity> BOOKS = new ConcurrentHashMap<>(8, 0.9f, 1);
 
     @Override
-    public Book saveEntity(Book book) {
+    public BookJPAEntity saveEntity(BookJPAEntity book) {
         if (book.getId() == null) {
             book.setId(COUNTER.incrementAndGet());
         }
@@ -25,13 +24,13 @@ public class InMemoryBookDao implements DBPoller<Book> {
     }
 
     @Override
-    public Book getEntity(Integer id) {
+    public BookJPAEntity getEntity(Integer id) {
         return BOOKS.get(id);
     }
 
     @Override
-    public Book deleteEntity(Integer id) {
-        Book book = BOOKS.remove(id);
+    public BookJPAEntity deleteEntity(Integer id) {
+        BookJPAEntity book = BOOKS.remove(id);
         if (book != null) {
             COUNTER.decrementAndGet();
         }
@@ -39,9 +38,9 @@ public class InMemoryBookDao implements DBPoller<Book> {
     }
 
     @Override
-    public <String> Book getEntityByNaturalId(String naturalId) {
-        Book entity = null;
-        for (Book book : BOOKS.values()) {
+    public <String> BookJPAEntity getEntityByNaturalId(String naturalId) {
+        BookJPAEntity entity = null;
+        for (BookJPAEntity book : BOOKS.values()) {
             if (book.getName().equals(naturalId)) {
                 entity = book;
                 break;
@@ -56,7 +55,7 @@ public class InMemoryBookDao implements DBPoller<Book> {
     }
 
     @Override
-    public Book updateEntity(Book entity) {
+    public BookJPAEntity updateEntity(BookJPAEntity entity) {
         return saveEntity(entity);
     }
 }
