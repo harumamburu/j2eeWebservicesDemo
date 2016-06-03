@@ -1,4 +1,4 @@
-package com.my.lab.web.entity.mapper;
+package com.my.lab.web.entity.mapper.frommapper;
 
 import com.my.lab.core.dto.AuthorDTO;
 import com.my.lab.web.entity.AuthorWebEntity;

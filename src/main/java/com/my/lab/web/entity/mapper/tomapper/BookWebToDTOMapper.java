@@ -1,4 +1,4 @@
-package com.my.lab.web.entity.mapper;
+package com.my.lab.web.entity.mapper.tomapper;
 
 import com.my.lab.core.dto.BookDTO;
 import com.my.lab.web.entity.BookWebEntity;
