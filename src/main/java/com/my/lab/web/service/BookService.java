@@ -15,27 +15,29 @@ public class BookService implements Service<BookWebEntity> {
 
     @Override
     public BookWebEntity onGet(Integer id) {
-        BookDTO bookDTO = bookAdapter.getEntity(id);
-        return BookWebFromDTOMapper.INSTANCE.bookFromDTO(bookDTO);
+        return bookFromDTO(bookAdapter.getEntity(id));
     }
 
     @Override
-    public BookWebEntity onPost(BookWebEntity entity) {
-        BookDTO bookDTO = BookWebToDTOMapper.INSTANCE.bookToDTO(entity);
-        bookDTO = bookAdapter.saveEntity(bookDTO);
-        return BookWebFromDTOMapper.INSTANCE.bookFromDTO(bookDTO);
+    public BookWebEntity onPost(BookWebEntity book) {
+        return bookFromDTO(bookAdapter.saveEntity(bookToDTO(book)));
     }
 
     @Override
-    public BookWebEntity onPut(BookWebEntity entity) {
-        BookDTO bookDTO = BookWebToDTOMapper.INSTANCE.bookToDTO(entity);
-        bookDTO = bookAdapter.updateEntity(bookDTO);
-        return BookWebFromDTOMapper.INSTANCE.bookFromDTO(bookDTO);
+    public BookWebEntity onPut(BookWebEntity book) {
+        return bookFromDTO(bookAdapter.updateEntity(bookToDTO(book)));
     }
 
     @Override
     public BookWebEntity onDelete(Integer id) {
-        BookDTO bookDTO = bookAdapter.deleteEntity(id);
+        return bookFromDTO(bookAdapter.deleteEntity(id));
+    }
+
+    private BookDTO bookToDTO(BookWebEntity book) {
+        return BookWebToDTOMapper.INSTANCE.bookToDTO(book);
+    }
+
+    private BookWebEntity bookFromDTO(BookDTO bookDTO) {
         return BookWebFromDTOMapper.INSTANCE.bookFromDTO(bookDTO);
     }
 }
