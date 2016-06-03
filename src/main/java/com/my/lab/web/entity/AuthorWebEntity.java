@@ -2,7 +2,7 @@ package com.my.lab.web.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.my.lab.web.entity.format.adapters.BirthDateAdapter;
+import com.my.lab.web.entity.format.xmladapter.BirthDateAdapter;
 import com.my.lab.web.setting.json.deserialization.BirthDateDeserializer;
 import com.my.lab.web.setting.json.deserialization.BirthDateSerializer;
 
