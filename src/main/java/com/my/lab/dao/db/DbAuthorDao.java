@@ -1,15 +1,15 @@
 package com.my.lab.dao.db;
 
-import com.my.lab.dao.entity.Author;
+import com.my.lab.dao.entity.AuthorJPAEntity;
 
 import javax.ejb.Stateless;
 
 @Stateless
-public class DbAuthorDao extends AbstractDbDao<Author> {
+public class DbAuthorDao extends AbstractDbDao<AuthorJPAEntity> {
 
     @Override
-    protected Class<Author> getEntityClass() {
-        return Author.class;
+    protected Class<AuthorJPAEntity> getEntityClass() {
+        return AuthorJPAEntity.class;
     }
 
     @Override
@@ -19,7 +19,7 @@ public class DbAuthorDao extends AbstractDbDao<Author> {
     }
 
     @Override
-    public <String> Author getEntityByNaturalId(String naturalId) {
+    public <String> AuthorJPAEntity getEntityByNaturalId(String naturalId) {
         return executeQuerySingleResult(Queries.BOOK_CHECK_BYNATURALID_QUERYNAME,
                 getSingleParamMap(Queries.QUERY_PARAM_NAME, naturalId));
     }

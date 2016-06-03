@@ -1,8 +1,7 @@
 package com.my.lab.dao.memory;
 
 import com.my.lab.dao.DBPoller;
-import com.my.lab.dao.entity.Author;
-import com.my.lab.dao.DAO;
+import com.my.lab.dao.entity.AuthorJPAEntity;
 
 import javax.ejb.Singleton;
 import java.util.Map;
@@ -10,13 +9,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Singleton
-public class InMemoryAuthorDao implements DBPoller<Author> {
+public class InMemoryAuthorDao implements DBPoller<AuthorJPAEntity> {
 
     private static final AtomicInteger COUNTER = new AtomicInteger();
-    private static final Map<Integer, Author> AUTHORS = new ConcurrentHashMap<>(8, 0.9f, 1);
+    private static final Map<Integer, AuthorJPAEntity> AUTHORS = new ConcurrentHashMap<>(8, 0.9f, 1);
 
     @Override
-    public Author saveEntity(Author author) {
+    public AuthorJPAEntity saveEntity(AuthorJPAEntity author) {
         if (author.getId() == null) {
             author.setId(COUNTER.incrementAndGet());
         }
@@ -25,13 +24,13 @@ public class InMemoryAuthorDao implements DBPoller<Author> {
     }
 
     @Override
-    public Author getEntity(Integer id) {
+    public AuthorJPAEntity getEntity(Integer id) {
         return AUTHORS.get(id);
     }
 
     @Override
-    public Author deleteEntity(Integer id) {
-        Author author = AUTHORS.remove(id);
+    public AuthorJPAEntity deleteEntity(Integer id) {
+        AuthorJPAEntity author = AUTHORS.remove(id);
         if (author != null) {
             COUNTER.decrementAndGet();
         }
@@ -39,9 +38,9 @@ public class InMemoryAuthorDao implements DBPoller<Author> {
     }
 
     @Override
-    public <String> Author getEntityByNaturalId(String naturalId) {
-        Author entity = null;
-        for (Author author : AUTHORS.values()) {
+    public <String> AuthorJPAEntity getEntityByNaturalId(String naturalId) {
+        AuthorJPAEntity entity = null;
+        for (AuthorJPAEntity author : AUTHORS.values()) {
             if (author.getName().equals(naturalId)) {
                 entity = author;
                 break;
@@ -56,7 +55,7 @@ public class InMemoryAuthorDao implements DBPoller<Author> {
     }
 
     @Override
-    public Author updateEntity(Author entity) {
+    public AuthorJPAEntity updateEntity(AuthorJPAEntity entity) {
         return saveEntity(entity);
     }
 }

@@ -35,7 +35,7 @@ public class Book implements Entity {
     @JoinTable(name = Constants.JOIN_TABLE_BOOKS_AUTHORS,
             joinColumns = @JoinColumn(name = Constants.BOOK_COLUMN_ID, nullable = false),
             inverseJoinColumns = @JoinColumn(name = Constants.AUTHOR_COLUMN_ID, nullable = false))
-    private List<Author> authors;
+    private List<AuthorJPAEntity> authors;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = Constants.JOIN_TABLE_BOOK_GENRES,
@@ -81,15 +81,15 @@ public class Book implements Entity {
         this.name = name;
     }
 
-    public List<Author> getAuthors() {
+    public List<AuthorJPAEntity> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<Author> authors) {
+    public void setAuthors(List<AuthorJPAEntity> authors) {
         this.authors = authors;
     }
 
-    public void setAuthor(Author author) {
+    public void setAuthor(AuthorJPAEntity author) {
         if (!authors.contains(author)) {
             authors.add(author);
         }
@@ -117,7 +117,7 @@ public class Book implements Entity {
                 "bookId=" + bookId +
                 ", name='" + name + '\'' +
                 ", authors=[";
-        for (Author author : authors) {
+        for (AuthorJPAEntity author : authors) {
             result += " " + author.toString() + ",";
         }
         result = result.substring(0, result.length() - 1) + " ], genres=[";

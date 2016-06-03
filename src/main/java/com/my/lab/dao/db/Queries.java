@@ -16,12 +16,12 @@ public interface Queries {
     String BOOK_CHECK_BYNATURALID_QUERY = "select b from Book b where b.name = :" + QUERY_PARAM_NAME;
 
     
-    String AUTHOR_DELETE_BYID_QUERYNAME = "Author.DeleteById";
-    String AUTHOR_DELETE_BYID_QUERY = "delete Author a where a.authorId = :" + QUERY_PARAM_ID;
+    String AUTHOR_DELETE_BYID_QUERYNAME = "AuthorJPAEntity.DeleteById";
+    String AUTHOR_DELETE_BYID_QUERY = "delete AuthorJPAEntity a where a.authorId = :" + QUERY_PARAM_ID;
     
-    String AUTHOR_CHECK_BYID_QUERYNAME = "Author.CheckById";
-    String AUTHOR_CHECK_BYID_QUERY = "select 1 from  Author a where a.authorId = :" + QUERY_PARAM_ID;
+    String AUTHOR_CHECK_BYID_QUERYNAME = "AuthorJPAEntity.CheckById";
+    String AUTHOR_CHECK_BYID_QUERY = "select 1 from  AuthorJPAEntity a where a.authorId = :" + QUERY_PARAM_ID;
 
-    String AUTHOR_CHECK_BYNATURALID_QUERYNAME = "Author.CheckByNaturalId";
-    String AUTHOR_CHECK_BYNATURALID_QUERY = "select a from  Author a where a.name = :" + QUERY_PARAM_NAME;
+    String AUTHOR_CHECK_BYNATURALID_QUERYNAME = "AuthorJPAEntity.CheckByNaturalId";
+    String AUTHOR_CHECK_BYNATURALID_QUERY = "select a from  AuthorJPAEntity a where a.name = :" + QUERY_PARAM_NAME;
 }

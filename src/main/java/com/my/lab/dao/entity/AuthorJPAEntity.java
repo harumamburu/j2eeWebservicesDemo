@@ -16,7 +16,7 @@ import java.util.Date;
 @NamedQueries({@NamedQuery(name = Queries.AUTHOR_DELETE_BYID_QUERYNAME, query = Queries.AUTHOR_DELETE_BYID_QUERY),
         @NamedQuery(name = Queries.AUTHOR_CHECK_BYID_QUERYNAME, query = Queries.AUTHOR_CHECK_BYID_QUERY),
         @NamedQuery(name = Queries.AUTHOR_CHECK_BYNATURALID_QUERYNAME, query = Queries.AUTHOR_CHECK_BYID_QUERY)})
-public class Author implements Entity {
+public class AuthorJPAEntity implements Entity {
 
     @Id
     @GeneratedValue(generator = "author_counter", strategy = GenerationType.SEQUENCE)
@@ -33,11 +33,11 @@ public class Author implements Entity {
     @Temporal(TemporalType.DATE)
     private Date birth;
 
-    public Author(String name) {
+    public AuthorJPAEntity(String name) {
         this.name = name;
     }
 
-    public Author() {
+    public AuthorJPAEntity() {
         // Default empty constructor for hibernate
     }
 
@@ -87,7 +87,7 @@ public class Author implements Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Author author = (Author) o;
+        AuthorJPAEntity author = (AuthorJPAEntity) o;
 
         if (authorId != null ? !authorId.equals(author.authorId) : author.authorId != null) return false;
         if (!name.equals(author.name)) return false;
