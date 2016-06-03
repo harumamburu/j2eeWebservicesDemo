@@ -8,6 +8,4 @@ public interface DAO<T extends Entity> {
     T updateEntity(T entity);
     T getEntity(Integer id);
     T deleteEntity(Integer id);
-    Boolean contains(Integer id);
-    <K extends Object> T getEntityByNaturalId(K naturalId);
 }

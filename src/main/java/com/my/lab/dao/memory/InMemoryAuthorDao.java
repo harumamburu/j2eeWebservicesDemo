@@ -1,5 +1,6 @@
 package com.my.lab.dao.memory;
 
+import com.my.lab.dao.DBPoller;
 import com.my.lab.dao.entity.Author;
 import com.my.lab.dao.DAO;
 
@@ -9,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Singleton
-public class InMemoryAuthorDao implements DAO<Author> {
+public class InMemoryAuthorDao implements DBPoller<Author> {
 
     private static final AtomicInteger COUNTER = new AtomicInteger();
     private static final Map<Integer, Author> AUTHORS = new ConcurrentHashMap<>(8, 0.9f, 1);
