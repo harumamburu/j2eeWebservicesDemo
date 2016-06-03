@@ -2,7 +2,7 @@ package com.my.lab.web.resource;
 
 import com.my.lab.core.converter.Converter;
 import com.my.lab.core.dto.BookDTO;
-import com.my.lab.core.manager.BookManager;
+import com.my.lab.core.adapter.BookAdapter;
 import com.my.lab.web.entity.Book;
 import com.my.lab.web.entity.converter.BookConverter;
 import io.swagger.annotations.Api;
@@ -23,7 +23,7 @@ public class BookResource {
     private static final String PARAM_BOOK_ID = "bookId";
 
     @EJB
-    private BookManager bookManager;
+    private BookAdapter bookAdapter;
 
     @GET
     @ApiOperation(value = "get a book by id", response = Book.class)
@@ -39,7 +39,7 @@ public class BookResource {
             throw new BadRequestException(PARAM_BOOK_ID + " should be an integer only!");
         }
 
-        Book book = new BookConverter().convertFromDTO(bookManager.getBook(Integer.valueOf(bookId)));
+        Book book = new BookConverter().convertFromDTO(bookAdapter.getEntity(Integer.valueOf(bookId)));
         if (book == null) {
             throw new NotFoundException("No book found by id = " + bookId);
         }
@@ -56,7 +56,7 @@ public class BookResource {
         Integer id;
         // TODO: add catch block for processing error messages
         Converter<BookDTO, Book> converter = new BookConverter();
-        book = converter.convertFromDTO(bookManager.saveBook(converter.convertToDTO(book)));
+        book = converter.convertFromDTO(bookAdapter.saveEntity(converter.convertToDTO(book)));
         return Response.status(Response.Status.CREATED).entity(book).build();
     }
 
@@ -68,7 +68,7 @@ public class BookResource {
             @ApiResponse(code = 500, message = "Internal server error")})
     public Response saveOrUpdateBook(Book book) {
         Converter<BookDTO, Book> converter = new BookConverter();
-        book = converter.convertFromDTO(bookManager.updateBook(converter.convertToDTO(book)));
+        book = converter.convertFromDTO(bookAdapter.updateEntity(converter.convertToDTO(book)));
         return Response.ok(book).build();
     }
 
@@ -78,7 +78,7 @@ public class BookResource {
             @ApiResponse(code = 200, message = "book has been deleted"),
             @ApiResponse(code = 404, message = "no book found")})
     public Response deleteBook(@QueryParam(PARAM_BOOK_ID) String bookId) {
-        Book book = new BookConverter().convertFromDTO(bookManager.deleteBook(Integer.valueOf(bookId)));
+        Book book = new BookConverter().convertFromDTO(bookAdapter.deleteEntity(Integer.valueOf(bookId)));
         if (book == null) {
             throw new NotFoundException("No book found with id = " + bookId);
         }
