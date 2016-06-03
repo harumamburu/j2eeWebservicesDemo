@@ -10,5 +10,5 @@ public interface BookWebFromDTOMapper {
 
     BookWebFromDTOMapper INSTANCE = Mappers.getMapper(BookWebFromDTOMapper.class);
 
-    BookWebEntity authorFromDTO(BookDTO bookDTO);
+    BookWebEntity bookFromDTO(BookDTO bookDTO);
 }
