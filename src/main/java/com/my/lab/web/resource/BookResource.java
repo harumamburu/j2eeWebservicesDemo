@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -19,7 +20,8 @@ public class BookResource {
 
     private static final String PARAM_BOOK_ID = "bookId";
 
-    private final Service<BookWebEntity> bookService = new BookService();
+    @EJB
+    private BookService bookService;
 
     @GET
     @ApiOperation(value = "get a book by id", response = BookWebEntity.class)

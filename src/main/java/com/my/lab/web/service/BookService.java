@@ -7,7 +7,11 @@ import com.my.lab.web.entity.mapper.frommapper.BookWebFromDTOMapper;
 import com.my.lab.web.entity.mapper.tomapper.BookWebToDTOMapper;
 
 import javax.ejb.EJB;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 
+@Stateless
+@LocalBean
 public class BookService implements Service<BookWebEntity> {
 
     @EJB
