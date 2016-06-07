@@ -8,7 +8,6 @@ import com.my.lab.dao.entity.mapper.frommapper.AuthorJPAFromDTOMapper;
 import com.my.lab.dao.entity.mapper.tomapper.AuthorJPAToDTOMapper;
 
 import javax.ejb.EJB;
-import javax.ejb.Local;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
