@@ -32,11 +32,14 @@ public abstract class AbstractDbDao<T extends JPAEntity> implements DbPersistent
         } else {
             for (final ListIterator<JPAEntity> iterator = entity.getNestedEntities().listIterator(); iterator.hasNext(); ) {
                 JPAEntity nested = iterator.next();
-                String naturalIdField = nested.getNaturalId().keySet().toArray
-                        (new String[nested.getNaturalId().size()])[0];
-                Object naturalIdValue = nested.getNaturalId().values().toArray()[0];
 
-                Criterion criteria = Restrictions.naturalId().set(naturalIdField, naturalIdValue);
+                // TODO: consider recursion
+                // TODO: consider null natIds values
+                Criterion criteria = null;
+                for (String naturalIdField : nested.getNaturalId().keySet()) {
+                    Object naturalIdValue = nested.getNaturalId().get(naturalIdField);
+                    criteria = Restrictions.naturalId().set(naturalIdField, naturalIdValue);
+                }
                 nested = (JPAEntity) DetachedCriteria.forClass(nested.getClass()).add(criteria)
                         .getExecutableCriteria(entityManager.unwrap(Session.class)).uniqueResult();
 
