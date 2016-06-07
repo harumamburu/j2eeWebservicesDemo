@@ -12,7 +12,8 @@ public abstract class AbstractDbDao<T extends Entity> implements Persistent<T> {
     @PersistenceContext(unitName = "demo-persistence-unit")
     private EntityManager entityManager;
 
-    protected abstract Class<T> getEntityClass();
+    @Override
+    public abstract Class<T> getEntityClass();
 
     @Override
     public T saveEntity(T entity) {
