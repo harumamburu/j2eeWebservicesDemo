@@ -9,6 +9,7 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @javax.persistence.Entity
 @Table(name = Constants.AUTHOR_TABLE_NAME)
@@ -70,6 +71,11 @@ public class AuthorJPAEntity implements JPAEntity {
 
     public void setBirth(Date birth) {
         this.birth = birth;
+    }
+
+    @Override
+    public <K extends JPAEntity> List<K> getNestedEntities() {
+        return null;
     }
 
     @Override

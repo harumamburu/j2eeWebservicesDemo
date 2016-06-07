@@ -84,6 +84,11 @@ public class BookJPAEntity implements JPAEntity {
         return authors;
     }
 
+    @Override
+    public List<AuthorJPAEntity> getNestedEntities() {
+        return authors;
+    }
+
     public void setAuthors(List<AuthorJPAEntity> authors) {
         this.authors = authors;
     }
