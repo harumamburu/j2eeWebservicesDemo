@@ -106,48 +106,18 @@ public class BookJPAEntity implements Entity {
     }
 
     @Override
-    public String toString() {
-        String result =  "Book : { " +
-                "bookId=" + bookId +
-                ", name='" + name + '\'' +
-                ", authors=[";
-        for (AuthorJPAEntity author : authors) {
-            result += " " + author.toString() + ",";
-        }
-        result = result.substring(0, result.length() - 1) + " ], genres=[";
-        if (genres == null) {
-            result += " null  ";
-        } else {
-            for (Genre genre : genres) {
-                result += " " + genre.name() + ",";
-            }
-        }
-        return result.substring(0, result.length() - 1) +
-                " ], written=" + DateFormats.YEAR_DATE_FORMAT.fromDate(written) + " }";
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BookJPAEntity book = (BookJPAEntity) o;
+        BookJPAEntity that = (BookJPAEntity) o;
 
-        if (bookId != null ? !bookId.equals(book.bookId) : book.bookId != null) return false;
-        if (!name.equals(book.name)) return false;
-        if (authors != null ? !authors.equals(book.authors) : book.authors != null) return false;
-        if (genres != null ? !genres.equals(book.genres) : book.genres != null) return false;
-        return !(written != null ? !written.equals(book.written) : book.written != null);
+        return name.equals(that.name);
 
     }
 
     @Override
     public int hashCode() {
-        int result = bookId != null ? bookId.hashCode() : 0;
-        result = 31 * result + name.hashCode();
-        result = 31 * result + (authors != null ? authors.hashCode() : 0);
-        result = 31 * result + (genres != null ? genres.hashCode() : 0);
-        result = 31 * result + (written != null ? written.hashCode() : 0);
-        return result;
+        return name.hashCode();
     }
 }

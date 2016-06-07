@@ -74,32 +74,18 @@ public class AuthorJPAEntity implements Entity {
     }
 
     @Override
-    public String toString() {
-        return "Author : { " +
-                "authorId=" + authorId +
-                ", name='" + name + "'" +
-                ", birth=" + DateFormats.BIRTH_DATE_FORMAT.fromDate(birth) +
-                " }";
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AuthorJPAEntity author = (AuthorJPAEntity) o;
+        AuthorJPAEntity that = (AuthorJPAEntity) o;
 
-        if (authorId != null ? !authorId.equals(author.authorId) : author.authorId != null) return false;
-        if (!name.equals(author.name)) return false;
-        return !(birth != null ? !birth.equals(author.birth) : author.birth != null);
+        return name.equals(that.name);
 
     }
 
     @Override
     public int hashCode() {
-        int result = authorId != null ? authorId.hashCode() : 0;
-        result = 31 * result + name.hashCode();
-        result = 31 * result + (birth != null ? birth.hashCode() : 0);
-        return result;
+        return name.hashCode();
     }
 }
