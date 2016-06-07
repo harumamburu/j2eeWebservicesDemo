@@ -10,7 +10,7 @@ import javax.ejb.Stateless;
 public class DbAuthorDao extends AbstractDbDao<AuthorJPAEntity> {
 
     @Override
-    protected Class<AuthorJPAEntity> getEntityClass() {
+    public Class<AuthorJPAEntity> getEntityClass() {
         return AuthorJPAEntity.class;
     }
 
