@@ -2,7 +2,6 @@ package com.my.lab.dao.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.my.lab.web.entity.format.DateFormats;
 import com.my.lab.dao.db.Queries;
 import com.my.lab.web.setting.json.deserialization.BirthDateDeserializer;
 import com.my.lab.web.setting.json.deserialization.BirthDateSerializer;
@@ -16,7 +15,7 @@ import java.util.Date;
 @NamedQueries({@NamedQuery(name = Queries.AUTHOR_DELETE_BYID_QUERYNAME, query = Queries.AUTHOR_DELETE_BYID_QUERY),
         @NamedQuery(name = Queries.AUTHOR_CHECK_BYID_QUERYNAME, query = Queries.AUTHOR_CHECK_BYID_QUERY),
         @NamedQuery(name = Queries.AUTHOR_CHECK_BYNATURALID_QUERYNAME, query = Queries.AUTHOR_CHECK_BYID_QUERY)})
-public class AuthorJPAEntity implements Entity {
+public class AuthorJPAEntity implements JPAEntity {
 
     @Id
     @GeneratedValue(generator = "author_counter", strategy = GenerationType.SEQUENCE)

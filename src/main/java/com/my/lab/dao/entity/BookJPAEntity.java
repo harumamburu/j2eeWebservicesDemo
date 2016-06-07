@@ -3,7 +3,6 @@ package com.my.lab.dao.entity;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.my.lab.core.dto.enumeration.Genre;
-import com.my.lab.web.entity.format.DateFormats;
 import com.my.lab.dao.db.Queries;
 import com.my.lab.web.setting.json.deserialization.PublishingDateDeserializer;
 import com.my.lab.web.setting.json.deserialization.PublishingDateSerializer;
@@ -18,7 +17,7 @@ import java.util.List;
 @NamedQueries({@NamedQuery(name = Queries.BOOK_DELETE_BYID_QUERYNAME, query = Queries.BOOK_DELETE_BYID_QUERY),
         @NamedQuery(name = Queries.BOOK_CHECK_BYID_QUERYNAME, query = Queries.BOOK_CHECK_BYID_QUERY),
         @NamedQuery(name = Queries.BOOK_CHECK_BYNATURALID_QUERYNAME, query = Queries.BOOK_CHECK_BYNATURALID_QUERY)})
-public class BookJPAEntity implements Entity {
+public class BookJPAEntity implements JPAEntity {
 
     @Id
     @GeneratedValue(generator = "book_counter", strategy = GenerationType.SEQUENCE)
