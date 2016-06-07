@@ -3,9 +3,10 @@ package com.my.lab.dao.entity;
 import com.my.lab.core.Identifiable;
 
 import java.util.List;
+import java.util.Map;
 
 public interface JPAEntity extends Identifiable {
 
-    <T extends Object> T getNaturalId();
+    Map<String, ?> getNaturalId();
     <K extends JPAEntity> List<K> getNestedEntities();
 }

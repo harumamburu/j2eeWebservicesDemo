@@ -9,7 +9,9 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @javax.persistence.Entity
 @Table(name = Constants.AUTHOR_TABLE_NAME)
@@ -56,9 +58,10 @@ public class AuthorJPAEntity implements JPAEntity {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public String getNaturalId() {
-        return getName();
+    public Map<String, String> getNaturalId() {
+        Map<String, String> naturalIds = new HashMap<>(1);
+        naturalIds.put("name", name);
+        return naturalIds;
     }
 
     public void setName(String name) {

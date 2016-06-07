@@ -4,6 +4,7 @@ import com.my.lab.dao.entity.AuthorJPAEntity;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import java.util.Map;
 
 @Stateless
 @LocalBean
@@ -21,8 +22,7 @@ public class DbAuthorDao extends AbstractDbDao<AuthorJPAEntity> {
     }
 
     @Override
-    public <String> AuthorJPAEntity getEntityByNaturalId(String naturalId) {
-        return executeQuerySingleResult(Queries.BOOK_CHECK_BYNATURALID_QUERYNAME,
-                getSingleParamMap(Queries.QUERY_PARAM_NAME, naturalId));
+    public AuthorJPAEntity getEntityByNaturalId(Map<java.lang.String, ?> naturalId) {
+        return executeQuerySingleResult(Queries.BOOK_CHECK_BYNATURALID_QUERYNAME, naturalId);
     }
 }
