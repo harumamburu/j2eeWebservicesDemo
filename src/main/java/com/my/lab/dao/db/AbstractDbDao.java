@@ -1,13 +1,13 @@
 package com.my.lab.dao.db;
 
-import com.my.lab.dao.Persistent;
+import com.my.lab.dao.DbPersistent;
 import com.my.lab.dao.entity.JPAEntity;
 
 import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractDbDao<T extends JPAEntity> implements Persistent<T> {
+public abstract class AbstractDbDao<T extends JPAEntity> implements DbPersistent<T> {
 
     @PersistenceContext(unitName = "demo-persistence-unit")
     private EntityManager entityManager;

@@ -38,18 +38,6 @@ public class InMemoryAuthorDao implements Persistent<AuthorJPAEntity> {
     }
 
     @Override
-    public <String> AuthorJPAEntity getEntityByNaturalId(String naturalId) {
-        AuthorJPAEntity entity = null;
-        for (AuthorJPAEntity author : AUTHORS.values()) {
-            if (author.getName().equals(naturalId)) {
-                entity = author;
-                break;
-            }
-        }
-        return entity;
-    }
-
-    @Override
     public Boolean contains(Integer id) {
         return AUTHORS.containsKey(id);
     }

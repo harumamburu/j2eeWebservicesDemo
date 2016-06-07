@@ -38,18 +38,6 @@ public class InMemoryBookDao implements Persistent<BookJPAEntity> {
     }
 
     @Override
-    public <String> BookJPAEntity getEntityByNaturalId(String naturalId) {
-        BookJPAEntity entity = null;
-        for (BookJPAEntity book : BOOKS.values()) {
-            if (book.getName().equals(naturalId)) {
-                entity = book;
-                break;
-            }
-        }
-        return entity;
-    }
-
-    @Override
     public Boolean contains(Integer id) {
         return BOOKS.containsKey(id);
     }
