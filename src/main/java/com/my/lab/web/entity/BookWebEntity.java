@@ -2,6 +2,7 @@ package com.my.lab.web.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.my.lab.core.Identifiable;
 import com.my.lab.core.dto.enumeration.Genre;
 import com.my.lab.web.entity.format.xmladapter.WrittenDateAdapter;
 import com.my.lab.web.setting.json.deserialization.PublishingDateDeserializer;
@@ -13,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @XmlRootElement(name = "book")
-public class BookWebEntity implements WebEntity {
+public class BookWebEntity implements WebEntity, Identifiable {
 
     private Integer bookId;
     private String name;

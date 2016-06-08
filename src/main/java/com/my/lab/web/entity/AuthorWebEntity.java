@@ -2,6 +2,7 @@ package com.my.lab.web.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.my.lab.core.Identifiable;
 import com.my.lab.web.entity.format.xmladapter.BirthDateAdapter;
 import com.my.lab.web.setting.json.deserialization.BirthDateDeserializer;
 import com.my.lab.web.setting.json.deserialization.BirthDateSerializer;
@@ -11,7 +12,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 
-public class AuthorWebEntity implements WebEntity {
+public class AuthorWebEntity implements WebEntity, Identifiable {
 
     private Integer authorId;
     private String name;
