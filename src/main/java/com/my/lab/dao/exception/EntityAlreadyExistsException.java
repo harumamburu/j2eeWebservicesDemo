@@ -2,8 +2,6 @@ package com.my.lab.dao.exception;
 
 public class EntityAlreadyExistsException extends DaoException {
 
-    private final String messageId = "Entity with id=%d already exists";
-
     public EntityAlreadyExistsException() {
         super();
     }
@@ -13,6 +11,6 @@ public class EntityAlreadyExistsException extends DaoException {
     }
 
     public void setEntityIdMessage(Long id) {
-        message = String.format(messageId, id);
+        message = String.format("Entity with id=%d already exists", id);
     }
 }
