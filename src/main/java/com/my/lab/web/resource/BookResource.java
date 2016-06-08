@@ -1,6 +1,8 @@
 package com.my.lab.web.resource;
 
 import com.my.lab.web.entity.BookWebEntity;
+import com.my.lab.web.error.EntityIdMisformatException;
+import com.my.lab.web.error.EntityNotFoundException;
 import com.my.lab.web.service.BookService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -8,7 +10,14 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.ejb.EJB;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -30,15 +39,16 @@ public class BookResource {
             @ApiResponse(code = 500, message = "Internal server error")})
     public Response getBookById(@QueryParam(PARAM_BOOK_ID) String bookId) {
         if (bookId == null) {
-            throw new BadRequestException(PARAM_BOOK_ID + " can't be null!");
+            throw new EntityIdMisformatException(PARAM_BOOK_ID + " can't be null!");
         }
         if (!bookId.matches("\\d+")) {
-            throw new BadRequestException(PARAM_BOOK_ID + " should be an integer only!");
+            throw new EntityIdMisformatException(PARAM_BOOK_ID + " should be an integer only!");
         }
 
         BookWebEntity book = bookService.onGet(Integer.valueOf(bookId));
+        // TODO: move this one to services
         if (book == null) {
-            throw new NotFoundException("No book found by id = " + bookId);
+            throw new EntityNotFoundException("No book found by id = " + bookId);
         }
         return Response.ok(book).build();
     }
@@ -75,7 +85,7 @@ public class BookResource {
     public Response deleteBook(@QueryParam(PARAM_BOOK_ID) String bookId) {
         BookWebEntity book = bookService.onDelete(Integer.valueOf(bookId));
         if (book == null) {
-            throw new NotFoundException("No book found with id = " + bookId);
+            throw new EntityNotFoundException("No book found with id = " + bookId);
         }
         return Response.ok().entity(book).build();
     }
