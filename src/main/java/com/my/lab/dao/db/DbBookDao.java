@@ -22,7 +22,7 @@ public class DbBookDao extends AbstractDbDao<BookJPAEntity> {
     }
 
     @Override
-    public BookJPAEntity getEntityByNaturalId(Map<java.lang.String, ?> naturalId) {
+    public BookJPAEntity getEntityByNaturalId(Map<String, ?> naturalId) {
         return executeQuerySingleResult(Queries.BOOK_CHECK_BYNATURALID_QUERYNAME, naturalId);
     }
 }
