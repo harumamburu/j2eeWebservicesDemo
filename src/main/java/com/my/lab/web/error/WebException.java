@@ -1,0 +1,24 @@
+package com.my.lab.web.error;
+
+import javax.ws.rs.core.Response.Status;
+
+public abstract class WebException extends RuntimeException {
+
+    public WebException() {
+        super();
+    }
+
+    public WebException(String message) {
+        super(message);
+    }
+
+    public WebException(Throwable cause) {
+        super(cause);
+    }
+
+    public WebException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public abstract Status getStatus();
+}
