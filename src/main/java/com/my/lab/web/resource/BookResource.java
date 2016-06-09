@@ -1,6 +1,7 @@
 package com.my.lab.web.resource;
 
 import com.my.lab.web.entity.BookWebEntity;
+import com.my.lab.web.entity.ExceptionWebEntity;
 import com.my.lab.web.error.EntityIdMisformatException;
 import com.my.lab.web.error.EntityNotFoundException;
 import com.my.lab.web.service.BookService;
@@ -32,11 +33,12 @@ public class BookResource {
     private BookService bookService;
 
     @GET
-    @ApiOperation(value = "get a book by id", response = BookWebEntity.class)
+    @ApiOperation(value = "get a book by id")
     @ApiResponses(value = {
-            @ApiResponse(code = 400, message = "Book id is null or misformatted"),
-            @ApiResponse(code = 404, message = "No book found"),
-            @ApiResponse(code = 500, message = "Internal server error")})
+            @ApiResponse(response = ExceptionWebEntity.class, code = 400, message = "Book id is null or misformatted"),
+            @ApiResponse(response = ExceptionWebEntity.class, code = 404, message = "No book found"),
+            @ApiResponse(response = ExceptionWebEntity.class, code = 500, message = "Internal server error"),
+            @ApiResponse(response = BookWebEntity.class, code = 200, message = "Book found")})
     public Response getBookById(@QueryParam(PARAM_BOOK_ID) String bookId) {
         checkIdParameter(bookId);
         return Response.ok(bookService.onGet(Integer.valueOf(bookId))).build();
@@ -44,20 +46,22 @@ public class BookResource {
 
     @POST
     @Consumes({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
-    @ApiOperation(value = "Post a book", response = BookWebEntity.class)
+    @ApiOperation(value = "Post a book")
     @ApiResponses(value = {
-            @ApiResponse(code = 409, message = "A book with such id is already exist"),
-            @ApiResponse(code = 500, message = "Internal Server Error")})
+            @ApiResponse(response = ExceptionWebEntity.class, code = 409, message = "A book with such id is already exist"),
+            @ApiResponse(response = ExceptionWebEntity.class, code = 500, message = "Internal Server Error"),
+            @ApiResponse(response = BookWebEntity.class, code = 201, message = "Book has been posted")})
     public Response saveNewBook(BookWebEntity book) {
         return Response.status(Response.Status.CREATED).entity(bookService.onPost(book)).build();
     }
 
     @PUT
     @Consumes({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
-    @ApiOperation(value = "Post or update a book", response = BookWebEntity.class, notes = "Post a book (no id required), " +
+    @ApiOperation(value = "Post or update a book", notes = "Post a book (no id required), " +
             "or check if a book exists (an id required) and either update it's entry or just post it")
     @ApiResponses(value = {
-            @ApiResponse(code = 500, message = "Internal server error")})
+            @ApiResponse(response = ExceptionWebEntity.class, code = 500, message = "Internal server error"),
+            @ApiResponse(response = BookWebEntity.class, code = 201, message = "Book has been saved")})
     public Response saveOrUpdateBook(BookWebEntity book) {
         book = bookService.onPut(book);
         return Response.ok(book).build();
@@ -66,8 +70,9 @@ public class BookResource {
     @DELETE
     @ApiOperation(value = "Delete a book")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "book has been deleted"),
-            @ApiResponse(code = 404, message = "no book found")})
+            @ApiResponse(response = ExceptionWebEntity.class, code = 404, message = "No book found"),
+            @ApiResponse(response = ExceptionWebEntity.class, code = 500, message = "Internal server error"),
+            @ApiResponse(response = BookWebEntity.class, code = 200, message = "Book has been deleted")})
     public Response deleteBook(@QueryParam(PARAM_BOOK_ID) String bookId) {
         checkIdParameter(bookId);
         BookWebEntity book = bookService.onDelete(Integer.valueOf(bookId));
