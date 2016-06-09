@@ -1,7 +1,9 @@
 package com.my.lab.web.error;
 
+import javax.ejb.ApplicationException;
 import javax.ws.rs.core.Response.Status;
 
+@ApplicationException
 public abstract class WebException extends RuntimeException {
 
     public WebException() {

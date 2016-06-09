@@ -23,6 +23,6 @@ public class EntityAlreadyExistsException extends WebException {
 
     @Override
     public Status getStatus() {
-        return null;
+        return Status.CONFLICT;
     }
 }
