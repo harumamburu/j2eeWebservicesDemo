@@ -22,7 +22,11 @@ public class BookService implements Service<BookWebEntity> {
 
     @Override
     public BookWebEntity onGet(Integer id) {
-        return bookFromDTO(bookAdapter.getEntity(id));
+        BookWebEntity book = bookFromDTO(bookAdapter.getEntity(id));
+        if (book == null) {
+            throw new EntityNotFoundException("No book found by id = " + id);
+        }
+        return book;
     }
 
     @Override

@@ -45,12 +45,7 @@ public class BookResource {
             throw new EntityIdMisformatException(PARAM_BOOK_ID + " should be an integer only!");
         }
 
-        BookWebEntity book = bookService.onGet(Integer.valueOf(bookId));
-        // TODO: move this one to services
-        if (book == null) {
-            throw new EntityNotFoundException("No book found by id = " + bookId);
-        }
-        return Response.ok(book).build();
+        return Response.ok(bookService.onGet(Integer.valueOf(bookId))).build();
     }
 
     @POST
@@ -60,10 +55,7 @@ public class BookResource {
             @ApiResponse(code = 409, message = "A book with such id is already exist"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
     public Response saveNewBook(BookWebEntity book) {
-        Integer id;
-        // TODO: add catch block for processing error messages
-        book = bookService.onPost(book);
-        return Response.status(Response.Status.CREATED).entity(book).build();
+        return Response.status(Response.Status.CREATED).entity(bookService.onPost(book)).build();
     }
 
     @PUT
