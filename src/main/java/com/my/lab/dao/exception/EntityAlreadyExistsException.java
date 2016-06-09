@@ -17,15 +17,15 @@ public class EntityAlreadyExistsException extends DaoException {
     public static class Builder extends DaoException.Builder {
 
         private final String messageId = "Entity with id=%d already exists";
-        private final String messageNaturalId = "Entity with natural id=%s of type %s already exists";
+        private final String messageNaturalId = "Entity with natural id of a field {%s=%s} already exists";
 
         public Builder setEntityIdMessage(Long id) {
             message = String.format(messageId, id);
             return this;
         }
 
-        public Builder setEntityNaturalIdMessage(String idType, String id) {
-            message = String.format(messageNaturalId, id, idType);
+        public Builder setEntityNaturalIdMessage(String field, String value) {
+            message = String.format(messageNaturalId, field, value);
             return this;
         }
 

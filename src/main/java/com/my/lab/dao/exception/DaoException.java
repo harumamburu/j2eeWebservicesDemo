@@ -10,6 +10,10 @@ public abstract class DaoException extends Exception {
         super(cause);
     }
 
+    public DaoException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
     public DaoException(Builder builder) {
         super(builder.message);
         if (builder.cause != null) {

@@ -30,7 +30,7 @@ public class BookAdapter implements DAO<BookDTO> {
         try {
             return bookToDTO(bookDao.saveEntity(bookFromDTO(bookDTO)));
         } catch (EntityAlreadyExistsException exc) {
-            throw new AlreadyExistsException(exc);
+            throw new AlreadyExistsException(exc.getMessage(), exc);
         }
     }
 

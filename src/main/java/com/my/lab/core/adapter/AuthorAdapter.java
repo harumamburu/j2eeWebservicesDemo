@@ -30,7 +30,7 @@ public class AuthorAdapter implements DAO<AuthorDTO> {
         try {
             return authorToDTO(authorDao.saveEntity(authorFromDTO(authorDTO)));
         } catch (EntityAlreadyExistsException exc) {
-            throw new AlreadyExistsException(exc);
+            throw new AlreadyExistsException(exc.getMessage(), exc);
         }
 
     }

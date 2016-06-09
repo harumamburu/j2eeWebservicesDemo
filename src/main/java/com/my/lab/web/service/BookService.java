@@ -34,7 +34,7 @@ public class BookService implements Service<BookWebEntity> {
         try {
             return bookFromDTO(bookAdapter.saveEntity(bookToDTO(book)));
         } catch (AlreadyExistsException exc) {
-            throw new EntityAlreadyExistsException(exc);
+            throw new EntityAlreadyExistsException(exc.getMessage(), exc);
         }
     }
 

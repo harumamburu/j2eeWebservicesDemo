@@ -4,7 +4,7 @@ import com.my.lab.dao.exception.DaoException;
 
 public class DataPersistenceException extends DaoException {
 
-    public DataPersistenceException(Throwable exc) {
-        super(exc);
+    public DataPersistenceException(String message, Throwable cause) {
+        super(message, cause);
     }
 }
