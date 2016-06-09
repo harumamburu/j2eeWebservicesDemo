@@ -26,6 +26,6 @@ public abstract class DaoException extends Exception {
             return this;
         }
 
-        public abstract DaoException build();
+        public abstract <E extends DaoException> E build();
     }
 }

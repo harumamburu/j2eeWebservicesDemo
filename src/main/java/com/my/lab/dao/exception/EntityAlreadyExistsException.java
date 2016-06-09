@@ -30,7 +30,7 @@ public class EntityAlreadyExistsException extends DaoException {
         }
 
         @Override
-        public DaoException build() {
+        public EntityAlreadyExistsException build() {
             return new EntityAlreadyExistsException(this);
         }
     }
