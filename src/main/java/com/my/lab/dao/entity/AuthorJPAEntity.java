@@ -18,7 +18,7 @@ import java.util.Map;
 @NamedQueries({@NamedQuery(name = Queries.AUTHOR_DELETE_BYID_QUERYNAME, query = Queries.AUTHOR_DELETE_BYID_QUERY),
         @NamedQuery(name = Queries.AUTHOR_CHECK_BYID_QUERYNAME, query = Queries.AUTHOR_CHECK_BYID_QUERY),
         @NamedQuery(name = Queries.AUTHOR_CHECK_BYNATURALID_QUERYNAME, query = Queries.AUTHOR_CHECK_BYID_QUERY)})
-public class AuthorJPAEntity implements JPAEntity {
+public class AuthorJPAEntity implements JPAEntity, Replicateable<AuthorJPAEntity> {
 
     @Id
     @GeneratedValue(generator = "author_counter", strategy = GenerationType.SEQUENCE)
@@ -41,6 +41,12 @@ public class AuthorJPAEntity implements JPAEntity {
 
     public AuthorJPAEntity() {
         // Default empty constructor for hibernate
+    }
+
+    @Override
+    public void replicate(AuthorJPAEntity entity) {
+        name = entity.getName();
+        birth = entity.getBirth();
     }
 
     @Override
