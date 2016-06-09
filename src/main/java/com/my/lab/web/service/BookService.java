@@ -8,6 +8,7 @@ import com.my.lab.web.entity.mapper.frommapper.BookWebFromDTOMapper;
 import com.my.lab.web.entity.mapper.tomapper.BookWebToDTOMapper;
 import com.my.lab.web.error.EntityAlreadyExistsException;
 import com.my.lab.web.error.EntityNotFoundException;
+import com.my.lab.web.error.InternalException;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -22,11 +23,13 @@ public class BookService implements Service<BookWebEntity> {
 
     @Override
     public BookWebEntity onGet(Integer id) {
-        BookWebEntity book = bookFromDTO(bookAdapter.getEntity(id));
-        if (book == null) {
-            throw new EntityNotFoundException("No book found by id = " + id);
+        try {
+            BookWebEntity book = bookFromDTO(bookAdapter.getEntity(id));
+            checkBuckNotNull(book, id);
+            return book;
+        } catch (Exception exc) {
+            throw new InternalException(exc);
         }
-        return book;
     }
 
     @Override
@@ -35,17 +38,29 @@ public class BookService implements Service<BookWebEntity> {
             return bookFromDTO(bookAdapter.saveEntity(bookToDTO(book)));
         } catch (AlreadyExistsException exc) {
             throw new EntityAlreadyExistsException(exc.getMessage(), exc);
+        } catch (Exception exc) {
+            throw new InternalException(exc);
         }
     }
 
     @Override
     public BookWebEntity onPut(BookWebEntity book) {
-        return bookFromDTO(bookAdapter.updateEntity(bookToDTO(book)));
+        try {
+            return bookFromDTO(bookAdapter.updateEntity(bookToDTO(book)));
+        } catch (Exception exc) {
+            throw new InternalException(exc);
+        }
     }
 
     @Override
     public BookWebEntity onDelete(Integer id) {
-        return bookFromDTO(bookAdapter.deleteEntity(id));
+        try {
+            BookWebEntity book = bookFromDTO(bookAdapter.deleteEntity(id));
+            checkBuckNotNull(book, id);
+            return book;
+        } catch (Exception exc) {
+            throw new InternalException(exc);
+        }
     }
 
     private BookDTO bookToDTO(BookWebEntity book) {
@@ -54,5 +69,11 @@ public class BookService implements Service<BookWebEntity> {
 
     private BookWebEntity bookFromDTO(BookDTO bookDTO) {
         return BookWebFromDTOMapper.INSTANCE.bookFromDTO(bookDTO);
+    }
+
+    private void checkBuckNotNull(BookWebEntity book, Integer id) {
+        if (book == null) {
+            throw new EntityNotFoundException("No book found by id = " + id);
+        }
     }
 }

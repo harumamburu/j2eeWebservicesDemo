@@ -38,13 +38,7 @@ public class BookResource {
             @ApiResponse(code = 404, message = "No book found"),
             @ApiResponse(code = 500, message = "Internal server error")})
     public Response getBookById(@QueryParam(PARAM_BOOK_ID) String bookId) {
-        if (bookId == null) {
-            throw new EntityIdMisformatException(PARAM_BOOK_ID + " can't be null!");
-        }
-        if (!bookId.matches("\\d+")) {
-            throw new EntityIdMisformatException(PARAM_BOOK_ID + " should be an integer only!");
-        }
-
+        checkIdParameter(bookId);
         return Response.ok(bookService.onGet(Integer.valueOf(bookId))).build();
     }
 
@@ -75,10 +69,17 @@ public class BookResource {
             @ApiResponse(code = 200, message = "book has been deleted"),
             @ApiResponse(code = 404, message = "no book found")})
     public Response deleteBook(@QueryParam(PARAM_BOOK_ID) String bookId) {
+        checkIdParameter(bookId);
         BookWebEntity book = bookService.onDelete(Integer.valueOf(bookId));
-        if (book == null) {
-            throw new EntityNotFoundException("No book found with id = " + bookId);
-        }
         return Response.ok().entity(book).build();
+    }
+
+    private void checkIdParameter(String id) {
+        if (id == null) {
+            throw new EntityIdMisformatException(PARAM_BOOK_ID + " can't be null!");
+        }
+        if (!id.matches("\\d+")) {
+            throw new EntityIdMisformatException(PARAM_BOOK_ID + " should be an integer only!");
+        }
     }
 }
