@@ -2,6 +2,8 @@ package com.my.lab.dao.db;
 
 import com.my.lab.dao.DbPersistent;
 import com.my.lab.dao.entity.JPAEntity;
+import com.my.lab.dao.exception.DaoException;
+import com.my.lab.dao.exception.EntityAlreadyExistsException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
@@ -11,6 +13,7 @@ import javax.persistence.*;
 import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public abstract class AbstractDbDao<T extends JPAEntity> implements DbPersistent<T> {
 
@@ -21,14 +24,15 @@ public abstract class AbstractDbDao<T extends JPAEntity> implements DbPersistent
     public abstract Class<T> getEntityClass();
 
     @Override
-    public T saveEntity(T entity) {
+    public T saveEntity(T entity) throws EntityAlreadyExistsException {
         // as ugly as it is, but this check is required to get rid of exceptions
         // on attempt to persist an entity with naturalId saved before
 
         T entityCheck = getEntityByNaturalId(entity.getNaturalId());
         if (entityCheck != null) {
-            // TODO: change with a custom exception
-            throw new IllegalArgumentException("The entity is already exist");
+            Entry<String, ?> natId = entity.getNaturalId().entrySet().iterator().next();
+            throw new EntityAlreadyExistsException.Builder().
+                    setEntityNaturalIdMessage(natId.getKey(), natId.getValue().toString()).build();
         } else {
             for (final ListIterator<JPAEntity> iterator = entity.getNestedEntities().listIterator(); iterator.hasNext(); ) {
                 JPAEntity nested = iterator.next();

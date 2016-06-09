@@ -1,11 +1,13 @@
 package com.my.lab.core.adapter;
 
 import com.my.lab.core.dto.AuthorDTO;
+import com.my.lab.core.adapter.exception.AlreadyExistsException;
 import com.my.lab.dao.DAO;
 import com.my.lab.dao.db.DbAuthorDao;
 import com.my.lab.dao.entity.AuthorJPAEntity;
 import com.my.lab.dao.entity.mapper.frommapper.AuthorJPAFromDTOMapper;
 import com.my.lab.dao.entity.mapper.tomapper.AuthorJPAToDTOMapper;
+import com.my.lab.dao.exception.EntityAlreadyExistsException;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -24,8 +26,13 @@ public class AuthorAdapter implements DAO<AuthorDTO> {
     }
 
     @Override
-    public AuthorDTO saveEntity(AuthorDTO authorDTO) {
-        return authorToDTO(authorDao.saveEntity(authorFromDTO(authorDTO)));
+    public AuthorDTO saveEntity(AuthorDTO authorDTO) throws AlreadyExistsException {
+        try {
+            return authorToDTO(authorDao.saveEntity(authorFromDTO(authorDTO)));
+        } catch (EntityAlreadyExistsException exc) {
+            throw new AlreadyExistsException(exc);
+        }
+
     }
 
     @Override

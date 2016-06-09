@@ -2,9 +2,12 @@ package com.my.lab.web.service;
 
 import com.my.lab.core.adapter.BookAdapter;
 import com.my.lab.core.dto.BookDTO;
+import com.my.lab.core.adapter.exception.AlreadyExistsException;
 import com.my.lab.web.entity.BookWebEntity;
 import com.my.lab.web.entity.mapper.frommapper.BookWebFromDTOMapper;
 import com.my.lab.web.entity.mapper.tomapper.BookWebToDTOMapper;
+import com.my.lab.web.error.EntityAlreadyExistsException;
+import com.my.lab.web.error.EntityNotFoundException;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -24,7 +27,11 @@ public class BookService implements Service<BookWebEntity> {
 
     @Override
     public BookWebEntity onPost(BookWebEntity book) {
-        return bookFromDTO(bookAdapter.saveEntity(bookToDTO(book)));
+        try {
+            return bookFromDTO(bookAdapter.saveEntity(bookToDTO(book)));
+        } catch (AlreadyExistsException exc) {
+            throw new EntityAlreadyExistsException(exc);
+        }
     }
 
     @Override

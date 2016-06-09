@@ -1,11 +1,13 @@
 package com.my.lab.core.adapter;
 
 import com.my.lab.core.dto.BookDTO;
+import com.my.lab.core.adapter.exception.AlreadyExistsException;
 import com.my.lab.dao.DAO;
 import com.my.lab.dao.db.DbBookDao;
 import com.my.lab.dao.entity.BookJPAEntity;
 import com.my.lab.dao.entity.mapper.frommapper.BookJPAFromDTOMapper;
 import com.my.lab.dao.entity.mapper.tomapper.BookJPAToDTOMapper;
+import com.my.lab.dao.exception.EntityAlreadyExistsException;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -24,8 +26,12 @@ public class BookAdapter implements DAO<BookDTO> {
     }
 
     @Override
-    public BookDTO saveEntity(BookDTO bookDTO) {
-        return bookToDTO(bookDao.saveEntity(bookFromDTO(bookDTO)));
+    public BookDTO saveEntity(BookDTO bookDTO) throws AlreadyExistsException {
+        try {
+            return bookToDTO(bookDao.saveEntity(bookFromDTO(bookDTO)));
+        } catch (EntityAlreadyExistsException exc) {
+            throw new AlreadyExistsException(exc);
+        }
     }
 
     @Override
