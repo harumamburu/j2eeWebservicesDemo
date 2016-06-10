@@ -38,7 +38,6 @@ public abstract class AbstractDbDao<T extends JPAEntity> implements DbPersistent
                 JPAEntity nested = iterator.next();
 
                 // TODO: consider recursion
-                // TODO: consider null natIds values
                 // create a db search criteria to check if the nested entity
                 // was persisted before by its natural id
                 Criterion criteria = null;
