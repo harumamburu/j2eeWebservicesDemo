@@ -2,7 +2,6 @@ package com.my.lab.dao.db;
 
 import com.my.lab.dao.DbPersistent;
 import com.my.lab.dao.entity.JPAEntity;
-import com.my.lab.dao.exception.DaoException;
 import com.my.lab.dao.exception.EntityAlreadyExistsException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
@@ -35,24 +34,30 @@ public abstract class AbstractDbDao<T extends JPAEntity> implements DbPersistent
                     setEntityNaturalIdMessage(natId.getKey(), natId.getValue().toString()).build();
         } else {
             for (final ListIterator<JPAEntity> iterator = entity.getNestedEntities().listIterator(); iterator.hasNext(); ) {
+                // get a nested entity
                 JPAEntity nested = iterator.next();
 
                 // TODO: consider recursion
                 // TODO: consider null natIds values
+                // create a db search criteria to check if the nested entity
+                // was persisted before by its natural id
                 Criterion criteria = null;
                 for (String naturalIdField : nested.getNaturalId().keySet()) {
                     Object naturalIdValue = nested.getNaturalId().get(naturalIdField);
                     criteria = Restrictions.naturalId().set(naturalIdField, naturalIdValue);
                 }
-                nested = (JPAEntity) DetachedCriteria.forClass(nested.getClass()).add(criteria)
+                // thy to acquire a persisted entity with the criteria
+                JPAEntity persistedNested = (JPAEntity) DetachedCriteria.forClass(nested.getClass()).add(criteria)
                         .getExecutableCriteria(entityManager.unwrap(Session.class)).uniqueResult();
 
                 if (nested != null) {
-                    // TODO: consider adding cloneable (clone detatched to fetched) to avoid data loss
-                    iterator.set(nested);
+                    // replicate fetched entity with values from a passed transient one (all besides ID)
+                    persistedNested.replicate(nested);
+                    iterator.set(persistedNested);
+                    // trying to persist a transient entity with ID in use would lead to exception
                 }
             }
-            entityManager.persist(entity);
+            entityManager.merge(entity);
         }
         return entity;
     }
