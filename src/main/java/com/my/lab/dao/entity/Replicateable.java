@@ -8,7 +8,7 @@ package com.my.lab.dao.entity;
  * no new objects is being created
  * @param <T> extends {@link JPAEntity}
  */
-public interface Replicateable<T extends JPAEntity> {
+public interface Replicateable<T> {
 
     /**
      * Makes a replica of a passed entity by
@@ -16,5 +16,5 @@ public interface Replicateable<T extends JPAEntity> {
      * passed as a parameter
      * @param entity to take parameters values from
      */
-    void replicate(T entity);
+    boolean replicate(T entity);
 }
