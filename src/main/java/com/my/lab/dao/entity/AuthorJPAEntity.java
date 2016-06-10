@@ -18,7 +18,7 @@ import java.util.Map;
 @NamedQueries({@NamedQuery(name = Queries.AUTHOR_DELETE_BYID_QUERYNAME, query = Queries.AUTHOR_DELETE_BYID_QUERY),
         @NamedQuery(name = Queries.AUTHOR_CHECK_BYID_QUERYNAME, query = Queries.AUTHOR_CHECK_BYID_QUERY),
         @NamedQuery(name = Queries.AUTHOR_CHECK_BYNATURALID_QUERYNAME, query = Queries.AUTHOR_CHECK_BYID_QUERY)})
-public class AuthorJPAEntity implements JPAEntity, Replicateable<AuthorJPAEntity> {
+public class AuthorJPAEntity implements JPAEntity {
 
     @Id
     @GeneratedValue(generator = "author_counter", strategy = GenerationType.SEQUENCE)
@@ -44,9 +44,14 @@ public class AuthorJPAEntity implements JPAEntity, Replicateable<AuthorJPAEntity
     }
 
     @Override
-    public void replicate(AuthorJPAEntity entity) {
-        name = entity.getName();
-        birth = entity.getBirth();
+    public boolean replicate(JPAEntity entity) {
+        if (entity.getClass() == AuthorJPAEntity.class) {
+            AuthorJPAEntity author = (AuthorJPAEntity) entity;
+            name = author.getName();
+            birth = author.getBirth();
+            return true;
+        }
+        return false;
     }
 
     @Override

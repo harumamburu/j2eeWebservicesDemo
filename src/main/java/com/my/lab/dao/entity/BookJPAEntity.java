@@ -19,7 +19,7 @@ import java.util.Map;
 @NamedQueries({@NamedQuery(name = Queries.BOOK_DELETE_BYID_QUERYNAME, query = Queries.BOOK_DELETE_BYID_QUERY),
         @NamedQuery(name = Queries.BOOK_CHECK_BYID_QUERYNAME, query = Queries.BOOK_CHECK_BYID_QUERY),
         @NamedQuery(name = Queries.BOOK_CHECK_BYNATURALID_QUERYNAME, query = Queries.BOOK_CHECK_BYNATURALID_QUERY)})
-public class BookJPAEntity implements JPAEntity, Replicateable<BookJPAEntity>{
+public class BookJPAEntity implements JPAEntity {
 
     @Id
     @GeneratedValue(generator = "book_counter", strategy = GenerationType.SEQUENCE)
@@ -59,11 +59,16 @@ public class BookJPAEntity implements JPAEntity, Replicateable<BookJPAEntity>{
     }
 
     @Override
-    public void replicate(BookJPAEntity entity) {
-        name = entity.getName();
-        authors = entity.getAuthors();
-        genres = entity.getGenres();
-        written = entity.getWritten();
+    public boolean replicate(JPAEntity entity) {
+        if (entity.getClass() == BookJPAEntity.class) {
+            BookJPAEntity book = (BookJPAEntity) entity;
+            name = book.getName();
+            authors = book.getAuthors();
+            genres = book.getGenres();
+            written = book.getWritten();
+            return true;
+        }
+        return false;
     }
 
     @Override
