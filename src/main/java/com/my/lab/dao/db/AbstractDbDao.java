@@ -87,6 +87,7 @@ public abstract class AbstractDbDao<T extends JPAEntity> implements DbPersistent
                 .getExecutableCriteria(entityManager.unwrap(Session.class)).uniqueResult();
     }
 
+    // TODO: fix this method logic according to saveEntity changes
     @Override
     public T updateEntity(T entity) {
         entity = entityManager.merge(entity);

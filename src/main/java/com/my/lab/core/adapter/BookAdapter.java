@@ -34,6 +34,8 @@ public class BookAdapter implements DAO<BookDTO> {
         }
     }
 
+    // TODO: add try/catches to all other methods
+
     @Override
     public BookDTO updateEntity(BookDTO bookDTO) {
         return bookToDTO(bookDao.updateEntity(bookFromDTO(bookDTO)));
