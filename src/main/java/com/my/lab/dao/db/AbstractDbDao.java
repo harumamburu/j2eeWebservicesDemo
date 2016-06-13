@@ -34,9 +34,9 @@ public abstract class AbstractDbDao<T extends JPAEntity> implements DbPersistent
     @AroundInvoke
     private Object interceptWithFlush(InvocationContext context) throws DaoException {
         try {
-            context.proceed();
+            Object result = context.proceed();
             entityManager.flush();
-            return context.proceed();
+            return result;
         } catch (Exception exc) {
             throw new DaoException(exc.getMessage(), exc);
         }
@@ -55,7 +55,7 @@ public abstract class AbstractDbDao<T extends JPAEntity> implements DbPersistent
         } else {
             // check if there some nested entities with natural ids and if they were persisted before
             checkNestedEntities(entity);
-            entity = entityManager.merge(entity);
+            entityManager.persist(entity);
         }
         return entity;
     }
