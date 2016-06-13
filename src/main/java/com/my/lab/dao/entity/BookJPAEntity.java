@@ -27,7 +27,7 @@ public class BookJPAEntity implements JPAEntity {
     @Column(name = Constants.BOOK_COLUMN_ID, nullable = false)
     private Integer bookId;
 
-    @NaturalId
+    @NaturalId(mutable = true)
     @Column(name = Constants.BOOK_COLUMN_NAME, nullable = false)
     @Basic(optional = false)
     private String name;

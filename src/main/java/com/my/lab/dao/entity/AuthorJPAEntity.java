@@ -25,7 +25,7 @@ public class AuthorJPAEntity implements JPAEntity {
     @Column(name = Constants.AUTHOR_COLUMN_ID, nullable = false)
     private Integer authorId;
 
-    @NaturalId
+    @NaturalId(mutable = true)
     @Column(name = Constants.AUTHOR_COLUMN_NAME, nullable = false)
     private String name;
 
