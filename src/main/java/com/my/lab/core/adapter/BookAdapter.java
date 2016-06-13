@@ -1,5 +1,6 @@
 package com.my.lab.core.adapter;
 
+import com.my.lab.core.adapter.exception.DataPersistenceException;
 import com.my.lab.core.dto.BookDTO;
 import com.my.lab.core.adapter.exception.AlreadyExistsException;
 import com.my.lab.dao.DAO;
@@ -21,36 +22,48 @@ public class BookAdapter implements DAO<BookDTO> {
     private DbBookDao bookDao;
 
     @Override
-    public BookDTO getEntity(Integer id) {
-        return bookToDTO(bookDao.getEntity(id));
+    public BookDTO getEntity(Integer id) throws DataPersistenceException {
+        try {
+            return bookToDTO(bookDao.getEntity(id));
+        } catch (Exception exc) {
+            throw new DataPersistenceException(exc.getMessage(), exc);
+        }
     }
 
     @Override
-    public BookDTO saveEntity(BookDTO bookDTO) throws AlreadyExistsException {
+    public BookDTO saveEntity(BookDTO bookDTO) throws DataPersistenceException {
         try {
             return bookToDTO(bookDao.saveEntity(bookFromDTO(bookDTO)));
         } catch (EntityAlreadyExistsException exc) {
             throw new AlreadyExistsException(exc.getMessage(), exc);
+        } catch (Exception exc) {
+            throw new DataPersistenceException(exc.getMessage(), exc);
         }
     }
 
-    // TODO: add try/catches to all other methods
-
     @Override
-    public BookDTO updateEntity(BookDTO bookDTO) {
-        return bookToDTO(bookDao.updateEntity(bookFromDTO(bookDTO)));
+    public BookDTO updateEntity(BookDTO bookDTO) throws DataPersistenceException {
+        try {
+            return bookToDTO(bookDao.updateEntity(bookFromDTO(bookDTO)));
+        } catch (Exception exc) {
+            throw new DataPersistenceException(exc.getMessage(), exc);
+        }
     }
 
     @Override
-    public BookDTO deleteEntity(Integer id) {
-        return bookToDTO(bookDao.deleteEntity(id));
+    public BookDTO deleteEntity(Integer id) throws DataPersistenceException {
+        try {
+            return bookToDTO(bookDao.deleteEntity(id));
+        } catch (Exception exc) {
+            throw new DataPersistenceException(exc.getMessage(), exc);
+        }
     }
 
-    private BookDTO bookToDTO(BookJPAEntity book) {
+    private BookDTO bookToDTO(BookJPAEntity book) throws DataPersistenceException {
         return BookJPAToDTOMapper.INSTANCE.bookToDTO(book);
     }
 
-    private BookJPAEntity bookFromDTO(BookDTO bookDTO) {
+    private BookJPAEntity bookFromDTO(BookDTO bookDTO) throws DataPersistenceException {
         return BookJPAFromDTOMapper.INSTANCE.bookFromDTO(bookDTO);
     }
 }

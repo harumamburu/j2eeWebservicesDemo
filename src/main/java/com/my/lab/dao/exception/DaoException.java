@@ -1,6 +1,6 @@
 package com.my.lab.dao.exception;
 
-public abstract class DaoException extends Exception {
+public class DaoException extends Exception {
 
     public DaoException() {
         super();

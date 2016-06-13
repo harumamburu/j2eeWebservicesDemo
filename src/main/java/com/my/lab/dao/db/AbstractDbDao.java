@@ -2,12 +2,16 @@ package com.my.lab.dao.db;
 
 import com.my.lab.dao.DbPersistent;
 import com.my.lab.dao.entity.JPAEntity;
+import com.my.lab.dao.exception.DaoException;
 import com.my.lab.dao.exception.EntityAlreadyExistsException;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.NaturalIdentifier;
 import org.hibernate.criterion.Restrictions;
 
+import javax.interceptor.AroundInvoke;
+import javax.interceptor.InvocationContext;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -26,6 +30,17 @@ public abstract class AbstractDbDao<T extends JPAEntity> implements DbPersistent
 
     @Override
     public abstract Class<T> getEntityClass();
+
+    @AroundInvoke
+    private Object interceptWithFlush(InvocationContext context) throws DaoException {
+        try {
+            context.proceed();
+            entityManager.flush();
+            return context.proceed();
+        } catch (Exception exc) {
+            throw new DaoException(exc.getMessage(), exc);
+        }
+    }
 
     @Override
     public T saveEntity(T entity) throws EntityAlreadyExistsException {
