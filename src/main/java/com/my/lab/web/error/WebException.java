@@ -15,7 +15,7 @@ public abstract class WebException extends RuntimeException {
     }
 
     public WebException(Throwable cause) {
-        super(cause);
+        super(cause.getMessage(), cause);
     }
 
     public WebException(String message, Throwable cause) {
