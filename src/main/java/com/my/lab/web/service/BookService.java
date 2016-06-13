@@ -25,7 +25,7 @@ public class BookService implements Service<BookWebEntity> {
     public BookWebEntity onGet(Integer id) {
         try {
             BookWebEntity book = bookFromDTO(bookAdapter.getEntity(id));
-            checkBuckNotNull(book, id);
+            checkBookNotNull(book, id);
             return book;
         } catch (Exception exc) {
             throw new InternalException(exc);
@@ -56,7 +56,7 @@ public class BookService implements Service<BookWebEntity> {
     public BookWebEntity onDelete(Integer id) {
         try {
             BookWebEntity book = bookFromDTO(bookAdapter.deleteEntity(id));
-            checkBuckNotNull(book, id);
+            checkBookNotNull(book, id);
             return book;
         } catch (Exception exc) {
             throw new InternalException(exc);
@@ -71,7 +71,7 @@ public class BookService implements Service<BookWebEntity> {
         return BookWebFromDTOMapper.INSTANCE.bookFromDTO(bookDTO);
     }
 
-    private void checkBuckNotNull(BookWebEntity book, Integer id) {
+    private void checkBookNotNull(BookWebEntity book, Integer id) {
         if (book == null) {
             throw new EntityNotFoundException("No book found by id = " + id);
         }

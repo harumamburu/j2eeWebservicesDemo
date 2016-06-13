@@ -3,7 +3,6 @@ package com.my.lab.web.resource;
 import com.my.lab.web.entity.BookWebEntity;
 import com.my.lab.web.entity.ExceptionWebEntity;
 import com.my.lab.web.error.EntityIdMisformatException;
-import com.my.lab.web.error.EntityNotFoundException;
 import com.my.lab.web.service.BookService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
