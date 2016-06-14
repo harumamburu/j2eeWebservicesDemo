@@ -7,12 +7,14 @@ import com.my.lab.web.entity.BookWebEntity;
 import com.my.lab.web.entity.mapper.frommapper.BookWebFromDTOMapper;
 import com.my.lab.web.entity.mapper.tomapper.BookWebToDTOMapper;
 import com.my.lab.web.error.EntityAlreadyExistsException;
+import com.my.lab.web.error.EntityMisformattedException;
 import com.my.lab.web.error.EntityNotFoundException;
 import com.my.lab.web.error.InternalException;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.ws.rs.NotAllowedException;
 
 @Stateless
 @LocalBean
@@ -38,6 +40,8 @@ public class BookService implements Service<BookWebEntity> {
             return bookFromDTO(bookAdapter.saveEntity(bookToDTO(book)));
         } catch (AlreadyExistsException exc) {
             throw new EntityAlreadyExistsException(exc.getMessage(), exc);
+        } catch(NotAllowedException exc) {
+            throw new EntityMisformattedException(exc);
         } catch (Exception exc) {
             throw new InternalException(exc);
         }

@@ -4,6 +4,7 @@ import com.my.lab.dao.DbPersistent;
 import com.my.lab.dao.entity.JPAEntity;
 import com.my.lab.dao.exception.DaoException;
 import com.my.lab.dao.exception.EntityAlreadyExistsException;
+import com.my.lab.dao.exception.EntityNotAllowedException;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
@@ -43,9 +44,13 @@ public abstract class AbstractDbDao<T extends JPAEntity> implements DbPersistent
     }
 
     @Override
-    public T saveEntity(T entity) throws EntityAlreadyExistsException {
+    public T saveEntity(T entity) throws EntityAlreadyExistsException, EntityNotAllowedException {
         // as ugly as it is, but this check is required to get rid of exceptions
         // on attempt to persist an entity with naturalId saved before
+
+        if (entity.getId() != null) {
+            throw new EntityNotAllowedException("Entity with ID is not allowed!");
+        }
 
         T entityCheck = getEntityByNaturalId(entity.getNaturalId());
         if (entityCheck != null) {

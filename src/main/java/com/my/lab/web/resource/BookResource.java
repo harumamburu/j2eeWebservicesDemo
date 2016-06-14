@@ -2,7 +2,7 @@ package com.my.lab.web.resource;
 
 import com.my.lab.web.entity.BookWebEntity;
 import com.my.lab.web.entity.ExceptionWebEntity;
-import com.my.lab.web.error.EntityIdMisformatException;
+import com.my.lab.web.error.EntityMisformattedException;
 import com.my.lab.web.service.BookService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -81,10 +81,10 @@ public class BookResource {
 
     private void checkIdParameter(String id) {
         if (id == null) {
-            throw new EntityIdMisformatException(PARAM_BOOK_ID + " can't be null!");
+            throw new EntityMisformattedException(PARAM_BOOK_ID + " can't be null!");
         }
         if (!id.matches("\\d+")) {
-            throw new EntityIdMisformatException(PARAM_BOOK_ID + " should be an integer only!");
+            throw new EntityMisformattedException(PARAM_BOOK_ID + " should be an integer only!");
         }
     }
 }
