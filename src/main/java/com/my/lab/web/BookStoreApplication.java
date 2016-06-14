@@ -14,6 +14,7 @@ public class BookStoreApplication extends ResourceConfig {
         initSwagger();
         packages("com.my.lab","io.swagger.jaxrs.json", "io.swagger.jaxrs.listing");
         register(CustomJacksonDateMappingProvider.class);
+        property("jersey.config.disableMoxyJson", true);
     }
 
     private void initSwagger() {

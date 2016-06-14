@@ -1,5 +1,6 @@
 package com.my.lab.web.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.my.lab.core.Identifiable;
@@ -16,8 +17,11 @@ import java.util.List;
 @XmlRootElement(name = "book")
 public class BookWebEntity implements WebEntity, Identifiable {
 
+    @JsonProperty(value = "id", required = true)
     private Integer bookId;
+    @JsonProperty(required = true)
     private String name;
+    @JsonProperty(required = true)
     private List<AuthorWebEntity> authors;
     private List<Genre> genres;
     @JsonDeserialize(using = PublishingDateDeserializer.class)
