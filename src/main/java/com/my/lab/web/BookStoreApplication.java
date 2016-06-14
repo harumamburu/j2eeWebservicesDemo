@@ -7,6 +7,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import javax.ws.rs.ApplicationPath;
 
+// TODO: make deployment-agnostic (extend application)
 @ApplicationPath("/bookstore/api")
 public class BookStoreApplication extends ResourceConfig {
 

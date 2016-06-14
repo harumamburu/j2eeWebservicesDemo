@@ -19,6 +19,7 @@ public enum DateFormats {
 
     public Date fromSting(String date) {
         try {
+            // TODO: fix \\d4 leading to birth dates being misparsed
             Matcher matcher = Pattern.compile("\\d{4}").matcher(date);
             return matcher.find() ? format.parse(matcher.group()) : null;
         } catch (ParseException | NullPointerException exc) {
