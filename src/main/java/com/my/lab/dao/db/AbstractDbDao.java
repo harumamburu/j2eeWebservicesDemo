@@ -57,12 +57,25 @@ public abstract class AbstractDbDao<T extends JPAEntity> implements DbPersistent
             Entry<String, ?> natId = entity.getNaturalId().entrySet().iterator().next();
             throw new EntityAlreadyExistsException.Builder().
                     setEntityNaturalIdMessage(natId.getKey(), natId.getValue().toString()).build();
-        } else {
-            // check if there some nested entities with natural ids and if they were persisted before
-            checkNestedEntities(entity);
-            entityManager.persist(entity);
         }
+
+        // check if there some nested entities with natural ids and if they were persisted before
+        checkNestedEntities(entity);
+        entityManager.persist(entity);
         return entity;
+    }
+
+    @Override
+    public T updateEntity(T entity) throws EntityAlreadyExistsException {
+        if (entity.getId() == null) {
+            try {
+                return saveEntity(entity);
+            } catch (EntityNotAllowedException exc) {
+                // won't be thrown
+            }
+        }
+        checkNestedEntities(entity);
+        return entityManager.merge(entity);
     }
 
     private void checkNestedEntities(JPAEntity entity) {
@@ -72,6 +85,13 @@ public abstract class AbstractDbDao<T extends JPAEntity> implements DbPersistent
             // check if an entity has some nested ones
             while (iterator.hasNext()) {
                 JPAEntity nested = iterator.next();
+
+                // skipping an entity with ID assuming that
+                // the client knows what they're doing by sending those
+                if (nested.getId() != null) {
+                    continue;
+                }
+
                 // check if a nested entity was persisted before
                 JPAEntity persistedNested = getPersistedEntity(nested);
 
@@ -105,13 +125,6 @@ public abstract class AbstractDbDao<T extends JPAEntity> implements DbPersistent
         // thy to acquire a persisted entity with the criteria
         return (JPAEntity) DetachedCriteria.forClass(entity.getClass()).add(criteria)
                 .getExecutableCriteria(entityManager.unwrap(Session.class)).uniqueResult();
-    }
-
-    // TODO: fix this method logic according to saveEntity changes
-    @Override
-    public T updateEntity(T entity) {
-        entity = entityManager.merge(entity);
-        return entity;
     }
 
     @Override
