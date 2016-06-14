@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public enum DateFormats {
 
     YEAR_DATE_FORMAT(new SimpleDateFormat("yyyy")),
-    BIRTH_DATE_FORMAT(new SimpleDateFormat("M dd, yyyy"));
+    BIRTH_DATE_FORMAT(new SimpleDateFormat("MMMMMMMMM d, yyyy"));
 
     private final SimpleDateFormat format;
 
