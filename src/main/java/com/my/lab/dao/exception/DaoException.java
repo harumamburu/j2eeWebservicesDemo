@@ -1,5 +1,8 @@
 package com.my.lab.dao.exception;
 
+import javax.ejb.ApplicationException;
+
+@ApplicationException(rollback = true)
 public class DaoException extends Exception {
 
     public DaoException() {
