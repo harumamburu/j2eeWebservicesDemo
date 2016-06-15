@@ -5,7 +5,6 @@ import com.my.lab.dao.entity.JPAEntity;
 import com.my.lab.dao.exception.DaoException;
 import com.my.lab.dao.exception.EntityAlreadyExistsException;
 import com.my.lab.dao.exception.EntityNotAllowedException;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.NaturalIdentifier;
@@ -33,18 +32,21 @@ public abstract class AbstractDbDao<T extends JPAEntity> implements DbPersistent
     public abstract Class<T> getEntityClass();
 
     @AroundInvoke
-    private Object interceptWithFlush(InvocationContext context) throws DaoException {
+    public Object interceptWithFlush(InvocationContext context) throws DaoException {
         try {
             Object result = context.proceed();
             entityManager.flush();
             return result;
         } catch (Exception exc) {
+            if (exc instanceof DaoException) {
+                throw (DaoException) exc;
+            }
             throw new DaoException(exc.getMessage(), exc);
         }
     }
 
     @Override
-    public T saveEntity(T entity) throws EntityAlreadyExistsException, EntityNotAllowedException {
+    public T saveEntity(T entity) throws EntityAlreadyExistsException, EntityNotAllowedException, DaoException {
         // as ugly as it is, but this check is required to get rid of exceptions
         // on attempt to persist an entity with naturalId saved before
 
@@ -66,7 +68,7 @@ public abstract class AbstractDbDao<T extends JPAEntity> implements DbPersistent
     }
 
     @Override
-    public T updateEntity(T entity) throws EntityAlreadyExistsException {
+    public T updateEntity(T entity) throws EntityAlreadyExistsException, DaoException {
         if (entity.getId() == null) {
             try {
                 return saveEntity(entity);
