@@ -22,7 +22,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/book")
-@Produces({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
+@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Api(value = "book")
 public class BookResource {
 
@@ -44,7 +44,7 @@ public class BookResource {
     }
 
     @POST
-    @Consumes({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @ApiOperation(value = "Post a book")
     @ApiResponses(value = {
             @ApiResponse(response = ExceptionWebEntity.class, code = 409, message = "A book with such id is already exist"),
@@ -55,13 +55,14 @@ public class BookResource {
     }
 
     @PUT
-    @Consumes({/*MediaType.APPLICATION_XML, */MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @ApiOperation(value = "Post or update a book", notes = "Post a book (no id required), " +
             "or check if a book exists (an id required) and either update it's entry or just post it")
     @ApiResponses(value = {
             @ApiResponse(response = ExceptionWebEntity.class, code = 500, message = "Internal server error"),
             @ApiResponse(response = BookWebEntity.class, code = 201, message = "Book has been saved")})
     public Response saveOrUpdateBook(BookWebEntity book) {
+        // TODO: Find out why get returns duplicated author (check merge/persist)
         book = bookService.onPut(book);
         return Response.ok(book).build();
     }
