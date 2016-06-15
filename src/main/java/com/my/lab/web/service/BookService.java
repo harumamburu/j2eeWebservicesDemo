@@ -1,6 +1,8 @@
 package com.my.lab.web.service;
 
 import com.my.lab.core.adapter.BookAdapter;
+import com.my.lab.core.adapter.exception.DataPersistenceException;
+import com.my.lab.core.adapter.exception.NotAllowedException;
 import com.my.lab.core.dto.BookDTO;
 import com.my.lab.core.adapter.exception.AlreadyExistsException;
 import com.my.lab.web.entity.BookWebEntity;
@@ -14,7 +16,6 @@ import com.my.lab.web.error.InternalException;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.ws.rs.NotAllowedException;
 
 @Stateless
 @LocalBean
@@ -29,7 +30,7 @@ public class BookService implements Service<BookWebEntity> {
             BookWebEntity book = bookFromDTO(bookAdapter.getEntity(id));
             checkBookNotNull(book, id);
             return book;
-        } catch (Exception exc) {
+        } catch (DataPersistenceException exc) {
             throw new InternalException(exc);
         }
     }
@@ -42,7 +43,7 @@ public class BookService implements Service<BookWebEntity> {
             throw new EntityAlreadyExistsException(exc.getMessage(), exc);
         } catch(NotAllowedException exc) {
             throw new EntityMisformattedException(exc);
-        } catch (Exception exc) {
+        } catch (DataPersistenceException exc) {
             throw new InternalException(exc);
         }
     }
@@ -51,7 +52,7 @@ public class BookService implements Service<BookWebEntity> {
     public BookWebEntity onPut(BookWebEntity book) {
         try {
             return bookFromDTO(bookAdapter.updateEntity(bookToDTO(book)));
-        } catch (Exception exc) {
+        } catch (DataPersistenceException exc) {
             throw new InternalException(exc);
         }
     }
@@ -62,7 +63,7 @@ public class BookService implements Service<BookWebEntity> {
             BookWebEntity book = bookFromDTO(bookAdapter.deleteEntity(id));
             checkBookNotNull(book, id);
             return book;
-        } catch (Exception exc) {
+        } catch (DataPersistenceException exc) {
             throw new InternalException(exc);
         }
     }
