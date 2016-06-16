@@ -9,12 +9,12 @@ import com.my.lab.web.error.EntityMisformattedException;
 import com.my.lab.web.error.EntityNotFoundException;
 import com.my.lab.web.error.InternalException;
 
-abstract class AbstractService<T extends WebEntity> implements Service<T> {
+public abstract class AbstractService<T extends WebEntity> implements Service<T> {
 
     public T onGet(Integer id) {
         try {
             return onGetRoutine(id);
-        }  catch (DataPersistenceException exc) {
+        }  catch (Exception exc) {
             throw new InternalException(exc);
         }
     }
@@ -28,7 +28,7 @@ abstract class AbstractService<T extends WebEntity> implements Service<T> {
             throw new EntityAlreadyExistsException(exc.getMessage(), exc);
         } catch(NotAllowedException exc) {
             throw new EntityMisformattedException(exc);
-        } catch (DataPersistenceException exc) {
+        } catch (Exception exc) {
             throw new InternalException(exc);
         }
     }
@@ -38,7 +38,9 @@ abstract class AbstractService<T extends WebEntity> implements Service<T> {
     public T onPut(T entity) {
         try {
             return onPutRoutine(entity);
-        } catch (DataPersistenceException exc) {
+        } catch (AlreadyExistsException exc) {
+            throw new EntityAlreadyExistsException(exc.getMessage(), exc);
+        } catch (Exception exc) {
             throw new InternalException(exc);
         }
     }
@@ -48,7 +50,7 @@ abstract class AbstractService<T extends WebEntity> implements Service<T> {
     public T onDelete(Integer id) {
         try {
             return onDeleteRoutine(id);
-        } catch (DataPersistenceException exc) {
+        } catch (Exception exc) {
             throw new InternalException(exc);
         }
     }

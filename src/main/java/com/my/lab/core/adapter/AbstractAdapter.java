@@ -7,7 +7,7 @@ import com.my.lab.dao.exception.DaoException;
 import com.my.lab.dao.exception.EntityAlreadyExistsException;
 import com.my.lab.dao.exception.EntityNotAllowedException;
 
-abstract class AbstractAdapter<T> implements Adapter<T> {
+public abstract class AbstractAdapter<T> implements Adapter<T> {
 
     @Override
     public T saveEntity(T entity) throws DataPersistenceException {
