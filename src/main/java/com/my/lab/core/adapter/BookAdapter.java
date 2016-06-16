@@ -14,28 +14,28 @@ import javax.ejb.Stateless;
 
 @Stateless
 @LocalBean
-public class BookAdapter implements Adapter<BookDTO> {
+public class BookAdapter extends AbstractAdapter<BookDTO> {
 
     @EJB
     private DbBookDao bookDao;
 
     @Override
-    public BookDTO saveEntityRoutine(BookDTO bookDTO) throws DaoException {
+    protected BookDTO saveEntityRoutine(BookDTO bookDTO) throws DaoException {
         return bookToDTO(bookDao.saveEntity(bookFromDTO(bookDTO)));
     }
 
     @Override
-    public BookDTO updateEntityRoutine(BookDTO bookDTO) throws DaoException {
+    protected BookDTO updateEntityRoutine(BookDTO bookDTO) throws DaoException {
         return bookToDTO(bookDao.updateEntity(bookFromDTO(bookDTO)));
     }
 
     @Override
-    public BookDTO getEntityRoutine(Integer id) throws DaoException {
+    protected BookDTO getEntityRoutine(Integer id) throws DaoException {
         return bookToDTO(bookDao.getEntity(id));
     }
 
     @Override
-    public BookDTO deleteEntityRoutine(Integer id) throws DaoException {
+    protected BookDTO deleteEntityRoutine(Integer id) throws DaoException {
         return bookToDTO(bookDao.deleteEntity(id));
     }
 

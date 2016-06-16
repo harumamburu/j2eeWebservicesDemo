@@ -13,34 +13,29 @@ import javax.ejb.Stateless;
 
 @Stateless
 @LocalBean
-public class AuthorAdapter implements Adapter<AuthorDTO> {
+public class AuthorAdapter extends AbstractAdapter<AuthorDTO> {
 
     @EJB
     private DbAuthorDao authorDao;
 
     @Override
-    public AuthorDTO saveEntityRoutine(AuthorDTO authorDTO) throws DaoException {
+    protected AuthorDTO saveEntityRoutine(AuthorDTO authorDTO) throws DaoException {
         return authorToDTO(authorDao.saveEntity(authorFromDTO(authorDTO)));
     }
 
     @Override
-    public AuthorDTO updateEntityRoutine(AuthorDTO authorDTO) throws DaoException {
+    protected AuthorDTO updateEntityRoutine(AuthorDTO authorDTO) throws DaoException {
         return authorToDTO(authorDao.updateEntity(authorFromDTO(authorDTO)));
     }
 
     @Override
-    public AuthorDTO getEntityRoutine(Integer id) throws DaoException {
+    protected AuthorDTO getEntityRoutine(Integer id) throws DaoException {
         return authorToDTO(authorDao.getEntity(id));
     }
 
     @Override
-    public AuthorDTO deleteEntityRoutine(Integer id) throws DaoException {
+    protected AuthorDTO deleteEntityRoutine(Integer id) throws DaoException {
         return authorToDTO(authorDao.deleteEntity(id));
-    }
-
-    @Override
-    public AuthorDTO getEntity(Integer id) {
-        return authorToDTO(authorDao.getEntity(id));
     }
 
     private AuthorDTO authorToDTO(AuthorJPAEntity author) {
