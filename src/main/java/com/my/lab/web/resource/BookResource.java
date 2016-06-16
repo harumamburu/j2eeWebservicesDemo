@@ -19,9 +19,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-@Path("/book")
+@Path("/books")
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-@Api(value = "book")
+@Api(value = "books")
 public class BookResource implements Resource<BookWebEntity> {
 
     private static final String PARAM_BOOK_ID = "bookId";

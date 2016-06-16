@@ -19,9 +19,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-@Path("/author")
+@Path("/authors")
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-@Api(value = "author")
+@Api(value = "authors")
 public class AuthorResource implements Resource<AuthorWebEntity> {
 
     private static final String PARAM_AUTHOR_ID = "authorId";
