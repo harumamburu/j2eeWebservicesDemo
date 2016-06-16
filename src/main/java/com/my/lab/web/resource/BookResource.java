@@ -10,6 +10,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.ejb.EJB;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -28,6 +30,7 @@ public class BookResource implements Resource<BookWebEntity> {
     private BookService bookService;
 
     @Override
+    @GET // @QueryParam annotation overrides those from the interface
     @ApiOperation(value = "Get a book by id")
     @ApiResponses(value = {
             @ApiResponse(response = ExceptionWebEntity.class, code = 400, message = "Book id is null or misformatted"),
@@ -62,6 +65,7 @@ public class BookResource implements Resource<BookWebEntity> {
     }
 
     @Override
+    @DELETE // @QueryParam annotation overrides those from the interface
     @ApiOperation(value = "Delete a book by id")
     @ApiResponses(value = {
             @ApiResponse(response = ExceptionWebEntity.class, code = 404, message = "No book found"),

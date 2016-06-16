@@ -10,8 +10,11 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.ejb.EJB;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -27,13 +30,14 @@ public class AuthorResource implements Resource<AuthorWebEntity> {
     private AuthorService authorService;
 
     @Override
+    @GET // @QueryParam annotation overrides those from the interface
     @ApiOperation(value = "Get an author by id")
     @ApiResponses(value = {
             @ApiResponse(response = ExceptionWebEntity.class, code = 400, message = "Author id is null or misformatted"),
             @ApiResponse(response = ExceptionWebEntity.class, code = 404, message = "No author found"),
             @ApiResponse(response = ExceptionWebEntity.class, code = 500, message = "Internal server error"),
             @ApiResponse(response = BookWebEntity.class, code = 200, message = "Book found")})
-    public Response getById(String id) {
+    public Response getById(@QueryParam(PARAM_AUTHOR_ID) String id) {
         checkIdParameter(id, PARAM_AUTHOR_ID);
         return Response.ok(authorService.onGet(Integer.valueOf(id))).build();
     }
@@ -61,12 +65,13 @@ public class AuthorResource implements Resource<AuthorWebEntity> {
     }
 
     @Override
+    @DELETE // @QueryParam annotation overrides those from the interface
     @ApiOperation(value = "Delete an author by id")
     @ApiResponses(value = {
             @ApiResponse(response = ExceptionWebEntity.class, code = 404, message = "No author found"),
             @ApiResponse(response = ExceptionWebEntity.class, code = 500, message = "Internal server error"),
             @ApiResponse(response = BookWebEntity.class, code = 200, message = "Author has been deleted")})
-    public Response deleteByID(String id) {
+    public Response deleteByID(@QueryParam(PARAM_AUTHOR_ID) String id) {
         checkIdParameter(id, PARAM_AUTHOR_ID);
         return Response.ok(authorService.onDelete(Integer.valueOf(id))).build();
     }
