@@ -32,13 +32,13 @@ public class BookJPAEntity implements JPAEntity {
     @Basic(optional = false)
     private String name;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = Constants.JOIN_TABLE_BOOKS_AUTHORS,
             joinColumns = @JoinColumn(name = Constants.BOOK_COLUMN_ID, nullable = false),
             inverseJoinColumns = @JoinColumn(name = Constants.AUTHOR_COLUMN_ID, nullable = false))
     private List<AuthorJPAEntity> authors;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection
     @CollectionTable(name = Constants.JOIN_TABLE_BOOK_GENRES,
             joinColumns = @JoinColumn(name = Constants.BOOK_COLUMN_ID))
     @Enumerated(EnumType.STRING)

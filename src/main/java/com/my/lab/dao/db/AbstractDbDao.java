@@ -100,10 +100,8 @@ public abstract class AbstractDbDao<T extends JPAEntity> implements DbPersistent
                 if (persistedNested != null) {
                     // replicate fetched entity with values from a passed transient one (all besides ID)
                     persistedNested.replicate(nested);
-                    // trying to persist a transient entity with ID in use would lead to exception
                     iterator.set(persistedNested);
-                    // removing link to original entity from context to avoid duplication
-                    nested = null;
+                    // trying to persist a transient entity with ID in use would lead to exception
                 }
             }
         }

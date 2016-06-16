@@ -62,7 +62,6 @@ public class BookResource {
             @ApiResponse(response = ExceptionWebEntity.class, code = 500, message = "Internal server error"),
             @ApiResponse(response = BookWebEntity.class, code = 201, message = "Book has been saved")})
     public Response saveOrUpdateBook(BookWebEntity book) {
-        // TODO: Find out why get returns duplicated author (check merge/persist)
         book = bookService.onPut(book);
         return Response.ok(book).build();
     }
