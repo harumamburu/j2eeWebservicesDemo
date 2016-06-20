@@ -37,6 +37,7 @@ public abstract class AbstractDbDao<T extends JPAEntity> implements DbPersistent
             Object result = context.proceed();
             entityManager.flush();
             return result;
+        // TODO: Consider mapping ORAs to exception types
         } catch (Exception exc) {
             if (exc instanceof DaoException) {
                 throw (DaoException) exc;
@@ -164,11 +165,5 @@ public abstract class AbstractDbDao<T extends JPAEntity> implements DbPersistent
             query.setParameter(param.getKey(), param.getValue());
         }
         return query;
-    }
-
-    protected <X extends Object> Map<String, X> getSingleParamMap(String key, X value) {
-        Map<String, X> param = new HashMap<>();
-        param.put(key, value);
-        return param;
     }
 }

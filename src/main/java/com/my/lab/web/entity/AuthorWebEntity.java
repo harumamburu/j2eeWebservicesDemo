@@ -10,9 +10,11 @@ import com.my.lab.web.setting.json.deserialization.BirthDateSerializer;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 
+@XmlRootElement(name = "author")
 public class AuthorWebEntity implements WebEntity, Identifiable {
 
     @JsonProperty(value = "id", required = true)

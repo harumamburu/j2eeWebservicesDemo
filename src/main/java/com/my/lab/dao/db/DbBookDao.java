@@ -4,6 +4,7 @@ import com.my.lab.dao.entity.BookJPAEntity;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import java.util.Collections;
 import java.util.Map;
 
 @Stateless
@@ -18,7 +19,7 @@ public class DbBookDao extends AbstractDbDao<BookJPAEntity> {
     @Override
     public Boolean contains(Integer id) {
         return executeQuerySingleResult(Queries.BOOK_CHECK_BYID_QUERYNAME,
-                getSingleParamMap(Queries.QUERY_PARAM_ID, id)) != null;
+                Collections.singletonMap(Queries.QUERY_PARAM_ID, id)) != null;
     }
 
     @Override
