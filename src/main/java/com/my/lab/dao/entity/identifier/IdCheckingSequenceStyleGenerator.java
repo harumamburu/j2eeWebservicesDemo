@@ -49,14 +49,16 @@ public class IdCheckingSequenceStyleGenerator extends SequenceStyleGenerator {
             if (dtHolder != null) {
                 // get the value of ID to be generated (the last generated + 1)
                 Integer next = Integer.valueOf(dtHolder.makeValue().intValue() + 1);
-                synchronized (this.getClass()) {
-                    // check if such ID value was provided by user for this entity type
-                    // remove it from the list (it won't be needed any more) if it was
-                    // and blank-generate it (related sequence will be queried)
-                    List<Integer> ids = idsMap.get(identifiable.getClass());
-                    if (ids != null && ids.contains(next)) {
-                        ids.remove(next);
-                        super.generate(session, object);
+                // check if such ID value was provided by user for this entity type
+                List<Integer> ids = idsMap.get(identifiable.getClass());
+                if (ids != null && ids.contains(next)) {
+                    synchronized (this.getClass()) {
+                        // remove it from the list (it won't be needed any more) if it was
+                        // and blank-generate it (related sequence will be queried)
+                        if (ids.contains(next)) {
+                            ids.remove(next);
+                            super.generate(session, object);
+                        }
                     }
                 }
             }
