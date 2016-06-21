@@ -6,13 +6,20 @@ import com.my.lab.core.dto.enumeration.Genre;
 import com.my.lab.dao.db.Queries;
 import com.my.lab.web.setting.json.deserialization.PublishingDateDeserializer;
 import com.my.lab.web.setting.json.deserialization.PublishingDateSerializer;
-import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @javax.persistence.Entity
 @Table(name = Constants.BOOK_TABLE_NAME)
@@ -23,7 +30,10 @@ public class BookJPAEntity implements JPAEntity {
 
     @Id
     @GeneratedValue(generator = "book_counter", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "book_counter", sequenceName = "book_seq", allocationSize = 1)
+    @GenericGenerator(name = "book_counter",
+            strategy = "com.my.lab.dao.entity.identifier.IdCheckingSequenceStyleGenerator",
+            parameters = {@Parameter(name = "sequence_name", value = "book_seq"),
+                    @Parameter(name = "allocation_size", value = "1")})
     @Column(name = Constants.BOOK_COLUMN_ID, nullable = false)
     private Integer bookId;
 
@@ -32,17 +42,17 @@ public class BookJPAEntity implements JPAEntity {
     @Basic(optional = false)
     private String name;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(name = Constants.JOIN_TABLE_BOOKS_AUTHORS,
             joinColumns = @JoinColumn(name = Constants.BOOK_COLUMN_ID, nullable = false),
             inverseJoinColumns = @JoinColumn(name = Constants.AUTHOR_COLUMN_ID, nullable = false))
-    private List<AuthorJPAEntity> authors;
+    private Set<AuthorJPAEntity> authors;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = Constants.JOIN_TABLE_BOOK_GENRES,
             joinColumns = @JoinColumn(name = Constants.BOOK_COLUMN_ID))
     @Enumerated(EnumType.STRING)
-    private List<Genre> genres;
+    private Set<Genre> genres;
 
     @JsonDeserialize(using = PublishingDateDeserializer.class)
     @JsonSerialize(using = PublishingDateSerializer.class)
@@ -96,24 +106,24 @@ public class BookJPAEntity implements JPAEntity {
         this.name = name;
     }
 
-    public List<AuthorJPAEntity> getAuthors() {
+    public Set<AuthorJPAEntity> getAuthors() {
         return authors;
     }
 
     @Override
     public List<AuthorJPAEntity> getNestedEntities() {
-        return authors;
+        return new ArrayList<>(authors);
     }
 
-    public void setAuthors(List<AuthorJPAEntity> authors) {
+    public void setAuthors(Set<AuthorJPAEntity> authors) {
         this.authors = authors;
     }
 
-    public List<Genre> getGenres() {
+    public Set<Genre> getGenres() {
         return genres;
     }
 
-    public void setGenres(List<Genre> genres) {
+    public void setGenres(Set<Genre> genres) {
         this.genres = genres;
     }
 

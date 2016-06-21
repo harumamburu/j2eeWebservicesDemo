@@ -5,9 +5,19 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.my.lab.dao.db.Queries;
 import com.my.lab.web.setting.json.deserialization.BirthDateDeserializer;
 import com.my.lab.web.setting.json.deserialization.BirthDateSerializer;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.Parameter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +31,10 @@ public class AuthorJPAEntity implements JPAEntity {
 
     @Id
     @GeneratedValue(generator = "author_counter", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "author_counter", sequenceName = "author_seq", allocationSize = 1)
+    @GenericGenerator(name = "author_counter",
+            strategy = "com.my.lab.dao.entity.identifier.IdCheckingSequenceStyleGenerator",
+            parameters = {@Parameter(name = "sequence_name", value = "author_seq"),
+                    @Parameter(name = "allocation_size", value = "1")})
     @Column(name = Constants.AUTHOR_COLUMN_ID, nullable = false)
     private Integer authorId;
 
