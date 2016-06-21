@@ -55,8 +55,8 @@ public class IdCheckingSequenceStyleGenerator extends SequenceStyleGenerator {
                     synchronized (this.getClass()) {
                         // remove it from the list (it won't be needed any more) if it was
                         // and blank-generate it (related sequence will be queried)
-                        if (ids.contains(next)) {
-                            ids.remove(next);
+                        while (ids.contains(next)) {
+                            ids.remove(next++);
                             super.generate(session, object);
                         }
                     }
