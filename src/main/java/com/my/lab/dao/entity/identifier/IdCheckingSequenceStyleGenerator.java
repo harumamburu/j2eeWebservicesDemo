@@ -21,7 +21,7 @@ public class IdCheckingSequenceStyleGenerator extends SequenceStyleGenerator {
     /**
      * keeps user-provided IDs for different entities types
      */
-    private static Map<Class<?>, List<Integer>> idsMap = new ConcurrentHashMap<>(8, 0.9f, 1);
+    private static Map<Class<?>, List<Integer>> idsMap = new ConcurrentHashMap<>(2, 0.9f, 1);
 
     /**
      *Checks if a provided entity is an instance of {@link Identifiable} and if it has an id,
