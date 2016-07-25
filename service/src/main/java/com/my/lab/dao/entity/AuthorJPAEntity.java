@@ -42,8 +42,6 @@ public class AuthorJPAEntity implements JPAEntity {
     @Column(name = Constants.AUTHOR_COLUMN_NAME, nullable = false)
     private String name;
 
-    @JsonDeserialize(using = BirthDateDeserializer.class)
-    @JsonSerialize(using = BirthDateSerializer.class)
     @Temporal(TemporalType.DATE)
     private Date birth;
 

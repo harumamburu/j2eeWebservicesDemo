@@ -54,8 +54,6 @@ public class BookJPAEntity implements JPAEntity {
     @Enumerated(EnumType.STRING)
     private Set<Genre> genres;
 
-    @JsonDeserialize(using = PublishingDateDeserializer.class)
-    @JsonSerialize(using = PublishingDateSerializer.class)
     @Temporal(TemporalType.DATE)
     private Date written;
 
