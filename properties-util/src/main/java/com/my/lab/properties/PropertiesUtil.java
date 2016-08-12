@@ -91,7 +91,8 @@ public class PropertiesUtil {
      * @return loaded {@link Properties}
      * @throws PropertiesReadingException
      */
-    private static Properties loadProperties(ClassLoader cLoader, String propertyResourcePath) throws PropertiesReadingException {
+    private static Properties loadProperties(ClassLoader cLoader, String propertyResourcePath)
+            throws PropertiesReadingException {
         try {
             InputStream propsResource = cLoader.getResourceAsStream(propertyResourcePath);
             Properties props = new Properties();
