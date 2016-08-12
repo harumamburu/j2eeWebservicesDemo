@@ -1,10 +1,19 @@
 package com.my.lab.properties;
 
+import com.my.lab.properties.exception.PropertiesLoadingException;
+import com.my.lab.properties.exception.PropertiesReadingException;
+import com.my.lab.properties.exception.UnmarshallingException;
 import com.my.lab.properties.xml.PropertiesType;
 import com.my.lab.properties.xml.FileType;
+import org.xml.sax.SAXException;
 
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXB;
-import java.io.FileNotFoundException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -19,36 +28,102 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PropertiesUtil {
 
     private static final Map<String, Properties> PROPERTIES = new ConcurrentHashMap<>();
+    private static final JAXBContext CONTEXT;
+    private static final Schema SCHEMA;
+    private static final String SCHEMA_NAME = "properties-loader-config.xsd";
+
+    static {JAXBContext contextTemp = null; Schema schemaTemp = null;
+        try {
+            contextTemp = JAXBContext.newInstance(PropertiesType.class);
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            schemaTemp = schemaFactory.newSchema(PropertiesUtil.class.getClassLoader().getResource(SCHEMA_NAME));
+        } catch (JAXBException | SAXException exc) {
+            contextTemp = null;
+            schemaTemp = null;
+        } finally {
+            CONTEXT = contextTemp;
+            SCHEMA = schemaTemp;
+        }
+    }
 
     /**
-     * Loads properties file by the given classpath regerence
-     * @param xmlConfigClassPath where a properties reader config file is stored on the classpath
+     * Loads properties file by the given resourcePath reference
+     * @param xmlConfigClassPath where a properties reader config file is stored on the classLoader path
      */
-    public static void loadProperties(String xmlConfigClassPath) {
-        try {
-            // TODO: add a possibility to get a caller's classloader to load the properties from
-            ClassLoader cLoader = PropertiesUtil.class.getClassLoader();
+    public static void loadProperties(String xmlConfigClassPath) throws PropertiesLoadingException {
+        ClassLoader cLoader = Thread.currentThread().getContextClassLoader();
 
-            // TODO: add xsd validation
-            PropertiesType propsConfig = JAXB.unmarshal(cLoader.getResourceAsStream(xmlConfigClassPath), PropertiesType.class);
-            for (FileType propsFile : propsConfig.getFile()) {
-                String propsFileName = propsFile.getClasspath();
+        // get an object representation of xml file describing properties
+        PropertiesType propsConfig = getPropertiesConfig(cLoader, xmlConfigClassPath);
 
-                InputStream propsResource = cLoader.getResourceAsStream(propsFile.getClasspath());
-                Properties props = new Properties();
-                props.load(propsResource);
+        // for each property from properties-describing xml
+        for (FileType propsFile : propsConfig.getFile()) {
+            // Load properties
+            String propertyResourcePath = propsFile.getResourcePath();
+            Properties props = loadProperties(cLoader, propertyResourcePath);
 
-                // TODO: add classloading monitoring to be able to coupe with same properties files from different modules
-                if (!PROPERTIES.containsKey(propsFileName)) {
-                    PROPERTIES.put(propsFileName, props);
-                } else {
-                    PROPERTIES.get(propsFileName).putAll(props);
-                }
+            // save the properties or add to existing ones (will override key matches)
+            String propsFileReference = getPropertiesFileSignature(propertyResourcePath);
+            if (!PROPERTIES.containsKey(propsFileReference)) {
+                PROPERTIES.put(propsFileReference, props);
+            } else {
+                PROPERTIES.get(propsFileReference).putAll(props);
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Gets props file name + classloader string representation
+     * to allow same file names for different classloaders
+     * @param propsFile
+     * @return
+     */
+    private static String getPropertiesFileSignature(String propsFile) {
+        // TODO: consider to remove
+        ClassLoader cLoader = Thread.currentThread().getContextClassLoader();
+        return propsFile + "_" + cLoader.toString();
+    }
+
+    /**
+     * Loads properties from classloader's resource stream
+     * @param cLoader classloader to get resource stream from
+     * @param propertyResourcePath properties file path for the classloader
+     * @return loaded {@link Properties}
+     * @throws PropertiesReadingException
+     */
+    private static Properties loadProperties(ClassLoader cLoader, String propertyResourcePath) throws PropertiesReadingException {
+        try {
+            InputStream propsResource = cLoader.getResourceAsStream(propertyResourcePath);
+            Properties props = new Properties();
+            props.load(propsResource);
+            return props;
+        } catch (IOException exc) {
+            throw new PropertiesReadingException("failed to read properties from " + propertyResourcePath, exc);
+        }
+    }
+
+    /**
+     * Gets the resource stream from a passed classloader
+     * and tries to unmarshal properties-describing xml from that stream
+     * @param cLoader contextual classloader
+     * @param xmlConfigClassPath path to a xml describing properties files
+     * @return object representation of properties-config xml
+     * @throws UnmarshallingException
+     */
+    private static PropertiesType getPropertiesConfig(ClassLoader cLoader, String xmlConfigClassPath)
+            throws UnmarshallingException {
+        try {
+            PropertiesType propsConfig;
+            if (CONTEXT == null || SCHEMA == null) {
+                propsConfig = JAXB.unmarshal(cLoader.getResourceAsStream(xmlConfigClassPath), PropertiesType.class);
+            } else {
+                Unmarshaller unmarshaller = CONTEXT.createUnmarshaller();
+                unmarshaller.setSchema(SCHEMA);
+                propsConfig = (PropertiesType) unmarshaller.unmarshal(cLoader.getResourceAsStream(xmlConfigClassPath));
+            }
+            return propsConfig;
+        } catch (JAXBException e) {
+            throw new UnmarshallingException("failed to unmarshall " + xmlConfigClassPath, e);
         }
     }
 
@@ -58,17 +133,14 @@ public class PropertiesUtil {
      * @return {@link String} property value or null if none was loaded with such name
      */
     public static String getProperty(String name) {
-        /* Get All Properties from the map
-         * map them to a single list of entries
-         * filter it getting entries with the key provided
-         * get first if any and get its optional
-         * return optional's value ot null
-         */
-        // TODO: consider to get back to good-old loops
+                // Get All Properties from the map
         return (String) PROPERTIES.values().stream().flatMap(
+                //map them to a single list of entries
                 properties -> properties.entrySet().stream())
-                .filter(v -> v.getKey().equals(name))
-                .findFirst().map(objectObjectEntry -> objectObjectEntry.getValue()).orElse(null);
+                //filter it getting entries with the key provided
+                .filter(entry -> entry.getKey().equals(name))
+                // get first if any and get its value's optional //return optional's value ot null
+                .findFirst().map(optionalEntry -> optionalEntry.getValue()).orElse(null);
     }
 
     /**
@@ -78,7 +150,7 @@ public class PropertiesUtil {
      * @return {@link String} property value or null if none was loaded with such name
      */
     public static String getProperty(String name, String fileClassPath) {
-        return PROPERTIES.get(fileClassPath).getProperty(name);
+        return PROPERTIES.get(getPropertiesFileSignature(fileClassPath)).getProperty(name);
     }
 
 }

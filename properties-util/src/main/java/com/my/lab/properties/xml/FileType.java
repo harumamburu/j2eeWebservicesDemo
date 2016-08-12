@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;complexType name="fileType">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;attribute name="classpath" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="resourcePath" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -28,31 +28,31 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "fileType")
 public class FileType {
 
-    @XmlAttribute(name = "classpath", required = true)
-    protected String classpath;
+    @XmlAttribute(name = "resourcePath", required = true)
+    protected String resourcePath;
 
     /**
-     * Gets the value of the classpath property.
+     * Gets the value of the resourcePath property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getClasspath() {
-        return classpath;
+    public String getResourcePath() {
+        return resourcePath;
     }
 
     /**
-     * Sets the value of the classpath property.
+     * Sets the value of the resourcePath property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setClasspath(String value) {
-        this.classpath = value;
+    public void setResourcePath(String value) {
+        this.resourcePath = value;
     }
 
 }
