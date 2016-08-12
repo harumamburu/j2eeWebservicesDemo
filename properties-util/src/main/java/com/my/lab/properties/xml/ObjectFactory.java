@@ -21,6 +21,7 @@ import javax.xml.namespace.QName;
  * provided in this class.
  * 
  */
+@SuppressWarnings("ALL")
 @XmlRegistry
 public class ObjectFactory {
 
@@ -55,7 +56,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "", name = "properties")
     public JAXBElement<PropertiesType> createProperties(PropertiesType value) {
-        return new JAXBElement<PropertiesType>(_Properties_QNAME, PropertiesType.class, null, value);
+        return new JAXBElement<>(_Properties_QNAME, PropertiesType.class, null, value);
     }
 
 }

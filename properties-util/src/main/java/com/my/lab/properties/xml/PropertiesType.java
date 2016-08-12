@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.*;
 public class PropertiesType {
 
     @XmlElement(required = true)
-    protected List<FileType> file;
+    private List<FileType> file;
 
     /**
      * Gets the value of the file property.
@@ -59,7 +59,7 @@ public class PropertiesType {
      */
     public List<FileType> getFile() {
         if (file == null) {
-            file = new ArrayList<FileType>();
+            file = new ArrayList<>();
         }
         return this.file;
     }

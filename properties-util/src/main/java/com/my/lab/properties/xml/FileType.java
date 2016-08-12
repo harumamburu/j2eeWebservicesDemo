@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlType;
 public class FileType {
 
     @XmlAttribute(name = "resourcePath", required = true)
-    protected String resourcePath;
+    private String resourcePath;
 
     /**
      * Gets the value of the resourcePath property.

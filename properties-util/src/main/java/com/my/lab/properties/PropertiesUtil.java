@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * in a map of &lt;String, Properties&gt;, where the String is a classpath reference to the properties file,
  * and fetch those properties values concurrently when needed.
  */
+@SuppressWarnings("ALL")
 public class PropertiesUtil {
 
     private static final Map<String, Properties> PROPERTIES = new ConcurrentHashMap<>();
@@ -37,7 +38,7 @@ public class PropertiesUtil {
             contextTemp = JAXBContext.newInstance(PropertiesType.class);
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             schemaTemp = schemaFactory.newSchema(PropertiesUtil.class.getClassLoader().getResource(SCHEMA_NAME));
-        } catch (JAXBException | SAXException exc) {
+        } catch (JAXBException | SAXException | NullPointerException exc) {
             contextTemp = null;
             schemaTemp = null;
         } finally {
@@ -75,8 +76,8 @@ public class PropertiesUtil {
     /**
      * Gets props file name + classloader string representation
      * to allow same file names for different classloaders
-     * @param propsFile
-     * @return
+     * @param propsFile properties file resource path
+     * @return properties file descriptor in the format of <pre><code>propsFile + "_" + cLoader.toString()</code></pre>
      */
     private static String getPropertiesFileSignature(String propsFile) {
         // TODO: consider to remove
@@ -89,7 +90,7 @@ public class PropertiesUtil {
      * @param cLoader classloader to get resource stream from
      * @param propertyResourcePath properties file path for the classloader
      * @return loaded {@link Properties}
-     * @throws PropertiesReadingException
+     * @throws PropertiesReadingException when property reading failure occurs
      */
     private static Properties loadProperties(ClassLoader cLoader, String propertyResourcePath)
             throws PropertiesReadingException {
@@ -109,7 +110,7 @@ public class PropertiesUtil {
      * @param cLoader contextual classloader
      * @param xmlConfigClassPath path to a xml describing properties files
      * @return object representation of properties-config xml
-     * @throws UnmarshallingException
+     * @throws UnmarshallingException when properties describing xml unmarshalling fails
      */
     private static PropertiesType getPropertiesConfig(ClassLoader cLoader, String xmlConfigClassPath)
             throws UnmarshallingException {
@@ -141,7 +142,7 @@ public class PropertiesUtil {
                 //filter it getting entries with the key provided
                 .filter(entry -> entry.getKey().equals(name))
                 // get first if any and get its value's optional //return optional's value ot null
-                .findFirst().map(optionalEntry -> optionalEntry.getValue()).orElse(null);
+                .findFirst().map(Map.Entry::getValue).orElse(null);
     }
 
     /**
