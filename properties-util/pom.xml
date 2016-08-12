@@ -8,6 +8,24 @@
     <artifactId>properties-util</artifactId>
     <version>0.1</version>
 
+    <properties>
+        <version.junit>4.12</version.junit>
+        <version.mockito>2.0.100-beta</version.mockito>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${version.junit}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${version.mockito}</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>

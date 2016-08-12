@@ -25,8 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * in a map of &lt;String, Properties&gt;, where the String is a classpath reference to the properties file,
  * and fetch those properties values concurrently when needed.
  */
-@SuppressWarnings("ALL")
-public class PropertiesUtil {
+public final class PropertiesUtil {
 
     private static final Map<String, Properties> PROPERTIES = new ConcurrentHashMap<>();
     private static final JAXBContext CONTEXT;
@@ -45,6 +44,9 @@ public class PropertiesUtil {
             CONTEXT = contextTemp;
             SCHEMA = schemaTemp;
         }
+    }
+
+    private PropertiesUtil() {
     }
 
     /**
