@@ -47,7 +47,7 @@ public class PropertiesType {
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getFile().add(newItem);
+     *    getFiles().add(newItem);
      * </pre>
      * 
      * 
@@ -57,7 +57,7 @@ public class PropertiesType {
      * 
      * 
      */
-    public List<FileType> getFile() {
+    public List<FileType> getFiles() {
         if (file == null) {
             file = new ArrayList<>();
         }

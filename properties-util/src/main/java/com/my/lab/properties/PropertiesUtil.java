@@ -17,6 +17,7 @@ import javax.xml.validation.SchemaFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -25,19 +26,22 @@ import java.util.concurrent.ConcurrentHashMap;
  * in a map of &lt;String, Properties&gt;, where the String is a classpath reference to the properties file,
  * and fetch those properties values concurrently when needed.
  */
-public final class PropertiesUtil {
+public class PropertiesUtil {
 
-    private static final Map<String, Properties> PROPERTIES = new ConcurrentHashMap<>();
-    private static final JAXBContext CONTEXT;
-    private static final Schema SCHEMA;
-    private static final String SCHEMA_NAME = "properties-loader-config.xsd";
+    private final Map<String, Properties> PROPERTIES = new ConcurrentHashMap<>();
+    private final JAXBContext CONTEXT;
+    private final Schema SCHEMA;
+    private final String SCHEMA_NAME = "properties-loader-config.xsd";
 
-    static {JAXBContext contextTemp = null; Schema schemaTemp = null;
+    PropertiesUtil() {
+        JAXBContext contextTemp = null;
+        Schema schemaTemp = null;
         try {
             contextTemp = JAXBContext.newInstance(PropertiesType.class);
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             schemaTemp = schemaFactory.newSchema(PropertiesUtil.class.getClassLoader().getResource(SCHEMA_NAME));
         } catch (JAXBException | SAXException | NullPointerException exc) {
+            // Context and Schema might be null, then default JAXB.unmarshal will be used
             contextTemp = null;
             schemaTemp = null;
         } finally {
@@ -46,21 +50,24 @@ public final class PropertiesUtil {
         }
     }
 
-    private PropertiesUtil() {
+    private static final PropertiesUtil INSTANCE = new PropertiesUtil();
+
+    public static PropertiesUtil getInstance() {
+        return INSTANCE;
     }
 
     /**
      * Loads properties file by the given resourcePath reference
      * @param xmlConfigClassPath where a properties reader config file is stored on the classLoader path
      */
-    public static void loadProperties(String xmlConfigClassPath) throws PropertiesLoadingException {
+    public synchronized void loadProperties(String xmlConfigClassPath) throws PropertiesLoadingException {
         ClassLoader cLoader = Thread.currentThread().getContextClassLoader();
 
         // get an object representation of xml file describing properties
         PropertiesType propsConfig = getPropertiesConfig(cLoader, xmlConfigClassPath);
 
         // for each property from properties-describing xml
-        for (FileType propsFile : propsConfig.getFile()) {
+        for (FileType propsFile : propsConfig.getFiles()) {
             // Load properties
             String propertyResourcePath = propsFile.getResourcePath();
             Properties props = loadProperties(cLoader, propertyResourcePath);
@@ -76,37 +83,6 @@ public final class PropertiesUtil {
     }
 
     /**
-     * Gets props file name + classloader string representation
-     * to allow same file names for different classloaders
-     * @param propsFile properties file resource path
-     * @return properties file descriptor in the format of <pre><code>propsFile + "_" + cLoader.toString()</code></pre>
-     */
-    private static String getPropertiesFileSignature(String propsFile) {
-        // TODO: consider to remove
-        ClassLoader cLoader = Thread.currentThread().getContextClassLoader();
-        return propsFile + "_" + cLoader.toString();
-    }
-
-    /**
-     * Loads properties from classloader's resource stream
-     * @param cLoader classloader to get resource stream from
-     * @param propertyResourcePath properties file path for the classloader
-     * @return loaded {@link Properties}
-     * @throws PropertiesReadingException when property reading failure occurs
-     */
-    private static Properties loadProperties(ClassLoader cLoader, String propertyResourcePath)
-            throws PropertiesReadingException {
-        try {
-            InputStream propsResource = cLoader.getResourceAsStream(propertyResourcePath);
-            Properties props = new Properties();
-            props.load(propsResource);
-            return props;
-        } catch (IOException exc) {
-            throw new PropertiesReadingException("failed to read properties from " + propertyResourcePath, exc);
-        }
-    }
-
-    /**
      * Gets the resource stream from a passed classloader
      * and tries to unmarshal properties-describing xml from that stream
      * @param cLoader contextual classloader
@@ -114,7 +90,7 @@ public final class PropertiesUtil {
      * @return object representation of properties-config xml
      * @throws UnmarshallingException when properties describing xml unmarshalling fails
      */
-    private static PropertiesType getPropertiesConfig(ClassLoader cLoader, String xmlConfigClassPath)
+    PropertiesType getPropertiesConfig(ClassLoader cLoader, String xmlConfigClassPath)
             throws UnmarshallingException {
         try {
             PropertiesType propsConfig;
@@ -132,11 +108,42 @@ public final class PropertiesUtil {
     }
 
     /**
+     * Loads properties from classloader's resource stream
+     * @param cLoader classloader to get resource stream from
+     * @param propertyResourcePath properties file path for the classloader
+     * @return loaded {@link Properties}
+     * @throws PropertiesReadingException when property reading failure occurs
+     */
+    Properties loadProperties(ClassLoader cLoader, String propertyResourcePath)
+            throws PropertiesReadingException {
+        try {
+            InputStream propsResource = cLoader.getResourceAsStream(propertyResourcePath);
+            Properties props = new Properties();
+            props.load(propsResource);
+            return props;
+        } catch (IOException exc) {
+            throw new PropertiesReadingException("failed to read properties from " + propertyResourcePath, exc);
+        }
+    }
+
+    /**
+     * Gets props file name + classloader string representation
+     * to allow same file names for different classloaders
+     * @param propsFile properties file resource path
+     * @return properties file descriptor in the format of <pre><code>propsFile + "_" + cLoader.toString()</code></pre>
+     */
+    String getPropertiesFileSignature(String propsFile) {
+        // TODO: consider removing
+        ClassLoader cLoader = Thread.currentThread().getContextClassLoader();
+        return propsFile + "_" + cLoader.toString();
+    }
+
+    /**
      * Gets a property value by its name, disregarding which file it came from
      * @param name key of a property to get its value
      * @return {@link String} property value or null if none was loaded with such name
      */
-    public static String getProperty(String name) {
+    public String getProperty(String name) {
                 // Get All Properties from the map
         return (String) PROPERTIES.values().stream().flatMap(
                 //map them to a single list of entries
@@ -150,11 +157,12 @@ public final class PropertiesUtil {
     /**
      * Gets a property value by its name,
      * @param name key of a property to get its value
-     * @param fileClassPath classpath reference the the properties file that contained the searched property
+     * @param fileResourcePath classpath reference the the properties file that contained the searched property
      * @return {@link String} property value or null if none was loaded with such name
      */
-    public static String getProperty(String name, String fileClassPath) {
-        return PROPERTIES.get(getPropertiesFileSignature(fileClassPath)).getProperty(name);
+    public String getProperty(String name, String fileResourcePath) {
+        return Optional.ofNullable(PROPERTIES.get(getPropertiesFileSignature(fileResourcePath)))
+                .orElse(new Properties()).getProperty(name);
     }
 
 }
