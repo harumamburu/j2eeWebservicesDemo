@@ -3,7 +3,6 @@ package com.my.lab.properties;
 import com.my.lab.properties.exception.UnmarshallingException;
 import com.my.lab.properties.xml.FileType;
 import com.my.lab.properties.xml.PropertiesType;
-import org.hamcrest.collection.IsCollectionWithSize;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,18 +14,16 @@ import javax.xml.validation.Schema;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
+import static org.hamcrest.collection.IsArrayContaining.hasItemInArray;
+import static org.hamcrest.collection.IsArrayWithSize.arrayWithSize;
 import static org.hamcrest.collection.IsMapContaining.hasValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -81,12 +78,13 @@ public final class PropertiesUtilTest {
     }
 
     @Test
-    public void testPropertiesConfigDescriptorLoading() throws UnmarshallingException {
+    public void testPropertiesConfigDescriptorParsing() throws UnmarshallingException {
         PropertiesType propertiesConfig = propertiesUtil.
                 getPropertiesConfig(Thread.currentThread().getContextClassLoader(), PROP_CONFIG_NAME);
-        List<String> propFiles = propertiesConfig.getFiles()
-                .stream().map(FileType::getResourcePath).collect(Collectors.toList());
-        assertThat(propFiles, allOf(containsInAnyOrder(PROP_FILE_NAME), hasSize(1)));
+        String[] propFiles = propertiesConfig.getFiles()
+                .stream().map(FileType::getResourcePath).toArray(String[]::new);
+
+        assertThat(propFiles, allOf(hasItemInArray(PROP_FILE_NAME), arrayWithSize(1)));
     }
 
     @Test
