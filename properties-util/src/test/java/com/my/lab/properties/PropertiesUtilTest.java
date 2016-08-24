@@ -1,5 +1,6 @@
 package com.my.lab.properties;
 
+import com.my.lab.properties.exception.PropertiesReadingException;
 import com.my.lab.properties.exception.UnmarshallingException;
 import com.my.lab.properties.xml.FileType;
 import com.my.lab.properties.xml.PropertiesType;
@@ -11,6 +12,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.validation.Schema;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -85,6 +87,15 @@ public final class PropertiesUtilTest {
                 .stream().map(FileType::getResourcePath).toArray(String[]::new);
 
         assertThat(propFiles, allOf(hasItemInArray(PROP_FILE_NAME), arrayWithSize(1)));
+    }
+
+    @Test
+    public void testPropertiesLoadingFromXmlDescriptor() throws PropertiesReadingException {
+        ClassLoader cLoader = mock(ClassLoader.class);
+        when(cLoader.getResourceAsStream(PROP_FILE_NAME)).thenReturn(new ByteArrayInputStream(
+                new String(key + "=" + value).getBytes()));
+
+        Properties props = propertiesUtil.loadPropertiesFromFile(cLoader, PROP_FILE_NAME);
     }
 
     @Test
