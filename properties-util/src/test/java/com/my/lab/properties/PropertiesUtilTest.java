@@ -60,7 +60,7 @@ public final class PropertiesUtilTest {
     }
 
     @Test
-    public void testPropertiesLoadingFromXmlDescriptor() throws Exception {
+    public void testPropertiesSaving() throws Exception {
         FileType fileType = mock(FileType.class);
         when(fileType.getResourcePath()).thenReturn(PROP_FILE_NAME);
         PropertiesType propsConfig = mock(PropertiesType.class);
@@ -68,10 +68,10 @@ public final class PropertiesUtilTest {
 
         doReturn(propsConfig).when(propertiesUtil).
                 getPropertiesConfig(any(ClassLoader.class), eq(PROP_CONFIG_NAME));
-        doReturn(testProperties).when(propertiesUtil).loadProperties(any(ClassLoader.class), eq(PROP_FILE_NAME));
+        doReturn(testProperties).when(propertiesUtil).loadPropertiesFromFile(any(ClassLoader.class), eq(PROP_FILE_NAME));
         doReturn(PROP_FILE_NAME).when(propertiesUtil).getPropertiesFileSignature(PROP_FILE_NAME);
 
-        propertiesUtil.loadProperties(PROP_CONFIG_NAME);
+        propertiesUtil.loadPropertiesFromFile(PROP_CONFIG_NAME);
         Map<String, Properties> properties = (Map) getFiledValue(PropertiesUtil.class, "PROPERTIES", propertiesUtil);
 
         assertThat(properties, hasValue(testProperties));
