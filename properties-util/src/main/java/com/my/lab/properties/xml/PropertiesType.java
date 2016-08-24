@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.*;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="file" type="{}fileType" maxOccurs="unbounded"/>
+ *         &lt;element name="files" type="{}fileType" maxOccurs="unbounded"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -26,23 +26,21 @@ import javax.xml.bind.annotation.*;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "propertiesType", propOrder = {
-    "file"
-})
-@XmlRootElement
+//@XmlType(name = "properties")
+@XmlRootElement(name = "properties")
 public class PropertiesType {
 
-    @XmlElement(required = true)
-    private List<FileType> file;
+    @XmlElement(required = true, name = "file")
+    private List<FileType> files;
 
     /**
-     * Gets the value of the file property.
+     * Gets the value of the files property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the file property.
+     * This is why there is not a <CODE>set</CODE> method for the files property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
@@ -58,10 +56,10 @@ public class PropertiesType {
      * 
      */
     public List<FileType> getFiles() {
-        if (file == null) {
-            file = new ArrayList<>();
+        if (files == null) {
+            files = new ArrayList<>();
         }
-        return this.file;
+        return this.files;
     }
 
 }

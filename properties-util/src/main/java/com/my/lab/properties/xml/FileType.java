@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "fileType")
+@XmlType(name = "file")
 public class FileType {
 
     @XmlAttribute(name = "resourcePath", required = true)
