@@ -88,7 +88,7 @@ public final class PropertiesUtilTest {
     }
 
     @Test
-    public void testPropertyLoadingByName() throws Exception {
+    public void testPropertyFetchingByName() throws Exception {
         Map<String, Properties> properties = mock(Map.class);
         properties.put(PROP_FILE_NAME, testProperties);
 
@@ -96,7 +96,7 @@ public final class PropertiesUtilTest {
     }
 
     @Test
-    public void testPropertyLoadingByNameAndFileName() throws Exception {
+    public void testPropertyFetchingByNameAndFileName() throws Exception {
         Map<String, Properties> properties = mock(Map.class);
         properties.put(PROP_FILE_NAME, testProperties);
         doReturn(PROP_FILE_NAME).when(propertiesUtil).getPropertiesFileSignature(PROP_FILE_NAME);
