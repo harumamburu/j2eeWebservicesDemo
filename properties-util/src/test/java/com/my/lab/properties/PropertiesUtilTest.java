@@ -27,7 +27,6 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.collection.IsArrayContaining.hasItemInArray;
 import static org.hamcrest.collection.IsArrayWithSize.arrayWithSize;
 import static org.hamcrest.collection.IsMapContaining.hasValue;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
@@ -89,7 +88,7 @@ public final class PropertiesUtilTest {
         doReturn(PROP_FILE_NAME).when(propertiesUtil).getPropertiesFileSignature(PROP_FILE_NAME);
 
         propertiesUtil.loadPropertiesFromConfigFile(PROP_CONFIG_NAME);
-        return  (Map) getFiledValue(PropertiesUtil.class, "PROPERTIES", propertiesUtil);
+        return  (Map<String, Properties>) getFiledValue(PropertiesUtil.class, "PROPERTIES", propertiesUtil);
     }
 
     @Test
@@ -111,7 +110,7 @@ public final class PropertiesUtilTest {
     public void testPropertiesLoadingFromPropertyFile() throws PropertiesReadingException {
         ClassLoader cLoader = mock(ClassLoader.class);
         when(cLoader.getResourceAsStream(PROP_FILE_NAME)).thenReturn(new ByteArrayInputStream(
-                new String(key + "=" + value).getBytes()));
+                (key + "=" + value).getBytes()));
 
         Properties props = propertiesUtil.loadPropertiesFromPropertyFile(cLoader, PROP_FILE_NAME);
     }
@@ -124,13 +123,13 @@ public final class PropertiesUtilTest {
     @Test
     public void testPropertyFetchingByName() throws Exception {
         mockPropertiesSavingAndSave(testProperties);
-        assertEquals(value, propertiesUtil.getProperty(key));
+        assertThat(value, is(propertiesUtil.getProperty(key)));
     }
 
     @Test
     public void testPropertyFetchingByNameAndFileName() throws Exception {
         mockPropertiesSavingAndSave(testProperties);
-        assertEquals(value, propertiesUtil.getProperty(key, PROP_FILE_NAME));
+        assertThat(value, is(propertiesUtil.getProperty(key, PROP_FILE_NAME)));
     }
 
     private Object getFiledValue(Class<?> targetClass, String fieldName, Object target)
