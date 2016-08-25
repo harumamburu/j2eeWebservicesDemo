@@ -117,7 +117,11 @@ public class PropertiesUtil {
     Properties loadPropertiesFromPropertyFile(ClassLoader cLoader, String propertyResourcePath)
             throws PropertiesReadingException {
         try {
-            InputStream propsResource = cLoader.getResourceAsStream(propertyResourcePath);
+            if (propertyResourcePath.isEmpty()) {
+                throw new IOException();
+            }
+            InputStream propsResource = Optional.ofNullable(cLoader.getResourceAsStream(propertyResourcePath))
+                    .orElseThrow(IOException::new);
             Properties props = new Properties();
             props.load(propsResource);
             return props;

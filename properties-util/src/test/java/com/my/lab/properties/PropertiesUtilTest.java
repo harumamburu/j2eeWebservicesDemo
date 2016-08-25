@@ -116,6 +116,11 @@ public final class PropertiesUtilTest {
         Properties props = propertiesUtil.loadPropertiesFromPropertyFile(cLoader, PROP_FILE_NAME);
     }
 
+    @Test(expected = PropertiesReadingException.class)
+    public void testPropertiesLoadingFromPropertyFileFailure() throws PropertiesReadingException {
+        propertiesUtil.loadPropertiesFromPropertyFile(Thread.currentThread().getContextClassLoader(), "");
+    }
+
     @Test
     public void testPropertyFetchingByName() throws Exception {
         mockPropertiesSavingAndSave(testProperties);
