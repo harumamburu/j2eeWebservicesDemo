@@ -2,12 +2,14 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.my.lab</groupId>
+  <parent>
+    <groupId>org.kovalsky.lab</groupId>
+    <artifactId>jxars-demo</artifactId>
+    <version>0.1</version>
+  </parent>
+
   <artifactId>jax-rs.webservices</artifactId>
   <packaging>war</packaging>
-  <version>0.1</version>
-  <name>jax-rs.webservices Maven Webapp</name>
-  <url>http://maven.apache.org</url>
 
   <properties>
     <project.build.directory>target/out</project.build.directory>
@@ -20,6 +22,12 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>org.kovalsky.lab</groupId>
+      <artifactId>properties-util</artifactId>
+      <version>0.1</version>
+    </dependency>
+
     <dependency>
       <groupId>javax</groupId>
       <artifactId>javaee-web-api</artifactId>
@@ -61,11 +69,6 @@
       <artifactId>hibernate-entitymanager</artifactId>
       <version>${dependency.version.hibernate}</version>
     </dependency>
-    <!--<dependency>
-      <groupId>com.oracle.jdbc</groupId>
-      <artifactId>ojdbc7</artifactId>
-      <version>12.1.0.2</version>
-    </dependency>-->
 
     <dependency>
       <groupId>org.mapstruct</groupId>
@@ -125,15 +128,6 @@
         <configuration>
           <archiveClasses>true</archiveClasses>
           <warName>jaxrsws</warName>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
         </configuration>
       </plugin>
       <plugin>
