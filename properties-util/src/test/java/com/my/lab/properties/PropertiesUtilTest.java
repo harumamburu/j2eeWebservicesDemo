@@ -29,6 +29,7 @@ import static org.hamcrest.collection.IsArrayWithSize.arrayWithSize;
 import static org.hamcrest.collection.IsMapContaining.hasValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doReturn;
@@ -54,7 +55,7 @@ public final class PropertiesUtilTest {
     }
 
     @Test
-    public void testPropertiesUtilWithSchemaInstantiation() throws NoSuchFieldException, IllegalAccessException {
+    public void testPropertiesUtilInstantiationWithSchema() throws NoSuchFieldException, IllegalAccessException {
         JAXBContext context = (JAXBContext) getFiledValue(PropertiesUtil.class, "CONTEXT", propertiesUtil);
         Schema schema = (Schema) getFiledValue(PropertiesUtil.class, "SCHEMA", propertiesUtil);
 
@@ -62,7 +63,12 @@ public final class PropertiesUtilTest {
     }
 
     @Test
-    public void testPropertiesSaving() throws Exception {
+    public void testPropertiesUtilInstantiationWithoutSchema() {
+        fail();
+    }
+
+    @Test
+    public void testPropertiesSavingToMap() throws Exception {
         FileType fileType = mock(FileType.class);
         when(fileType.getResourcePath()).thenReturn(PROP_FILE_NAME);
         PropertiesType propsConfig = mock(PropertiesType.class);
@@ -80,13 +86,33 @@ public final class PropertiesUtilTest {
     }
 
     @Test
-    public void testPropertiesConfigDescriptorParsing() throws UnmarshallingException {
+    public void testPropertiesAdditionToMap() {
+        fail();
+    }
+
+    @Test
+    public void testPropertiesReplacementInMap() {
+        fail();
+    }
+
+    @Test
+    public void testPropertiesConfigDescriptorParsingWithSchema() throws UnmarshallingException {
         PropertiesType propertiesConfig = propertiesUtil.
                 getPropertiesConfig(Thread.currentThread().getContextClassLoader(), PROP_CONFIG_NAME);
         String[] propFiles = propertiesConfig.getFiles()
                 .stream().map(FileType::getResourcePath).toArray(String[]::new);
 
         assertThat(propFiles, allOf(hasItemInArray(PROP_FILE_NAME), arrayWithSize(1)));
+    }
+
+    @Test
+    public void testPropertiesConfigDescriptorParsingWithoutSchema() {
+        fail();
+    }
+
+    @Test(expected = UnmarshallingException.class)
+    public void testPropertiesConfigDescriptorParsingFailure() {
+
     }
 
     @Test
