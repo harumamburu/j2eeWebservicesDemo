@@ -29,7 +29,6 @@ import static org.hamcrest.collection.IsArrayWithSize.arrayWithSize;
 import static org.hamcrest.collection.IsMapContaining.hasValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doReturn;
@@ -43,7 +42,7 @@ public final class PropertiesUtilTest {
     private final static String PROP_FILE_NAME = "property.properties";
 
     @Spy
-    private PropertiesUtil propertiesUtil = PropertiesUtil.getInstance();
+    private PropertiesUtil propertiesUtil;
     private static Properties testProperties;
     private static String key = "key";
     private static String value = "value";
@@ -59,16 +58,26 @@ public final class PropertiesUtilTest {
         JAXBContext context = (JAXBContext) getFiledValue(PropertiesUtil.class, "CONTEXT", propertiesUtil);
         Schema schema = (Schema) getFiledValue(PropertiesUtil.class, "SCHEMA", propertiesUtil);
 
-        assertThat(Arrays.asList(context, schema), everyItem(not(is(nullValue()))));
-    }
-
-    @Test
-    public void testPropertiesUtilInstantiationWithoutSchema() {
-        fail();
+        assertThat(Arrays.asList(context, schema), everyItem(is(not(nullValue()))));
     }
 
     @Test
     public void testPropertiesSavingToMap() throws Exception {
+        Map<String, Properties> propertiesMap = mockPropertiesSavingAndSave(testProperties);
+        assertThat(propertiesMap, hasValue(testProperties));
+    }
+
+    @Test
+    public void testPropertiesAdditionToMap() throws Exception {
+        mockPropertiesSavingAndSave(testProperties);
+        Properties additionalTestProperties = (Properties) testProperties.clone();
+        additionalTestProperties.put(value, key);
+        Map<String, Properties> propertiesMap = mockPropertiesSavingAndSave(additionalTestProperties);
+
+        assertThat(propertiesMap, allOf(hasValue(testProperties), hasValue(additionalTestProperties)));
+    }
+
+    private Map<String, Properties> mockPropertiesSavingAndSave(Properties props) throws Exception {
         FileType fileType = mock(FileType.class);
         when(fileType.getResourcePath()).thenReturn(PROP_FILE_NAME);
         PropertiesType propsConfig = mock(PropertiesType.class);
@@ -76,23 +85,11 @@ public final class PropertiesUtilTest {
 
         doReturn(propsConfig).when(propertiesUtil).
                 getPropertiesConfig(any(ClassLoader.class), eq(PROP_CONFIG_NAME));
-        doReturn(testProperties).when(propertiesUtil).loadPropertiesFromFile(any(ClassLoader.class), eq(PROP_FILE_NAME));
+        doReturn(props).when(propertiesUtil).loadPropertiesFromPropertyFile(any(ClassLoader.class), eq(PROP_FILE_NAME));
         doReturn(PROP_FILE_NAME).when(propertiesUtil).getPropertiesFileSignature(PROP_FILE_NAME);
 
-        propertiesUtil.loadPropertiesFromFile(PROP_CONFIG_NAME);
-        Map<String, Properties> properties = (Map) getFiledValue(PropertiesUtil.class, "PROPERTIES", propertiesUtil);
-
-        assertThat(properties, hasValue(testProperties));
-    }
-
-    @Test
-    public void testPropertiesAdditionToMap() {
-        fail();
-    }
-
-    @Test
-    public void testPropertiesReplacementInMap() {
-        fail();
+        propertiesUtil.loadPropertiesFromConfigFile(PROP_CONFIG_NAME);
+        return  (Map) getFiledValue(PropertiesUtil.class, "PROPERTIES", propertiesUtil);
     }
 
     @Test
@@ -105,39 +102,29 @@ public final class PropertiesUtilTest {
         assertThat(propFiles, allOf(hasItemInArray(PROP_FILE_NAME), arrayWithSize(1)));
     }
 
-    @Test
-    public void testPropertiesConfigDescriptorParsingWithoutSchema() {
-        fail();
-    }
-
     @Test(expected = UnmarshallingException.class)
-    public void testPropertiesConfigDescriptorParsingFailure() {
-
+    public void testPropertiesConfigDescriptorParsingFailure() throws UnmarshallingException {
+        propertiesUtil.getPropertiesConfig(Thread.currentThread().getContextClassLoader(), "");
     }
 
     @Test
-    public void testPropertiesLoadingFromXmlDescriptor() throws PropertiesReadingException {
+    public void testPropertiesLoadingFromPropertyFile() throws PropertiesReadingException {
         ClassLoader cLoader = mock(ClassLoader.class);
         when(cLoader.getResourceAsStream(PROP_FILE_NAME)).thenReturn(new ByteArrayInputStream(
                 new String(key + "=" + value).getBytes()));
 
-        Properties props = propertiesUtil.loadPropertiesFromFile(cLoader, PROP_FILE_NAME);
+        Properties props = propertiesUtil.loadPropertiesFromPropertyFile(cLoader, PROP_FILE_NAME);
     }
 
     @Test
     public void testPropertyFetchingByName() throws Exception {
-        Map<String, Properties> properties = mock(Map.class);
-        properties.put(PROP_FILE_NAME, testProperties);
-
+        mockPropertiesSavingAndSave(testProperties);
         assertEquals(value, propertiesUtil.getProperty(key));
     }
 
     @Test
     public void testPropertyFetchingByNameAndFileName() throws Exception {
-        Map<String, Properties> properties = mock(Map.class);
-        properties.put(PROP_FILE_NAME, testProperties);
-        doReturn(PROP_FILE_NAME).when(propertiesUtil).getPropertiesFileSignature(PROP_FILE_NAME);
-
+        mockPropertiesSavingAndSave(testProperties);
         assertEquals(value, propertiesUtil.getProperty(key, PROP_FILE_NAME));
     }
 

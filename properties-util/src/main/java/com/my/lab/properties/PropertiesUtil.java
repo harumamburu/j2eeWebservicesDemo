@@ -60,7 +60,7 @@ public class PropertiesUtil {
      * Loads properties file by the given resourcePath reference
      * @param xmlConfigClassPath where a properties reader config file is stored on the classLoader path
      */
-    public synchronized void loadPropertiesFromFile(String xmlConfigClassPath) throws PropertiesLoadingException {
+    public synchronized void loadPropertiesFromConfigFile(String xmlConfigClassPath) throws PropertiesLoadingException {
         ClassLoader cLoader = Thread.currentThread().getContextClassLoader();
 
         // get an object representation of xml file describing properties
@@ -70,7 +70,7 @@ public class PropertiesUtil {
         for (FileType propsFile : propsConfig.getFiles()) {
             // Load properties
             String propertyResourcePath = propsFile.getResourcePath();
-            Properties props = loadPropertiesFromFile(cLoader, propertyResourcePath);
+            Properties props = loadPropertiesFromPropertyFile(cLoader, propertyResourcePath);
 
             // save the properties or add to existing ones (will override key matches)
             String propsFileReference = getPropertiesFileSignature(propertyResourcePath);
@@ -114,7 +114,7 @@ public class PropertiesUtil {
      * @return loaded {@link Properties}
      * @throws PropertiesReadingException when property reading failure occurs
      */
-    Properties loadPropertiesFromFile(ClassLoader cLoader, String propertyResourcePath)
+    Properties loadPropertiesFromPropertyFile(ClassLoader cLoader, String propertyResourcePath)
             throws PropertiesReadingException {
         try {
             InputStream propsResource = cLoader.getResourceAsStream(propertyResourcePath);
