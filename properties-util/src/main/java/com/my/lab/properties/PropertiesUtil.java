@@ -93,16 +93,17 @@ public class PropertiesUtil {
     PropertiesType getPropertiesConfig(ClassLoader cLoader, String xmlConfigClassPath)
             throws UnmarshallingException {
         try {
+            InputStream propsConfigResource = getClassPathResourceStream(cLoader, xmlConfigClassPath);
             PropertiesType propsConfig;
             if (CONTEXT == null || SCHEMA == null) {
-                propsConfig = JAXB.unmarshal(cLoader.getResourceAsStream(xmlConfigClassPath), PropertiesType.class);
+                propsConfig = JAXB.unmarshal(propsConfigResource, PropertiesType.class);
             } else {
                 Unmarshaller unmarshaller = CONTEXT.createUnmarshaller();
                 unmarshaller.setSchema(SCHEMA);
-                propsConfig = (PropertiesType) unmarshaller.unmarshal(cLoader.getResourceAsStream(xmlConfigClassPath));
+                propsConfig = (PropertiesType) unmarshaller.unmarshal(propsConfigResource);
             }
             return propsConfig;
-        } catch (JAXBException e) {
+        } catch (IOException | JAXBException | IllegalArgumentException e) {
             throw new UnmarshallingException("failed to unmarshall " + xmlConfigClassPath, e);
         }
     }
@@ -117,17 +118,27 @@ public class PropertiesUtil {
     Properties loadPropertiesFromPropertyFile(ClassLoader cLoader, String propertyResourcePath)
             throws PropertiesReadingException {
         try {
-            if (propertyResourcePath.isEmpty()) {
-                throw new IOException();
-            }
-            InputStream propsResource = Optional.ofNullable(cLoader.getResourceAsStream(propertyResourcePath))
-                    .orElseThrow(IOException::new);
+            InputStream propsResource = getClassPathResourceStream(cLoader, propertyResourcePath);
             Properties props = new Properties();
             props.load(propsResource);
             return props;
         } catch (IOException exc) {
             throw new PropertiesReadingException("failed to read properties from " + propertyResourcePath, exc);
         }
+    }
+
+    /**
+     * Attempts to load a resource as InputStream from a passed ClassLoader
+     * @param cLoader to load resource stream from
+     * @param resourceName to load
+     * @return resource InputStream from a passed ClassLoader
+     * @throws IOException in case when resource name is empty or no such resource were found
+     */
+    private InputStream getClassPathResourceStream(ClassLoader cLoader, String resourceName) throws IOException {
+        if (resourceName.isEmpty()) {
+            throw new IOException();
+        }
+        return Optional.ofNullable(cLoader.getResourceAsStream(resourceName)).orElseThrow(IOException::new);
     }
 
     /**

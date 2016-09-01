@@ -103,7 +103,7 @@ public final class PropertiesUtilTest {
 
     @Test(expected = UnmarshallingException.class)
     public void testPropertiesConfigDescriptorParsingFailure() throws UnmarshallingException {
-        propertiesUtil.getPropertiesConfig(Thread.currentThread().getContextClassLoader(), "");
+        propertiesUtil.getPropertiesConfig(Thread.currentThread().getContextClassLoader(), "123");
     }
 
     @Test
