@@ -1,5 +1,7 @@
 package com.my.lab.web;
 
+import com.my.lab.properties.PropertiesUtil;
+import com.my.lab.properties.exception.PropertiesLoadingException;
 import com.my.lab.web.error.mapper.ErrorToResponseMapper;
 import com.my.lab.web.resource.AuthorResource;
 import com.my.lab.web.resource.BookResource;
@@ -16,10 +18,23 @@ import java.util.Set;
 
 @ApplicationPath("/bookstore/api")
 public class BookStoreApplication extends Application {
+
     @Override
     public Set<Class<?>> getClasses() {
-        initSwagger();
+        String defaultHost = "localhost";
+        String defaultPort = "8080";
+        try {
+            initProjectProperties();
+            defaultHost = PropertiesUtil.getInstance().getProperty("service.host");
+            defaultPort = PropertiesUtil.getInstance().getProperty("service.port");
+        } catch (PropertiesLoadingException exc) {
+            exc.printStackTrace();
+        }
+        initSwagger(defaultHost, defaultPort);
+        return initResources();
+    }
 
+    private Set<Class<?>> initResources() {
         final Set<Class<?>> classes = new HashSet<>();
         classes.add(BookResource.class);
         classes.add(AuthorResource.class);
@@ -31,20 +46,24 @@ public class BookStoreApplication extends Application {
         return classes;
     }
 
+    private void initProjectProperties() throws PropertiesLoadingException {
+        PropertiesUtil.getInstance().loadPropertiesFromConfigFile("resources/properties-descriptor.xml");
+    }
+
+    private void initSwagger(String host, String port) {
+        BeanConfig swaggerConfig = new BeanConfig();
+        swaggerConfig.setSchemes(new String[]{"http", "https"});
+        swaggerConfig.setHost(host + ":" + port);
+        swaggerConfig.setBasePath("/jaxrsws/bookstore/api");
+        swaggerConfig.setResourcePackage("com.my.lab");
+        swaggerConfig.setInfo(new Info().title("Book store web API"));
+        swaggerConfig.setScan(true);
+    }
+
     @Override
     public Map<String, Object> getProperties() {
         final Map<String, Object> properties = new HashMap<>();
         properties.put("jersey.config.disableMoxyJson", true);
         return  properties;
-    }
-
-    private void initSwagger() {
-        BeanConfig swaggerConfig = new BeanConfig();
-        swaggerConfig.setSchemes(new String[]{"http", "https"});
-        swaggerConfig.setHost("localhost:8080");
-        swaggerConfig.setBasePath("/jaxrsws/bookstore/api");
-        swaggerConfig.setResourcePackage("com.my.lab");
-        swaggerConfig.setInfo(new Info().title("Book store web API"));
-        swaggerConfig.setScan(true);
     }
 }
