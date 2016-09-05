@@ -159,14 +159,10 @@ public class PropertiesUtil {
      * @return {@link String} property value or null if none was loaded with such name
      */
     public String getProperty(String name) {
-                // Get All Properties from the map
-        return (String) PROPERTIES.values().stream().flatMap(
-                //map them to a single list of entries
-                properties -> properties.entrySet().stream())
-                //filter it getting entries with the key provided
-                .filter(entry -> entry.getKey().equals(name))
-                // get first if any and get its value's optional //return optional's value ot null
-                .findFirst().map(Map.Entry::getValue).orElse(null);
+        Properties properties = PROPERTIES.values().stream().
+                filter(props -> props.containsKey(name)).
+                findFirst().orElse(new Properties());
+        return properties.getProperty(name);
     }
 
     /**
